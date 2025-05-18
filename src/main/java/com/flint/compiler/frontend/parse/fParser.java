@@ -1,8 +1,10 @@
 package com.flint.compiler.frontend.parse;
 
 import com.flint.compiler.frontend.ast.nodes.AstNod;
+import com.flint.compiler.frontend.ast.nodes.AstOperatorNod;
 import com.flint.compiler.frontend.ast.nodes.kinds.AstNodKind;
 import com.flint.compiler.frontend.ast.nodes.leaves.AstProdSubTreeN;
+import com.flint.compiler.frontend.ast.nodes.operators.AstEntitySepOpNod;
 import com.flint.compiler.frontend.lang.grammar.GProd;
 import com.flint.compiler.frontend.parse.lex.fLexer;
 import com.flint.compiler.frontend.parse.lex.token.fTokenKind;
@@ -21,7 +23,7 @@ public class fParser {
 		pa.setRight(expr());
 		while (ph.getTokenKind() == fTokenKind.T_COMMA) {
 			ph.next();
-			pa.insertEntitySep();
+			ph.insertEntitySep(pa.getLastAdded());
 			pa.setRight(expr());
 		}
 		return new AstProdSubTreeN(GProd.EXPRS, pa.rootOp, pa.getLastAdded());

@@ -1,5 +1,8 @@
 package com.flint.compiler.frontend.parse;
 
+import com.flint.compiler.frontend.ast.nodes.AstNod;
+import com.flint.compiler.frontend.ast.nodes.AstOperatorNod;
+import com.flint.compiler.frontend.ast.nodes.operators.AstEntitySepOpNod;
 import com.flint.compiler.frontend.parse.lex.fLexer;
 import com.flint.compiler.frontend.parse.lex.token.OpChar;
 import com.flint.compiler.frontend.parse.lex.token.fOperatorKind;
@@ -139,5 +142,14 @@ public class ParseHelp {
 			}
 		}
 		throw new RuntimeException("Unexpected token: " + token.kind);
+	}
+
+	void insertEntitySep(AstNod astNod) {
+		AstOperatorNod prn = astNod.getAstParentN();
+		assert prn.isOperator();
+		assert prn.getAstRightN() == astNod;
+		AstEntitySepOpNod sepOp = new AstEntitySepOpNod();
+		prn.setAstRightN(sepOp);
+		sepOp.setAstLeftN(astNod);
 	}
 }

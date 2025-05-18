@@ -15,21 +15,7 @@ public class ParseArgs {
 		lastAdded = astRightN;
 	}
 
-	public void insertEntitySep(){
-		assert lastAdded.isOperator() == false;
-		AstEntitySepOpNod sepOp = new AstEntitySepOpNod();
-		AstOperatorNod prn = lastAdded.getAstParentN();
-      assert prn.isOperator();
-		if(prn ==  rootOp){
-			rootOp.setAstRightN(sepOp);
-			sepOp.setAstLeftN(lastAdded);
-		} else {
-			AstOperatorNod grandParent = prn.getAstParentN();
-			assert grandParent.isOperator() && grandParent.getAstRightN() == prn;//?
-			grandParent.setAstRightN(sepOp);
-			sepOp.setAstLeftN(prn);
-		}
-	}
+
 
 
 	public AstNod getLastAdded() {
