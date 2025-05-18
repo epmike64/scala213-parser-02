@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.flint</groupId>
-  <artifactId>scala213-ast-004</artifactId>
+  <artifactId>scala213-parser-02</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
