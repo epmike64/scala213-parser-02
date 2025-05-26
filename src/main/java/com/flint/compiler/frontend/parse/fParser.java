@@ -2,7 +2,7 @@ package com.flint.compiler.frontend.parse;
 
 import com.flint.compiler.frontend.ast.nodes.leaves.AstProdSubTreeN;
 import com.flint.compiler.frontend.ast.nodes.leaves.AstSubTreeNod;
-import com.flint.compiler.frontend.lang.grammar.GProd;
+import com.flint.compiler.frontend.lang.grammar.GrmPrd;
 import com.flint.compiler.frontend.parse.lex.fLexer;
 import com.flint.compiler.frontend.parse.utils.Ast;
 
@@ -22,7 +22,7 @@ public class fParser {
 			h.insertEntitySep(a.astLastN());
 			a.setRight(expr());
 		}
-		return new AstProdSubTreeN(GProd.EXPRS, a);
+		return new AstProdSubTreeN(GrmPrd.EXPRS, a);
 	}
 
 
@@ -52,7 +52,7 @@ public class fParser {
 			}
 		}
 
-		return new AstProdSubTreeN(GProd.EXPR, a);
+		return new AstProdSubTreeN(GrmPrd.EXPR, a);
 	}
 
 	void exprTID(Ast a) {
