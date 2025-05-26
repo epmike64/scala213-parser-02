@@ -1,5 +1,5 @@
 package com.flint.compiler.frontend.lang.grammar;
 
-public enum GProd {
+public enum GrmPrd {
 	EXPR, EXPRS
 }

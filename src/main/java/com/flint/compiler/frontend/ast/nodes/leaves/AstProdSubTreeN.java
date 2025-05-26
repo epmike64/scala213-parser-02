@@ -1,13 +1,13 @@
 package com.flint.compiler.frontend.ast.nodes.leaves;
 
-import com.flint.compiler.frontend.lang.grammar.GProd;
-import com.flint.compiler.frontend.parse.utils.Ast;
+import com.flint.compiler.frontend.ast.nodes.operators.AstRootOpNod;
+import com.flint.compiler.frontend.lang.grammar.GrmPrd;
 
 public class AstProdSubTreeN extends AstSubTreeNod {
-	final GProd gProd;
+	final GrmPrd gp;
 
-	public AstProdSubTreeN(GProd gProd, Ast ast) {
-		super(ast);
-		this.gProd = gProd;
+	public AstProdSubTreeN(GrmPrd p, AstRootOpNod rootOp) {
+		super(rootOp);
+		this.gp = p;
 	}
 }
