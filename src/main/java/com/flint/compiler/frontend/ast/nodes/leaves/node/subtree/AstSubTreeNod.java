@@ -1,4 +1,4 @@
-package com.flint.compiler.frontend.ast.nodes.leaves;
+package com.flint.compiler.frontend.ast.nodes.leaves.node.subtree;
 
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 import com.flint.compiler.frontend.ast.nodes.kinds.AstNodKind;

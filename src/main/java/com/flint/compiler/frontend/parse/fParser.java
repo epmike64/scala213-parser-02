@@ -1,9 +1,10 @@
 package com.flint.compiler.frontend.parse;
 
-import com.flint.compiler.frontend.ast.nodes.leaves.AstProdSubTreeN;
-import com.flint.compiler.frontend.ast.nodes.leaves.AstSubTreeNod;
+import com.flint.compiler.frontend.ast.nodes.leaves.node.IdLeafNod;
+import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstProdSubTreeN;
 import com.flint.compiler.frontend.lang.grammar.GrmPrd;
 import com.flint.compiler.frontend.parse.lex.fLexer;
+import com.flint.compiler.frontend.parse.lex.token.type.NamedToken;
 import com.flint.compiler.frontend.parse.utils.Ast;
 
 public class fParser {
@@ -26,28 +27,31 @@ public class fParser {
 
 
 
-	AstProdSubTreeN expr(Ast a) {
+	AstProdSubTreeN expr(Ast z) {
 		loop:
 		while (true) {
 			switch (h.TKnd()) {
 				case T_RPAREN:
 					break loop;
-
 				case T_LPAREN:
-					exprLeftParen(a);
-					break;
+					exprLeftParen(z);
+					continue ;
+				case T_ID: case T_THIS: case T_SUPER:
+					exprTID(z);
+					continue;
 
 				default:
 					throw new AssertionError("Unexpected token: " + h.getToken());
 			}
 		}
 
-		return new AstProdSubTreeN(GrmPrd.EXPR, a.rootOp);
+		return new AstProdSubTreeN(GrmPrd.EXPR, z.rootOp);
 	}
 
-	void exprTID(Ast a) {
-		switch (a.astLastNKnd()) {
+	void exprTID(Ast z) {
+		switch (z.astLastNKnd()) {
 			case AST_ROOT: case AST_ID_OPER:
+				z.setRight(new IdLeafNod((NamedToken)h.next()));
 				break;
 			case AST_ID_LEAF:
 				break;
