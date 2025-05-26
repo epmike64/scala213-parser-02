@@ -31,7 +31,11 @@ public class ParseHelp {
 		return prevToken;
 	}
 
-	fTokenKind getTokenKind() {
+	boolean isTkComma() {
+		return token.kind == T_COMMA;
+	}
+
+	fTokenKind TKnd() {
 		return token.kind;
 	}
 
@@ -112,13 +116,13 @@ public class ParseHelp {
 		return count;
 	}
 
-	int skipRPar() {
-		int count = 0;
-		while (token.kind == fTokenKind.T_RPAREN) {
-			count++;
+	int skipRPar(int lparSz) {
+		assert lparSz > 0;
+		while (lparSz > 0 && token.kind == fTokenKind.T_RPAREN) {
+			lparSz--;
 			next();
 		}
-		return count;
+		return lparSz;
 	}
 
 	void skipSemi() {
