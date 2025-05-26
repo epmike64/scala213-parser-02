@@ -21,7 +21,7 @@ public class fParser {
 			h.insertEntitySep(a.astLastN());
 			a.setRight(expr(a));
 		}
-		return new AstProdSubTreeN(GrmPrd.EXPRS, a);
+		return new AstProdSubTreeN(GrmPrd.EXPRS, a.rootOp);
 	}
 
 
@@ -42,7 +42,7 @@ public class fParser {
 			}
 		}
 
-		return new AstProdSubTreeN(GrmPrd.EXPR, a);
+		return new AstProdSubTreeN(GrmPrd.EXPR, a.rootOp);
 	}
 
 	void exprTID(Ast a) {
