@@ -2,12 +2,12 @@ package com.flint.compiler.frontend.ast.nodes.leaves;
 
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 import com.flint.compiler.frontend.ast.nodes.kinds.AstNodKind;
-import com.flint.compiler.frontend.parse.utils.Ast;
+import com.flint.compiler.frontend.ast.nodes.operators.AstRootOpNod;
 
 public class AstSubTreeNod extends AstOperandNod {
-	public final Ast astPtr;
-	public AstSubTreeNod(Ast astPtr) {
-		this.astPtr = astPtr;
+	public final AstRootOpNod rootOpNod;
+	public AstSubTreeNod(AstRootOpNod rootOpNod) {
+		this.rootOpNod = rootOpNod;
 	}
 
 	@Override

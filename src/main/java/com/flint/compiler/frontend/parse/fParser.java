@@ -4,7 +4,6 @@ import com.flint.compiler.frontend.ast.nodes.leaves.AstProdSubTreeN;
 import com.flint.compiler.frontend.ast.nodes.leaves.AstSubTreeNod;
 import com.flint.compiler.frontend.lang.grammar.GProd;
 import com.flint.compiler.frontend.parse.lex.fLexer;
-import com.flint.compiler.frontend.parse.lex.token.fTokenKind;
 import com.flint.compiler.frontend.parse.utils.Ast;
 
 public class fParser {
@@ -15,8 +14,8 @@ public class fParser {
 		h = new ParseHelp(lexer);
 	}
 
-	AstProdSubTreeN exprs(Ast a) {
-//		AstPtr pa = new AstPtr();
+	AstProdSubTreeN exprs() {
+		Ast a = new Ast();
 		a.setRight(expr());
 		while (h.isTkComma()) {
 			h.next();
@@ -35,7 +34,7 @@ public class fParser {
 			switch (h.TKnd()) {
 				case T_RPAREN:
 					a = exprRightParen(a);
-					if(a.lparSz == 0) {
+					if(a.astParClosure == null) {
 						break loop;
 					}
 					break;
@@ -66,28 +65,46 @@ public class fParser {
 		}
 	}
 
-	Ast exprRightParen(Ast a) {
-		assert a.parentAst != null && a.parentAst.lparSz > 0;
-		a.parentAst.lparSz = h.skipRPar(a.parentAst.lparSz);
-		a.parentAst.setRight(new AstSubTreeNod(a));
-		return a.parentAst;
+	Ast exprRightParen(Ast y) {
+		assert  y.astParClosure != null;
+		int lparSz = h.skipRPar(y.astParClosure.lparSz);
+		if(lparSz == 0){
+			// V = SubTree( Y / D )
+			// Z = K *  V
+			Ast z = y.astParClosure.ast;
+			z.setRight(new AstSubTreeNod(y.rootOp));
+			return z;
+		}
+		// V = SubTree( Y / D )
+		// Z = K * V
+		Ast v = new Ast();
+		v.setRight(new AstSubTreeNod(y.rootOp));
+		v.astParClosure = new Ast.ParenClosure( y.astParClosure.ast, lparSz);
+		return v;
 	}
 
-	Ast exprLeftParen(Ast a) {
-		switch (a.astLastNKnd()) {
+	Ast exprLeftParen(Ast z) {
+		switch (z.astLastNKnd()) {
 			case AST_ROOT: case AST_ID_OPER: {
-				a.lparSz = h.skipLPar();
-				assert a.lparSz > 0;
-				AstProdSubTreeN tree = exprs(a);
-				a.lparSz -= h.skipRPar(a.lparSz);
-				if(a.lparSz == 0) {
-					a.setRight(tree);
-					return a;
+				int lparSz = h.skipLPar();
+				assert lparSz > 0;
+				AstProdSubTreeN x = exprs();
+				lparSz -= h.skipRPar(lparSz);
+				if(lparSz == 0) {
+					// X = (A + B)
+					// Z = K * X
+					z.setRight(x);
+					return z;
 				}
-				Ast outer = new Ast();
-				outer.parentAst = a;
-				outer.lparSz = a.lparSz;
-				return outer;
+				// Z = K * (((A + B) * C) / D)
+				// X = SubTree(A + B)
+				// Y = SubTree( X * C )
+				// V = SubTree( Y / D )
+				// Z = K * V
+				Ast y = new Ast();
+				y.setRight(x);
+				y.astParClosure = new Ast.ParenClosure(z, lparSz);
+				return y;
 			}
 			default:
 				throw new AssertionError("LParen in unexpected place");
