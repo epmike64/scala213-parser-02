@@ -65,7 +65,7 @@ public class fParser {
 				Ast y = new Ast();
 				while(true) {
 					AstProdSubTreeN x = exprs(y);
-					int n = h.skipRPar(lparSz); assert n > 0; lparSz -= n;
+					int n = h.skipRPar(lparSz); assert n > 0: "unmatched left par"; lparSz -= n;
 					if(lparSz == 0){
 						z.setRight(x);
 						return;
