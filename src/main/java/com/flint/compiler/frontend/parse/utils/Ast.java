@@ -9,19 +9,6 @@ public class Ast {
 	public final AstRootOpNod rootOp = new AstRootOpNod();
 	private AstNod astLastN = rootOp;
 
-//	public ParenClosure astParClosure = null;
-
-//	public static class ParenClosure {
-//		public final Ast ast;
-//		public final int lparSz;
-//
-//		public ParenClosure(Ast ast, int lparSz) {
-//			assert ast != null && lparSz >= 0;
-//			this.ast = ast;
-//			this.lparSz = lparSz;
-//		}
-//	}
-
 	public void setRight(AstNod astRightN) {
 		astLastN.setAstRightN(astRightN);
 		astLastN = astRightN;
