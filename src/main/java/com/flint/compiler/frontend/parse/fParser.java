@@ -14,38 +14,28 @@ public class fParser {
 		h = new ParseHelp(lexer);
 	}
 
-	AstProdSubTreeN exprs() {
-		Ast a = new Ast();
-		a.setRight(expr());
+	AstProdSubTreeN exprs(Ast a) {
+		a.setRight(expr(a));
 		while (h.isTkComma()) {
 			h.next();
 			h.insertEntitySep(a.astLastN());
-			a.setRight(expr());
+			a.setRight(expr(a));
 		}
 		return new AstProdSubTreeN(GrmPrd.EXPRS, a);
 	}
 
 
 
-	AstProdSubTreeN expr() {
-		Ast a = new Ast();
+	AstProdSubTreeN expr(Ast a) {
 		loop:
 		while (true) {
 			switch (h.TKnd()) {
 				case T_RPAREN:
-					a = exprRightParen(a);
-					if(a.astParClosure == null) {
-						break loop;
-					}
-					break;
+					break loop;
 
 				case T_LPAREN:
-					a = exprLeftParen(a);
+					exprLeftParen(a);
 					break;
-
-//				case T_ID: case T_THIS: case T_SUPER:
-//					a.setRight(h.accept(fTokenKind.T_ID));
-//					break;
 
 				default:
 					throw new AssertionError("Unexpected token: " + h.getToken());
@@ -65,46 +55,24 @@ public class fParser {
 		}
 	}
 
-	Ast exprRightParen(Ast y) {
-		assert  y.astParClosure != null;
-		int lparSz = h.skipRPar(y.astParClosure.lparSz);
-		if(lparSz == 0){
-			// V = SubTree( Y / D )
-			// Z = K *  V
-			Ast z = y.astParClosure.ast;
-			z.setRight(new AstSubTreeNod(y.rootOp));
-			return z;
-		}
-		// V = SubTree( Y / D )
-		// Z = K * V
-		Ast v = new Ast();
-		v.setRight(new AstSubTreeNod(y.rootOp));
-		v.astParClosure = new Ast.ParenClosure( y.astParClosure.ast, lparSz);
-		return v;
-	}
 
-	Ast exprLeftParen(Ast z) {
+
+
+	void exprLeftParen(Ast z) {
 		switch (z.astLastNKnd()) {
 			case AST_ROOT: case AST_ID_OPER: {
-				int lparSz = h.skipLPar();
-				assert lparSz > 0;
-				AstProdSubTreeN x = exprs();
-				lparSz -= h.skipRPar(lparSz);
-				if(lparSz == 0) {
-					// X = (A + B)
-					// Z = K * X
-					z.setRight(x);
-					return z;
-				}
-				// Z = K * (((A + B) * C) / D)
-				// X = SubTree(A + B)
-				// Y = SubTree( X * C )
-				// V = SubTree( Y / D )
-				// Z = K * V
+				int lparSz = h.skipLPar(); assert lparSz > 0;
 				Ast y = new Ast();
-				y.setRight(x);
-				y.astParClosure = new Ast.ParenClosure(z, lparSz);
-				return y;
+				while(true) {
+					AstProdSubTreeN x = exprs(y);
+					int n = h.skipRPar(lparSz); assert n > 0; lparSz -= n;
+					if(lparSz == 0){
+						z.setRight(x);
+						return;
+					}
+					y = new Ast();
+					y.setRight(x);
+				}
 			}
 			default:
 				throw new AssertionError("LParen in unexpected place");
