@@ -104,6 +104,10 @@ public class ParseHelp {
 		return false;
 	}
 
+	boolean isAtOpT(int la) {
+		return isLaOpChar(la, T_ID, OpChar.AT);
+	}
+
 	boolean isColonOpT(int la) {
 		return isLaOpChar(la, T_ID, OpChar.COLON);
 	}

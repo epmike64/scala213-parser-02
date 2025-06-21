@@ -357,6 +357,82 @@ public class fParser {
 		return new AstProdSubTreeN(GrmPrd.TEMPLATE_BODY, a);
 	}
 
+	AstProdSubTreeN patDef() {
+		Ast a = new Ast();
+		return new AstProdSubTreeN(GrmPrd.SUBTREE, a);
+	}
+
+	AstProdSubTreeN patterns(){
+		Ast a = new Ast();
+		while(true){
+			a.setRight(pattern2());
+			if(h.isTkComma()){
+				h.insertOperator(a, fLangOperatorKind.O_COMMA, (NamedToken)h.next());
+				continue;
+			}
+			break;
+		}
+		return new AstProdSubTreeN(GrmPrd.SUBTREE, a);
+	}
+
+	AstProdSubTreeN pattern2() {
+		Ast a = new Ast();
+		switch (h.TKnd()){
+			case T_ID: {
+				if(h.isAtOpT(1)){
+					a.setRight(new StableId((NamedToken) h.next()));
+					h.insertOperator(a, fLangOperatorKind.O_AT, (NamedToken) h.next());
+					a.setRight(pattern3());
+					return new AstProdSubTreeN(GrmPrd.SUBTREE, a);
+				}
+				//fall through
+			}
+			case T_THIS: case T_SUPER: case T_LPAREN: {
+				a.setRight(pattern3());
+				return new AstProdSubTreeN(GrmPrd.SUBTREE, a);
+			}
+			default:
+				throw new RuntimeException("Pattern in unexpected place: " + h.getToken());
+		}
+	}
+
+	AstProdSubTreeN pattern3(){
+		Ast a = new Ast();
+		loop:
+		while(true){
+			switch (h.TKnd()){
+				case T_ID: case T_THIS: case T_SUPER: {
+					pattern3Id(a);
+				}
+				case T_LPAREN:{
+					h.accept(fTokenKind.T_LPAREN);
+					a.setRight(patterns());
+					h.accept(fTokenKind.T_RPAREN);
+					return new AstProdSubTreeN(GrmPrd.SUBTREE, a);
+				}
+				default:
+					break loop;
+			}
+		}
+		return new AstProdSubTreeN(GrmPrd.SUBTREE, a);
+	}
+
+	void pattern3Id(Ast a){
+		switch (a.astLastNKnd()){
+			case AST_ROOT_OPERATOR: case AST_OPERATOR:{
+				a.setRight(stableId(a, false));
+				break;
+			}
+			case AST_OPERAND:{
+				//should be plain T_ID
+				h.insertOperator(a, fLangOperatorKind.getIdSymbolicAssoc(h.getAsNamedToken().isRightAssociative()), (NamedToken) h.next());
+				break;
+			}
+			default:
+				throw new RuntimeException("Pattern3Id in unexpected place: " + a.astLastNKnd());
+		}
+	}
+
 	void exprLCURL(Ast a){
 		//BlockExpr
 		switch (a.astLastNKnd()){
