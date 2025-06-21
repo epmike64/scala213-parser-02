@@ -1,6 +1,7 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node.subtree;
 
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
+import com.flint.compiler.frontend.parse.lex.token.type.NamedToken;
 import com.flint.compiler.frontend.parse.lex.token.type.fToken;
 
 import java.util.List;
@@ -8,6 +9,9 @@ import java.util.List;
 public class StableId extends AstOperandNod {
     private List<fToken> isTokens;
 
+    public  StableId(NamedToken token) {
+         this.isTokens = List.of(token);
+    }
     public StableId(List<fToken> isTokens) {
         this.isTokens = isTokens;
     }

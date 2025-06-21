@@ -146,16 +146,7 @@ public class fParser {
 		}
 	}
 
-	void typeTID(Ast a){
-		switch (a.astLastNKnd()){
-			case AST_ROOT_OPERATOR: case AST_OPERATOR:{
-				a.setRight(stableId(a, false));
-				break;
-			}
-			default:
-				throw new RuntimeException("TID in unexpected place: " + a.astLastNKnd());
-		}
-	}
+
 
 
 	AstProdSubTreeN expr(Ast a) {
@@ -222,6 +213,27 @@ public class fParser {
 
 	StableId stableId(Ast a, boolean isPath){
 		return null;
+	}
+
+	void typeTID(Ast a){
+		switch (a.astLastNKnd()){
+			case AST_ROOT_OPERATOR: case AST_OPERATOR:{
+				a.setRight(stableId(a, false));
+				break;
+			}
+			case AST_OPERAND:{
+				/* ID OPERATOR */
+				if(h.isPoundOpT(0)){
+					h.insertOperator(a, fLangOperatorKind.O_POUND, (NamedToken) h.next());
+					a.setRight(new StableId((NamedToken) h.accept(fTokenKind.T_ID)));
+				} else {
+					h.insertOperator(a, fLangOperatorKind.O_ID_SMBLC_RIGHT_ASSC, (NamedToken) h.next());
+				}
+				break;
+			}
+			default:
+				throw new RuntimeException("TID in unexpected place: " + a.astLastNKnd());
+		}
 	}
 
 	void exprTID(Ast a) {

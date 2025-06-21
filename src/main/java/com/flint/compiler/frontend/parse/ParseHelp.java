@@ -112,6 +112,10 @@ public class ParseHelp {
 		return isLaOpChar(la, T_ID, OpChar.ASSIGN);
 	}
 
+	boolean isPoundOpT(int la) {
+		return isLaOpChar(la, T_ID, OpChar.POUND);
+	}
+
 	boolean isPipeOpT(int la) {
 		return isLaOpChar(la, T_ID, OpChar.PIPE);
 	}

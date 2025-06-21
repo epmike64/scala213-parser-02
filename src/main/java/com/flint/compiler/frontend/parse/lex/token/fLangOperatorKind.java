@@ -6,6 +6,7 @@ public enum fLangOperatorKind {
 	O_COLON(":", 8, true),
 	O_FAT_ARROW("=>", 7, false),
 	O_WITH("with", 7, false),
+	O_POUND("#", 7, false),
 	O_MULTIPLY("*", 6, false),
 	O_DIVIDE("/", 6, false),
 	O_MODULO("%", 6, false),
