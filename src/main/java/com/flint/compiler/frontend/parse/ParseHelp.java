@@ -28,6 +28,14 @@ public class ParseHelp {
 		return token;
 	}
 
+	NamedToken getAsNamedToken() {
+		if (token instanceof NamedToken namedToken) {
+			return namedToken;
+		} else {
+			throw new AssertionError("Expected NamedToken but found " + token.kind);
+		}
+	}
+
 	fToken getPrevToken() {
 		return prevToken;
 	}

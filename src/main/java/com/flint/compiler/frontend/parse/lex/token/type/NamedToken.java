@@ -19,6 +19,10 @@ public class NamedToken extends fToken {
 		}
 	}
 
+	public boolean isRightAssociative() {
+		return name.lastIndexOf(":") == name.length() - 1;
+	}
+
 	@Override
 	public OpChar opChar() {
 		return opChar;

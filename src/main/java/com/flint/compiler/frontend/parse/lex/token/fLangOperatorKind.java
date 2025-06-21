@@ -38,4 +38,11 @@ public enum fLangOperatorKind {
 		}
 		return _prec;
 	}
+
+	public static fLangOperatorKind getIdSymbolicAssoc(boolean isRightAssociative) {
+		if(isRightAssociative){
+			return  fLangOperatorKind.O_ID_SMBLC_RIGHT_ASSC;
+		}
+		return   fLangOperatorKind.O_ID_SMBLC_LEFT_ASSC;
+	}
 }

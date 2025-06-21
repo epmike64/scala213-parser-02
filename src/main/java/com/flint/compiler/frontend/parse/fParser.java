@@ -195,7 +195,7 @@ public class fParser {
 					a.setRight(expr(a));
 					a.setContinue(false);
 				} else {
-					h.insertOperator(a, fLangOperatorKind.O_ID_SMBLC_LEFT_ASSC, (NamedToken) h.next());
+					h.insertOperator(a, fLangOperatorKind.getIdSymbolicAssoc(h.getAsNamedToken().isRightAssociative()), (NamedToken) h.next());
 				}
 				break;
 			}
