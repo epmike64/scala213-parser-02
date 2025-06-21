@@ -44,6 +44,10 @@ public class ParseHelp {
 		return token.kind == T_COMMA;
 	}
 
+	boolean isTkWith() {
+		return token.kind == T_WITH;
+	}
+
 	fTokenKind TKnd() {
 		return token.kind;
 	}

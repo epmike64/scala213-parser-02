@@ -59,12 +59,27 @@ public class fParser {
 					typeTID(a);
 					continue;
 				case T_WITH:
+					typeWith(a);
 					continue;
 				default:
 					break loop;
 			}
 		}
 		return new fType(new AstProdSubTreeN(GrmPrd.TYPE, a));
+	}
+
+	void typeWith(Ast a) {
+		while(h.isTkWith()) {
+			switch (a.astLastNKnd()) {
+				case AST_OPERAND: {
+					h.insertOperator(a, fLangOperatorKind.O_WITH, (NamedToken) h.next());
+					a.setRight(type());
+					continue ;
+				}
+				default:
+					throw new RuntimeException("With in unexpected place: " + a.astLastNKnd());
+			}
+		}
 	}
 
 	AstProdSubTreeN types() {
