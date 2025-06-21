@@ -43,11 +43,18 @@ public class fParser {
 		loop:
 		while(true) {
 			switch(h.TKnd()){
-				case T_LPAREN: //(ParamType, ParamType) | (Type, Type)
+				case T_FAT_ARROW:{
+					typeFatArrow(a);
+					break loop;
+				}
+				case T_LPAREN: {//(ParamType, ParamType) | (Type, Type)
 					typeLParen(a);
 					continue;
-				case T_LBRACKET:
+				}
+				case T_LBRACKET: {//typeArgs
+					typeLBracket(a);
 					continue;
+				}
 				case T_ID: case T_SUPER: case T_THIS:
 					typeTID(a);
 					continue;
@@ -86,11 +93,37 @@ public class fParser {
 		return new AstProdSubTreeN(GrmPrd.PARAM_TYPES, a);
 	}
 
+	void typeFatArrow(Ast a) {
+		switch (a.astLastNKnd()) {
+			case AST_OPERAND: {
+				h.insertOperator(a, fLangOperatorKind.O_FAT_ARROW, (NamedToken) h.next());
+				a.setRight(type());
+				break;
+			}
+			default:
+				throw new RuntimeException("FatArrow in unexpected place: " + a.astLastNKnd());
+		}
+	}
+
+	void typeLBracket(Ast a) {
+		switch (a.astLastNKnd()) {
+			case AST_OPERAND: {
+				h.accept(fTokenKind.T_LBRACKET);
+				h.insertOperator(a, fLangOperatorKind.O_BRACKETS, (NamedToken) h.next());
+				a.setRight(types());
+				h.accept(fTokenKind.T_RBRACKET);
+			}
+			default:
+				throw new RuntimeException("LBracket in unexpected place: " + a.astLastNKnd());
+		}
+	}
+
 	void typeLParen(Ast a){
-		h.accept(fTokenKind.T_LPAREN);
 		switch (a.astLastNKnd()){
 			case AST_ROOT_OPERATOR: case AST_OPERATOR:{
+				h.accept(fTokenKind.T_LPAREN);
 				a.setRight(paramTypes());
+				h.accept(fTokenKind.T_RPAREN);
 				break;
 			}
 			default:
