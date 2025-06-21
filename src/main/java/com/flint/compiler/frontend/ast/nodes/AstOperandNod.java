@@ -1,9 +1,16 @@
 package com.flint.compiler.frontend.ast.nodes;
 
+import com.flint.compiler.frontend.ast.nodes.kinds.AstNodKind;
+
 public abstract class AstOperandNod extends AstNod {
 	@Override
 	public boolean isOperator() {
 		return false;
+	}
+
+	@Override
+	public AstNodKind astNKind() {
+		return AstNodKind.AST_OPERAND;
 	}
 
 	@Override

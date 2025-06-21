@@ -8,8 +8,10 @@ public class Ast {
 
 	public final AstRootOpNod rootOp = new AstRootOpNod();
 	private AstNod astLastN = rootOp;
+	private boolean isContinue = true;
 
 	public void setRight(AstNod astRightN) {
+		assert astRightN.isOperator(): "astRightN must be an operator";
 		astLastN.setAstRightN(astRightN);
 		astLastN = astRightN;
 	}
@@ -20,5 +22,13 @@ public class Ast {
 
 	public AstNodKind astLastNKnd() {
 		return astLastN.astNKind();
+	}
+
+	public boolean isContinue() {
+		return isContinue;
+	}
+
+	public void setContinue(boolean isContinue) {
+		this.isContinue = isContinue;
 	}
 }

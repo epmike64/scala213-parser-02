@@ -1,6 +1,6 @@
 package com.flint.compiler.frontend.parse.lex.token;
 
-public enum fOperatorKind {
+public enum fLangOperatorKind {
 	O_DOT(".", 9, false),
 	O_COLON(":", 8, true),
 	O_FAT_ARROW("=>", 7, false),
@@ -23,7 +23,7 @@ public enum fOperatorKind {
 
 	O_RIGHT_PAREN(")", -1, false);
 
-	fOperatorKind(String opname, int precedence, boolean isRightAssociative) {
+	fLangOperatorKind(String opname, int precedence, boolean isRightAssociative) {
 		assert opname != null && opname.trim().length() > 0;
 		this.opname = opname;
 		this._prec = precedence;

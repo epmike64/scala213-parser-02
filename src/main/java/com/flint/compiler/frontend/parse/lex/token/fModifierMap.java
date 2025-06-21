@@ -12,10 +12,10 @@ public class fModifierMap {
 	private static final Map<String, fAccessQualifier> accQmap = new HashMap<>();
 
 	static {
-		for (fModifierKind t : fModifier.fModifierKind.values()) {
+		for (fModifierKind t : fModifierKind.values()) {
 			modKMap.put(t.modname, t);
 		}
-		for (fAccessQualifier t : fModifier.fAccessQualifier.values()) {
+		for (fAccessQualifier t : fAccessQualifier.values()) {
 			accQmap.put(t.name(), t);
 		}
 	}

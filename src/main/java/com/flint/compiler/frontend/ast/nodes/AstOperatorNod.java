@@ -1,12 +1,31 @@
 package com.flint.compiler.frontend.ast.nodes;
 
-public abstract class AstOperatorNod extends AstNod {
+import com.flint.compiler.frontend.ast.nodes.kinds.AstNodKind;
+import com.flint.compiler.frontend.parse.lex.token.fLangOperatorKind;
+import com.flint.compiler.frontend.parse.lex.token.type.NamedToken;
 
+public class AstOperatorNod extends AstNod {
+	public final fLangOperatorKind kind;
+	public final NamedToken operatorToken;
 
+	public AstOperatorNod(fLangOperatorKind kind, NamedToken operatorToken) {
+		this.kind = kind;
+		this.operatorToken = operatorToken;
+	}
+
+	@Override
+	public AstNodKind astNKind(){
+		return AstNodKind.AST_OPERATOR;
+	}
+
+	@Override
 	public boolean isOperator() {
 		return true;
 	}
 
+	public fLangOperatorKind getLangOperatorKind() {
+		return kind;
+	}
 
 	@Override
 	public void setAstRightN(AstNod astRightN) {
@@ -19,5 +38,10 @@ public abstract class AstOperatorNod extends AstNod {
 	public void setAstLeftN(AstNod astLeftN) {
 		this.astLeftN = astLeftN;
 		astLeftN.setAstParentN(this);
+	}
+
+	@Override
+	public NamedToken getFirstToken() {
+		return operatorToken;
 	}
 }

@@ -2,13 +2,14 @@ package com.flint.compiler.frontend.parse;
 
 import com.flint.compiler.frontend.ast.nodes.AstNod;
 import com.flint.compiler.frontend.ast.nodes.AstOperatorNod;
-import com.flint.compiler.frontend.ast.nodes.operators.AstEntitySepOpNod;
 import com.flint.compiler.frontend.parse.lex.fLexer;
 import com.flint.compiler.frontend.parse.lex.token.OpChar;
-import com.flint.compiler.frontend.parse.lex.token.fOperatorKind;
-import com.flint.compiler.frontend.parse.lex.token.fOperatorMap;
+import com.flint.compiler.frontend.parse.lex.token.fLangOperatorKind;
+import com.flint.compiler.frontend.parse.lex.token.fLangOperatorMap;
 import com.flint.compiler.frontend.parse.lex.token.fTokenKind;
+import com.flint.compiler.frontend.parse.lex.token.type.NamedToken;
 import com.flint.compiler.frontend.parse.lex.token.type.fToken;
+import com.flint.compiler.frontend.parse.utils.Ast;
 
 import static com.flint.compiler.frontend.parse.lex.token.fTokenKind.*;
 
@@ -103,8 +104,12 @@ public class ParseHelp {
 		return isLaOpChar(la, T_ID, OpChar.PIPE);
 	}
 
-	fOperatorKind getOperatorKind(fToken token) {
-		return fOperatorMap.getOperatorKind(token);
+	boolean isStarOpT(int la) {
+		return isLaOpChar(la, T_ID, OpChar.STAR);
+	}
+
+	fLangOperatorKind getOperatorKind(fToken token) {
+		return fLangOperatorMap.getOperatorKind(token);
 	}
 
 	int skipLPar() {
@@ -148,12 +153,25 @@ public class ParseHelp {
 		throw new RuntimeException("Unexpected token: " + token.kind);
 	}
 
-	void insertEntitySep(AstNod astNod) {
-		AstOperatorNod prn = astNod.getAstParentN();
-		assert prn.isOperator();
-		assert prn.getAstRightN() == astNod;
-		AstEntitySepOpNod sepOp = new AstEntitySepOpNod();
-		prn.setAstRightN(sepOp);
-		sepOp.setAstLeftN(astNod);
+	void insertOperator(Ast a, fLangOperatorKind k, NamedToken operatorToken) {
+		AstNod last = a.astLastN();
+		assert !last.isOperator(): "Last node should be operator";
+		AstOperatorNod prn = last.getAstParentN();
+		assert prn.isOperator() && prn.getAstRightN() == last;
+		AstOperatorNod  op = new AstOperatorNod(k, operatorToken);
+		if(prn == a.rootOp){
+			op.setAstRightN(last);
+			a.rootOp.setAstRightN(op);
+		} else {
+			if(k.precedence() > prn.getLangOperatorKind().precedence() || k.isRightAssociative){
+				AstNod right = prn.getAstRightN(); assert !right.isOperator();
+				prn.setAstRightN(op);
+				op.setAstLeftN(right);
+			} else {
+				AstOperatorNod grandParent = prn.getAstParentN(); assert grandParent.isOperator();
+				grandParent.setAstParentN(op);
+				op.setAstLeftN(prn);
+			}
+		}
 	}
 }

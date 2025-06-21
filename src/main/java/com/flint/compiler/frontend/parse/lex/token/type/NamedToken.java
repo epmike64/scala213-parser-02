@@ -8,6 +8,7 @@ public class NamedToken extends fToken {
 	/** The name of this token */
 	public final String name;
 	private final OpChar opChar;
+	public static final NamedToken ROOT_OPERATOR_TOKEN = new NamedToken(fTokenKind.T_ROOT_OPERATOR, -1, -1, "", OpChar.INVALID);
 
 	public NamedToken(fTokenKind kind, int pos, int endPos, String name, OpChar opChar) {
 		super(kind, pos, endPos);
