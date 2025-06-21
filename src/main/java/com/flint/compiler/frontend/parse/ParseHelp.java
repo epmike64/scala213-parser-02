@@ -169,7 +169,7 @@ public class ParseHelp {
 				op.setAstLeftN(right);
 			} else {
 				AstOperatorNod grandParent = prn.getAstParentN(); assert grandParent.isOperator();
-				grandParent.setAstParentN(op);
+				grandParent.setAstRightN(op);
 				op.setAstLeftN(prn);
 			}
 		}
