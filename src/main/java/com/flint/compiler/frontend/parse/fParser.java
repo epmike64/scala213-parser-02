@@ -187,7 +187,7 @@ public class fParser {
 					continue ;
 				}
 				case T_NEW: {
-					exprNEW(a);
+					a.setRight(exprNEW());
 					continue;
 				}
 				case T_LCURL: {
@@ -290,7 +290,73 @@ public class fParser {
 				throw new RuntimeException("LBracket in unexpected place: " + a.astLastNKnd());
 		}
 	}
-	void exprNEW(Ast a){}
+
+	AstProdSubTreeN exprNEW(){
+		h.accept(fTokenKind.T_NEW);
+		switch (h.TKnd()){
+			case T_LCURL: {
+				return templateBody();
+			}
+			case T_ID: case T_THIS: case T_SUPER: case T_LPAREN: {
+				return classTemplate();
+			}
+			default:
+				throw new RuntimeException("NEW in unexpected place: " + h.getToken());
+		}
+	}
+
+
+	AstProdSubTreeN classTemplate(){
+		Ast a = new Ast();
+		return new AstProdSubTreeN(GrmPrd.CLASS_TEMPLATE, a);
+	}
+
+	AstProdSubTreeN templateBody(){
+		h.accept(fTokenKind.T_LCURL);
+		Ast a = new Ast();
+		loop:
+		while(true){
+			switch (h.TKnd()){
+				case T_IMPORT: {
+					//importClause();
+					continue;
+				}
+				case T_LAZY: case T_IMPLICIT: case T_ABSTRACT: case T_FINAL: case T_SEALED:{
+					//modifiers();
+					continue;
+				}
+				case T_VAL: {
+					//patDef();
+					continue;
+				}
+				case T_VAR: {
+					//varDef();
+					continue;
+				}
+				case T_DEF: {
+					//defDef();
+					continue;
+				}
+				case T_TYPE: {
+					//typeDef();
+					continue;
+				}
+				case T_CASE: case T_CLASS:  case T_OBJECT: {
+					//classDef();
+					continue;
+				}
+				case T_TRAIT: {
+					//traitDef();
+					continue;
+				}
+				default:
+					break loop;
+			}
+		}
+		h.accept(fTokenKind.T_RCURL);
+		return new AstProdSubTreeN(GrmPrd.TEMPLATE_BODY, a);
+	}
+
 	void exprLCURL(Ast a){
 		//BlockExpr
 		switch (a.astLastNKnd()){
