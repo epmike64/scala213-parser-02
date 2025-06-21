@@ -1,7 +1,6 @@
 package com.flint.compiler.frontend.parse;
 
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
-import com.flint.compiler.frontend.ast.nodes.AstOperatorNod;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.fFunction;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.fParamType;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.fParameterizedType;
@@ -273,9 +272,10 @@ public class fParser {
 	AstProdSubTreeN typeArgs() {
 		return null;
 	}
+
 	AstProdSubTreeN exprs() {
 		Ast aPrn = new Ast();
-		Ast aChd = new Ast();
+		Ast aChd = null;
 		int lparSz = h.skipLPar(); assert lparSz > 0;
 		while(true){
 			aPrn.setRight(expr(aChd));
@@ -286,7 +286,7 @@ public class fParser {
 			int n = h.skipRPar(lparSz); assert n > 0;
 			lparSz -= n; assert lparSz >= 0;
 			if(lparSz == 0){
-				return new AstProdSubTreeN(GrmPrd.EXPRS_BINDINGS, aPrn);
+				return new AstProdSubTreeN(GrmPrd.EXPRS_OR_BINDINGS, aPrn);
 			}
 			aChd = new Ast();
 			aChd.setRight(new AstProdSubTreeN(GrmPrd.SUBTREE, aPrn));

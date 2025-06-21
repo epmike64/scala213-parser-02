@@ -155,13 +155,13 @@ public class ParseHelp {
 
 	void insertOperator(Ast a, fLangOperatorKind k, NamedToken operatorToken) {
 		AstNod last = a.astLastN();
-		assert !last.isOperator(): "Last node should be operator";
+		assert !last.isOperator(): "Last node should not be operator";
 		AstOperatorNod prn = last.getAstParentN();
 		assert prn.isOperator() && prn.getAstRightN() == last;
 		AstOperatorNod  op = new AstOperatorNod(k, operatorToken);
 		if(prn == a.rootOp){
-			op.setAstRightN(last);
 			a.rootOp.setAstRightN(op);
+			op.setAstLeftN(last);
 		} else {
 			if(k.precedence() > prn.getLangOperatorKind().precedence() || k.isRightAssociative){
 				AstNod right = prn.getAstRightN(); assert !right.isOperator();
