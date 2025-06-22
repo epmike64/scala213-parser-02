@@ -365,6 +365,37 @@ public class fParser {
 		return funDef;
 	}
 
+	fParamClauses  paramClauses(){
+		fParamClauses pcs = new fParamClauses();
+		while(h.isTkLParen()) {
+			if(h.isLa(1, fTokenKind.T_IMPLICIT)){
+				pcs.setImplicitParams(paramClause(true));
+				break;
+			}
+			pcs.addParams(paramClause(false));
+		}
+		return pcs;
+	}
+
+	List<fParam> paramClause(boolean isImplicit) {
+		List<fParam> params = new ArrayList<>();
+		h.accept(fTokenKind.T_LPAREN);
+		if(!h.isTkRParen()){
+			if(isImplicit){
+				h.accept(fTokenKind.T_IMPLICIT);
+			}
+			while(true){
+				params.add(param());
+				if(h.isTkComma()){
+					h.next(); continue;
+				}
+				break;
+			}
+		}
+		h.accept(fTokenKind.T_RPAREN);
+		return params;
+	}
+
 	fParam param(){
 		fParam p = new fParam((NamedToken) h.next());
 		if(h.isColonOpT(0)){

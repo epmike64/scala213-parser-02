@@ -44,6 +44,18 @@ public class ParseHelp {
 		return token.kind == T_UPPER_BOUND;
 	}
 
+	boolean isTkLParen() {
+		return token.kind == T_LPAREN;
+	}
+
+	boolean isTkRParen() {
+		return token.kind == T_RPAREN;
+	}
+
+	boolean isTkImplicit() {
+		return token.kind == T_IMPLICIT;
+	}
+
 	boolean isTkLBracket() {
 		return token.kind == T_LBRACKET;
 	}
