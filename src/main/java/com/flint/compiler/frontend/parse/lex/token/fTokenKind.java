@@ -66,7 +66,6 @@ public enum fTokenKind {
 	T_FAT_ARROW("=>"),
 	T_LEFT_ARROW("<-"),
 	T_UPPER_BOUND("<:"),
-	T_LESS_PERCENT("<%"),
 	T_LOWER_BOUND(">:");
 
 

@@ -36,8 +36,12 @@ public class ParseHelp {
 		}
 	}
 
-	fToken getPrevToken() {
-		return prevToken;
+	boolean isTkLowerBound() {
+		return token.kind == T_LOWER_BOUND;
+	}
+
+	boolean isTkUpperBound() {
+		return token.kind == T_UPPER_BOUND;
 	}
 
 	boolean isTkLBracket() {
@@ -107,6 +111,14 @@ public class ParseHelp {
 
 	boolean isAtOpT(int la) {
 		return isLaOpChar(la, T_ID, OpChar.AT);
+	}
+
+	boolean isPlusOpT(int la) {
+		return isLaOpChar(la, T_ID, OpChar.PLUS);
+	}
+
+	boolean isMinusOpT(int la) {
+		return isLaOpChar(la, T_ID, OpChar.MINUS);
 	}
 
 	boolean isColonOpT(int la) {

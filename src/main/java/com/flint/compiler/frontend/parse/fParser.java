@@ -364,13 +364,13 @@ public class fParser {
 		fFunctionDef funDef = new fFunctionDef((NamedToken) h.next());
 		if(h.isTkLBracket()){
 
-			funDef.setTypeParams(funTypeParamClause());
+			funDef.setTypeParams(funTypeParams());
 
 		}
 		return funDef;
 	}
 
-	List<fTypeParam> funTypeParamClause(){
+	List<fTypeParam> funTypeParams(){
 		List<fTypeParam> params = new ArrayList<>();
 		h.accept(fTokenKind.T_LBRACKET);
 		while(true){
@@ -384,20 +384,59 @@ public class fParser {
 		return params;
 	}
 
+
+
+	List<fVariantTypeParam> variantTypeParams() {
+		List<fVariantTypeParam> params = new ArrayList<>();
+		h.accept(fTokenKind.T_LBRACKET);
+		while(true){
+			params.add(variantTypeParam());
+			if(h.isTkComma()){
+				h.next(); continue;
+			}
+			break;
+		}
+		h.accept(fTokenKind.T_RBRACKET);
+		return params;
+	}
+
 	fTypeParam typeParam() {
 		fTypeParam p = new fTypeParam((NamedToken) h.next());
 		if(h.isTkLBracket()){
-
+			p.setVariantTypeParams(variantTypeParams());
 		}
+		if(h.isTkLowerBound()){
+			p.setLowerBound(type());
+		}
+		if(h.isTkUpperBound()){
+			p.setUpperBound(type());
+		}
+		if(h.isColonOpT(0)){
+			p.setType(type());
+		}
+
+		return p;
 	}
 
-	fVariantTypeParam varientTypeParam() {
+	fVariantTypeParam variantTypeParam() {
 		fVariantTypeParam p = new fVariantTypeParam((NamedToken) h.next());
-		if(h.isTkLBracket()){
-			h.accept(fTokenKind.T_LBRACKET);
-			p.setTypeArgs(typeArgs());
-			h.accept(fTokenKind.T_RBRACKET);
+		if(h.isPlusOpT(0)){
+			h.next();
+			p.setVariance(fVariantTypeParam.fVariance.VARIANT);
+		} else if(h.isMinusOpT(0)){
+			h.next();
+			p.setVariance(fVariantTypeParam.fVariance.INVARIANT);
 		}
+		if(h.isTkLowerBound()){
+			p.setLowerBound(type());
+		}
+		if(h.isTkUpperBound()){
+			p.setUpperBound(type());
+		}
+		if(h.isColonOpT(0)){
+			p.setType(type());
+		}
+
 		return p;
 	}
 
