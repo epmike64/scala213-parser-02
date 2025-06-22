@@ -326,11 +326,11 @@ public class fParser {
 					continue;
 				}
 				case T_VAL: {
-					//patDef();
+					a.setRight(patDef());
 					continue;
 				}
 				case T_VAR: {
-					//varDef();
+					a.setRight(varDef());
 					continue;
 				}
 				case T_DEF: {
@@ -357,12 +357,47 @@ public class fParser {
 		return new AstProdSubTreeN(GrmPrd.TEMPLATE_BODY, a);
 	}
 
-	AstProdSubTreeN patDef() {
-		Ast a = new Ast();
-		return new AstProdSubTreeN(GrmPrd.SUBTREE, a);
+	AstProdSubTreeN varDef() {
+		// patDef() + "ids: Type = _"
+		return patDef();
 	}
 
-	AstProdSubTreeN patterns(){
+
+	AstProdSubTreeN patterns() {
+		Ast a = new Ast();
+		while(true){
+			a.setRight(pattern());
+			if(h.isTkComma()){
+				h.insertOperator(a, fLangOperatorKind.O_COMMA, (NamedToken)h.next());
+				continue;
+			}
+			break;
+		}
+		return new AstProdSubTreeN(GrmPrd.PATTERNS, a);
+	}
+
+	AstProdSubTreeN pattern() {
+		Ast a = new Ast();
+		while (true){
+			a.setRight(pattern1());
+			if(h.isPipeOpT(0)){
+				h.insertOperator(a, fLangOperatorKind.O_PIPE, (NamedToken)h.next());
+				continue;
+			}
+			break;
+		}
+		return new AstProdSubTreeN(GrmPrd.PATTERN, a);
+	}
+
+	AstProdSubTreeN pattern1() {
+		Ast a = new Ast();
+		a.setRight(stableId(a, false));
+		h.insertOperator(a, fLangOperatorKind.O_COLON, (NamedToken)h.next());
+		a.setRight(type());
+		return new  AstProdSubTreeN(GrmPrd.PATTERN_1, a);
+	}
+
+	AstProdSubTreeN patDef(){
 		Ast a = new Ast();
 		while(true){
 			a.setRight(pattern2());
@@ -372,6 +407,12 @@ public class fParser {
 			}
 			break;
 		}
+		if(h.isColonOpT(0)){
+			h.insertOperator(a, fLangOperatorKind.O_COLON, (NamedToken)h.next());
+			a.setRight(type());
+		}
+		h.insertOperator(a, fLangOperatorKind.O_ASSIGN, (NamedToken) h.acceptOpChar(OpChar.ASSIGN));
+		a.setRight(expr(null));
 		return new AstProdSubTreeN(GrmPrd.SUBTREE, a);
 	}
 

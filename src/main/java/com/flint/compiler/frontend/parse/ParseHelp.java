@@ -59,12 +59,9 @@ public class ParseHelp {
 		return prevToken;
 	}
 
-	void acceptOpChar(OpChar opChar) {
-		if (token.opChar() == opChar) {
-			next();
-		} else {
-			throw new AssertionError("Expected " + opChar + " but found " + token.opChar());
-		}
+	fToken acceptOpChar(OpChar opChar) {
+		assert token.kind == T_ID && token.opChar() == opChar;
+		return next();
 	}
 
 	fToken accept(fTokenKind kind) {
