@@ -369,11 +369,11 @@ public class fParser {
 				break;
 			}
 			case T_CASE: case T_CLASS:  case T_OBJECT: {
-				//classDef();
+				a.setRight(classObjectDef());
 				break;
 			}
 			case T_TRAIT: {
-				//traitDef();
+				a.setRight(traitDef());
 				break;
 			}
 			case T_IF: case T_WHILE: case T_FOR: case T_TRY: case T_THROW: case T_RETURN:
@@ -385,6 +385,69 @@ public class fParser {
 				break;
 		}
 		return new AstProdSubTreeN(prd, a);
+	}
+
+	AstOperandNod traitDef() {
+		fTraitDef trait = new fTraitDef((NamedToken) h.next());
+		return trait;
+	}
+
+	AstOperandNod classObjectDef(){
+		boolean isCase = false;
+		if(h.isLa(0, fTokenKind.T_CASE)){
+			h.next();
+			isCase = true;
+		}
+		if(h.isLa(0, fTokenKind.T_CLASS)){
+
+			return classDef(isCase);
+
+		} else if(h.isLa(0, fTokenKind.T_OBJECT)){
+
+			return objectDef(isCase);
+
+		}
+		throw new RuntimeException("Expected 'class' or 'object' but found: " + h.getToken());
+	}
+
+	fClassDef classDef(boolean isCase) {
+		h.accept(fTokenKind.T_CLASS);
+		fClassDef cls = new fClassDef((NamedToken) h.next(), isCase);
+//		if(h.isTkLBracket()){
+//			cls.setTypeParams(funTypeParams());
+//		}
+//		if(h.isTkExtends()){
+//			h.next();
+//			cls.setExtendsType(type());
+//		}
+//		if(h.isTkLCurl()){
+//			h.next();
+//			cls.setBody(block());
+//			h.accept(fTokenKind.T_RCURL);
+//		} else {
+//			throw new RuntimeException("Expected '{' but found: " + h.getToken());
+//		}
+		return cls;
+	}
+
+	fObject objectDef(boolean isCase) {
+		h.accept(fTokenKind.T_OBJECT);
+		fObject obj = new fObject((NamedToken) h.next(), isCase);
+//		if(h.isTkLBracket()){
+//			obj.setTypeParams(funTypeParams());
+//		}
+//		if(h.isTkExtends()){
+//			h.next();
+//			obj.setExtendsType(type());
+//		}
+//		if(h.isTkLCurl()){
+//			h.next();
+//			obj.setBody(block());
+//			h.accept(fTokenKind.T_RCURL);
+//		} else {
+//			throw new RuntimeException("Expected '{' but found: " + h.getToken());
+//		}
+		return obj;
 	}
 
 	fFunctionDef  funDef(){
