@@ -306,6 +306,18 @@ public class fParser {
 		return new AstProdSubTreeN(GrmPrd.CLASS_TEMPLATE, a);
 	}
 
+	AstProdSubTreeN block() {
+		Ast a = new Ast();
+		while(true){
+			a.setRight(blockStat());
+			if(h.isTkSemi()){
+				h.next(); continue;
+			}
+			break;
+		}
+		return new AstProdSubTreeN(GrmPrd.BLOCK, a);
+	}
+
 	AstProdSubTreeN templateBody() {
 		h.accept(fTokenKind.T_LCURL);
 		Ast a = new Ast();
@@ -321,53 +333,58 @@ public class fParser {
 	}
 
 	AstProdSubTreeN templateStat(){
-		Ast a = new Ast();
-		loop:
-		while(true){
-			switch (h.TKnd()){
-				case T_IMPORT: {
-					//importClause();
-					continue;
-				}
-				case T_LAZY: case T_IMPLICIT: case T_ABSTRACT: case T_FINAL: case T_SEALED:{
-					//modifiers();
-					continue;
-				}
-				case T_VAL: {
-					a.setRight(patDef());
-					continue;
-				}
-				case T_VAR: {
-					a.setRight(varDef());
-					continue;
-				}
-				case T_DEF: {
-					a.setRight(funDef());
-					continue;
-				}
-				case T_TYPE: {
-					//typeDef();
-					continue;
-				}
-				case T_CASE: case T_CLASS:  case T_OBJECT: {
-					//classDef();
-					continue;
-				}
-				case T_TRAIT: {
-					//traitDef();
-					continue;
-				}
-				case T_IF: case T_WHILE: case T_FOR: case T_TRY: case T_THROW: case T_RETURN:
-				case T_ID: case T_THIS: case T_SUPER: case T_LPAREN: case T_LCURL: case T_NEW:
-				{
-					a.setRight(expr(null));
-				}
-				default:
-					break loop;
-			}
-		}
+		return blockOrTemplateStat(GrmPrd.TEMPLATE_STAT);
+	}
 
-		return new AstProdSubTreeN(GrmPrd.TEMPLATE_STAT, a);
+	AstProdSubTreeN blockStat(){
+		return blockOrTemplateStat(GrmPrd.BLOCK_STAT);
+	}
+
+	AstProdSubTreeN blockOrTemplateStat(GrmPrd prd) {
+		Ast a = new Ast();
+
+		switch (h.TKnd()){
+			case T_IMPORT: {
+				//importClause();
+				break;
+			}
+			case T_LAZY: case T_IMPLICIT: case T_ABSTRACT: case T_FINAL: case T_SEALED:{
+				//modifiers();
+				break;
+			}
+			case T_VAL: {
+				a.setRight(patDef());
+				break;
+			}
+			case T_VAR: {
+				a.setRight(varDef());
+				break;
+			}
+			case T_DEF: {
+				a.setRight(funDef());
+				break;
+			}
+			case T_TYPE: {
+				//a.setRight(typeDef());
+				break;
+			}
+			case T_CASE: case T_CLASS:  case T_OBJECT: {
+				//classDef();
+				break;
+			}
+			case T_TRAIT: {
+				//traitDef();
+				break;
+			}
+			case T_IF: case T_WHILE: case T_FOR: case T_TRY: case T_THROW: case T_RETURN:
+			case T_ID: case T_THIS: case T_SUPER: case T_LPAREN: case T_LCURL: case T_NEW:
+			{
+				a.setRight(expr(null));
+			}
+			default:
+				break;
+		}
+		return new AstProdSubTreeN(prd, a);
 	}
 
 	fFunctionDef  funDef(){
@@ -403,28 +420,6 @@ public class fParser {
 		}
 
 		return fun;
-	}
-
-	AstProdSubTreeN block() {
-		Ast a = new Ast();
-		while(true){
-			a.setRight(blockStat());
-			if(h.isTkSemi()){
-				h.next(); continue;
-			}
-			break;
-		}
-		return new AstProdSubTreeN(GrmPrd.BLOCK, a);
-	}
-
-	AstProdSubTreeN blockStat() {
-		Ast a = new Ast();
-		switch (h.TKnd()){
-			case T_IMPORT: {
-				//importClause();
-				break;
-			}
-		}
 	}
 
 	fParamClauses  paramClauses(){

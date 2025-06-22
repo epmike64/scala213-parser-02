@@ -72,6 +72,10 @@ public class ParseHelp {
 		return token.kind == T_WITH;
 	}
 
+	boolean isTkSemi(){
+		return token.kind == T_SEMI || token.kind == T_NL;
+	}
+
 	fTokenKind TKnd() {
 		return token.kind;
 	}
