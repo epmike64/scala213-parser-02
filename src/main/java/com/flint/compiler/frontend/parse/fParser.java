@@ -5,9 +5,7 @@ import com.flint.compiler.frontend.ast.nodes.leaves.node.fFunction;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.fParamType;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.fParameterizedType;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.fType;
-import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstProdSubTreeN;
-import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.StableId;
-import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.fPath;
+import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.*;
 import com.flint.compiler.frontend.lang.grammar.GrmPrd;
 import com.flint.compiler.frontend.parse.lex.fLexer;
 import com.flint.compiler.frontend.parse.lex.token.OpChar;
@@ -15,6 +13,9 @@ import com.flint.compiler.frontend.parse.lex.token.fLangOperatorKind;
 import com.flint.compiler.frontend.parse.lex.token.fTokenKind;
 import com.flint.compiler.frontend.parse.lex.token.type.NamedToken;
 import com.flint.compiler.frontend.parse.utils.Ast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class fParser {
 
@@ -334,7 +335,7 @@ public class fParser {
 					continue;
 				}
 				case T_DEF: {
-					//defDef();
+					a.setRight(funDef());
 					continue;
 				}
 				case T_TYPE: {
@@ -355,6 +356,49 @@ public class fParser {
 		}
 		h.accept(fTokenKind.T_RCURL);
 		return new AstProdSubTreeN(GrmPrd.TEMPLATE_BODY, a);
+	}
+
+	fFunctionDef  funDef(){
+		h.accept(fTokenKind.T_DEF);
+		Ast a = new Ast();
+		fFunctionDef funDef = new fFunctionDef((NamedToken) h.next());
+		if(h.isTkLBracket()){
+
+			funDef.setTypeParams(funTypeParamClause());
+
+		}
+		return funDef;
+	}
+
+	List<fTypeParam> funTypeParamClause(){
+		List<fTypeParam> params = new ArrayList<>();
+		h.accept(fTokenKind.T_LBRACKET);
+		while(true){
+			params.add(typeParam());
+			if(h.isTkComma()){
+				h.next(); continue;
+			}
+			break;
+		}
+		h.accept(fTokenKind.T_RBRACKET);
+		return params;
+	}
+
+	fTypeParam typeParam() {
+		fTypeParam p = new fTypeParam((NamedToken) h.next());
+		if(h.isTkLBracket()){
+
+		}
+	}
+
+	fVariantTypeParam varientTypeParam() {
+		fVariantTypeParam p = new fVariantTypeParam((NamedToken) h.next());
+		if(h.isTkLBracket()){
+			h.accept(fTokenKind.T_LBRACKET);
+			p.setTypeArgs(typeArgs());
+			h.accept(fTokenKind.T_RBRACKET);
+		}
+		return p;
 	}
 
 	AstProdSubTreeN varDef() {
