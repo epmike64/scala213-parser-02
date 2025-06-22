@@ -1,10 +1,7 @@
 package com.flint.compiler.frontend.parse;
 
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
-import com.flint.compiler.frontend.ast.nodes.leaves.node.fFunction;
-import com.flint.compiler.frontend.ast.nodes.leaves.node.fParamType;
-import com.flint.compiler.frontend.ast.nodes.leaves.node.fParameterizedType;
-import com.flint.compiler.frontend.ast.nodes.leaves.node.fType;
+import com.flint.compiler.frontend.ast.nodes.leaves.node.*;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.*;
 import com.flint.compiler.frontend.lang.grammar.GrmPrd;
 import com.flint.compiler.frontend.parse.lex.fLexer;
@@ -360,14 +357,25 @@ public class fParser {
 
 	fFunctionDef  funDef(){
 		h.accept(fTokenKind.T_DEF);
-		Ast a = new Ast();
+
 		fFunctionDef funDef = new fFunctionDef((NamedToken) h.next());
 		if(h.isTkLBracket()){
-
 			funDef.setTypeParams(funTypeParams());
-
 		}
 		return funDef;
+	}
+
+	fParam param(){
+		fParam p = new fParam((NamedToken) h.next());
+		if(h.isColonOpT(0)){
+			h.next();
+			p.setParamType(paramType());
+		}
+		if(h.isAssignOpT(0)){
+			h.next();
+			p.setDefaultValue(expr(null));
+		}
+		return p;
 	}
 
 	List<fTypeParam> funTypeParams(){
