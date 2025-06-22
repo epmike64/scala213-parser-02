@@ -144,9 +144,6 @@ public class fParser {
 		}
 	}
 
-
-
-
 	AstProdSubTreeN expr(Ast a) {
 		if(a == null) a = new Ast();
 		loop:
@@ -309,8 +306,21 @@ public class fParser {
 		return new AstProdSubTreeN(GrmPrd.CLASS_TEMPLATE, a);
 	}
 
-	AstProdSubTreeN templateBody(){
+	AstProdSubTreeN templateBody() {
 		h.accept(fTokenKind.T_LCURL);
+		Ast a = new Ast();
+		while(true){
+			a.setRight(templateStat());
+			if(h.isTkSemi()){
+				h.next(); continue;
+			}
+			break;
+		}
+		h.accept(fTokenKind.T_RCURL);
+		return new  AstProdSubTreeN(GrmPrd.TEMPLATE_BODY, a);
+	}
+
+	AstProdSubTreeN templateStat(){
 		Ast a = new Ast();
 		loop:
 		while(true){
@@ -347,22 +357,74 @@ public class fParser {
 					//traitDef();
 					continue;
 				}
+				case T_IF: case T_WHILE: case T_FOR: case T_TRY: case T_THROW: case T_RETURN:
+				case T_ID: case T_THIS: case T_SUPER: case T_LPAREN: case T_LCURL: case T_NEW:
+				{
+					a.setRight(expr(null));
+				}
 				default:
 					break loop;
 			}
 		}
-		h.accept(fTokenKind.T_RCURL);
-		return new AstProdSubTreeN(GrmPrd.TEMPLATE_BODY, a);
+
+		return new AstProdSubTreeN(GrmPrd.TEMPLATE_STAT, a);
 	}
 
 	fFunctionDef  funDef(){
 		h.accept(fTokenKind.T_DEF);
+		fFunctionDef fun = null;
+		if(h.isLa(0, fTokenKind.T_ID)){
+			fun = new fFunctionDef((NamedToken) h.next());
+			if(h.isTkLBracket()){
+				fun.setTypeParams(funTypeParams());
+			}
+			fun.setParamClauses(paramClauses());
+			if(h.isColonOpT(0)){
+				h.next();
+				fun.setReturnType(type());
+				h.acceptOpChar(OpChar.ASSIGN);
+				fun.setBody(expr(null));
+			} else if(h.isAssignOpT(0)){
+				fun.setBody(expr(null));
+			} else if(h.isTkLCurl()){
+				h.next();
+				fun.setBody(block());
+				h.accept(fTokenKind.T_RCURL);
+			} else {
+				throw new RuntimeException("Unexpected token: " + h.getToken());
+			}
+		} else if(h.isLa(0, fTokenKind.T_THIS)){
+			/*
+			   'this'  paramClause()  paramClasses() ('=' ConstrExpr | ConstrBlock)
+			 */
 
-		fFunctionDef funDef = new fFunctionDef((NamedToken) h.next());
-		if(h.isTkLBracket()){
-			funDef.setTypeParams(funTypeParams());
+		} else {
+			throw new AssertionError("Unexpected token: " + h.getToken());
 		}
-		return funDef;
+
+		return fun;
+	}
+
+	AstProdSubTreeN block() {
+		Ast a = new Ast();
+		while(true){
+			a.setRight(blockStat());
+			if(h.isTkSemi()){
+				h.next(); continue;
+			}
+			break;
+		}
+		return new AstProdSubTreeN(GrmPrd.BLOCK, a);
+	}
+
+	AstProdSubTreeN blockStat() {
+		Ast a = new Ast();
+		switch (h.TKnd()){
+			case T_IMPORT: {
+				//importClause();
+				break;
+			}
+		}
 	}
 
 	fParamClauses  paramClauses(){
@@ -611,24 +673,6 @@ public class fParser {
 			}
 			default:
 				throw new RuntimeException("LCURL in unexpected place: " + a.astLastNKnd());
-		}
-	}
-
-	void block() {
-		switch (h.TKnd()){
-			case T_IMPORT:{
-				h.next();
-				//importClauses();
-				return;
-			}
-		}
-		switch (h.TKnd()){
-			case T_LAZY: case T_IMPLICIT: case T_ABSTRACT: case T_FINAL: case T_SEALED:{
-				break;
-			}
-		}
-		switch (h.TKnd()){
-
 		}
 	}
 

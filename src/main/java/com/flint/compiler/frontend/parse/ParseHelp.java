@@ -60,6 +60,10 @@ public class ParseHelp {
 		return token.kind == T_LBRACKET;
 	}
 
+	boolean isTkLCurl() {
+		return token.kind == T_LCURL;
+	}
+
 	boolean isTkComma() {
 		return token.kind == T_COMMA;
 	}
