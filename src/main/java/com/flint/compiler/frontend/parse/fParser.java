@@ -24,18 +24,42 @@ public class fParser {
 		h = new ParseHelp(lexer);
 	}
 
-	fParamType paramType() {
+	fParamType paramType(boolean isSimpleType) {
 		Ast a = new Ast();
 		boolean isFatArrow = false;
 		boolean isStar = false;
-		if(h.isLa(0, fTokenKind.T_FAT_ARROW)){
-			isFatArrow = true; h.next();
+		if(!isSimpleType){
+			if(h.isLa(0, fTokenKind.T_FAT_ARROW)){
+				isFatArrow = true; h.next();
+			}
 		}
 		fType t = type();
-		if(h.isStarOpT(0)){
-			isStar = true; h.next();
+		if(!isSimpleType){
+			if(h.isStarOpT(0)){
+				isStar = true; h.next();
+			}
 		}
 		return new fParamType(t, isFatArrow, isStar);
+	}
+
+	fParamType simpleType() {
+		Ast a = new Ast();
+		loop:
+		while(true) {
+			switch (h.TKnd()) {
+				case T_LPAREN: {// (Type, Type)
+					typeLParen(a, true);
+					continue;
+				}
+				case T_ID: case T_SUPER: case T_THIS: {
+					typeTID(a);
+					continue;
+				}
+				default:
+					break loop;
+			}
+		}
+		return new fParamType(new fType(new AstProdSubTreeN(GrmPrd.SIMPLE_TYPE, a)), false, false);
 	}
 
 	fType type() {
@@ -48,7 +72,7 @@ public class fParser {
 					break loop;
 				}
 				case T_LPAREN: {//(ParamType, ParamType) | (Type, Type)
-					typeLParen(a);
+					typeLParen(a, false);
 					continue;
 				}
 				case T_LBRACKET: {//typeArgs
@@ -95,17 +119,18 @@ public class fParser {
 		return new AstProdSubTreeN(GrmPrd.TYPES, a);
 	}
 
-	AstProdSubTreeN paramTypes() {
+	List<fParamType> paramTypes(boolean isSimpleType) {
+		List<fParamType> ps = new ArrayList<>();
 		Ast a = new Ast();
 		while(true){
-			a.setRight(paramType());
+			ps.add(paramType(isSimpleType));
 			if(h.isTkComma()){
 				h.insertOperator(a, fLangOperatorKind.O_COMMA, (NamedToken)h.next());
 				continue;
 			}
 			break;
 		}
-		return new AstProdSubTreeN(GrmPrd.PARAM_TYPES, a);
+		return ps;
 	}
 
 	void typeFatArrow(Ast a) {
@@ -133,13 +158,14 @@ public class fParser {
 		}
 	}
 
-	void typeLParen(Ast a){
+	List<fParamType> typeLParen(Ast a, boolean isSimpleType) {
+		List<fParamType> ps = null;
 		switch (a.astLastNKnd()){
 			case AST_ROOT_OPERATOR: case AST_OPERATOR:{
 				h.accept(fTokenKind.T_LPAREN);
-				a.setRight(paramTypes());
+				ps = paramTypes(isSimpleType);
 				h.accept(fTokenKind.T_RPAREN);
-				break;
+				return ps;
 			}
 			default:
 				throw new RuntimeException("LParen in unexpected place: " + a.astLastNKnd());
@@ -460,7 +486,7 @@ public class fParser {
 		}
 		p.setIdentifier((NamedToken) h.next());
 		h.acceptOpChar(OpChar.COLON);
-		p.setParamType(paramType());
+		p.setParamType(paramType(false));
 		if(h.isAssignOpT(0)){
 			h.next();
 			p.setDefaultValue(expr(null));
@@ -585,7 +611,7 @@ public class fParser {
 		fParam p = new fParam((NamedToken) h.next());
 		if(h.isColonOpT(0)){
 			h.next();
-			p.setParamType(paramType());
+			p.setParamType(paramType(false));
 		}
 		if(h.isAssignOpT(0)){
 			h.next();
