@@ -30,6 +30,6 @@ public abstract class AstNod {
 	public abstract void setAstLeftN(AstNod astLeftN);
 	public abstract void setAstRightN(AstNod astRightN);
 
-	public abstract fToken getFirstToken();
+	public fToken getFirstToken() {return null;};
 }
 

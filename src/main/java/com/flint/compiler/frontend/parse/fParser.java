@@ -14,6 +14,8 @@ import com.flint.compiler.frontend.parse.utils.Ast;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.flint.compiler.frontend.parse.lex.token.fTokenKind.*;
+
 public class fParser {
 
 	private final ParseHelp h;
@@ -124,7 +126,7 @@ public class fParser {
 				h.accept(fTokenKind.T_LBRACKET);
 				h.insertOperator(a, fLangOperatorKind.O_BRACKETS, (NamedToken) h.next());
 				a.setRight(types());
-				h.accept(fTokenKind.T_RBRACKET);
+				h.accept(T_RBRACKET);
 			}
 			default:
 				throw new RuntimeException("LBracket in unexpected place: " + a.astLastNKnd());
@@ -410,16 +412,79 @@ public class fParser {
 		throw new RuntimeException("Expected 'class' or 'object' but found: " + h.getToken());
 	}
 
+	fClassParamClauses classParamClauses() {
+		fClassParamClauses cpcs = new fClassParamClauses();
+		while(h.isTkLParen()) {
+			if(h.isLa(1, fTokenKind.T_IMPLICIT)){
+				cpcs.setImplicitParams(classParamClause(true));
+				break;
+			}
+			cpcs.addParams(classParamClause(false));
+		}
+		return cpcs;
+	}
+
+	List<fClassParam> classParamClause(boolean isImplicit) {
+		List<fClassParam> params = new ArrayList<>();
+		h.accept(T_LPAREN);
+		h.accept(T_IMPLICIT);
+		if(!h.isTkRParen()) {
+			while (true) {
+				params.add(classParam());
+				if (h.isTkComma()) {
+					h.next();
+					continue;
+				}
+				break;
+			}
+		}
+		h.accept(T_RPAREN);
+		return params;
+	}
+
+	fClassParam classParam() {
+		fClassParam p = new fClassParam();
+		//Modifier
+		switch (h.TKnd()){
+			case T_VAL: {
+				p.setValVar(fValVar.VAL);
+				break;
+			}
+			case T_VAR: {
+				p.setValVar(fValVar.VAR);
+				break;
+			}
+			default:
+				p.setValVar(fValVar.NONE);
+				break;
+		}
+		p.setIdentifier((NamedToken) h.next());
+		h.acceptOpChar(OpChar.COLON);
+		p.setParamType(paramType());
+		if(h.isAssignOpT(0)){
+			h.next();
+			p.setDefaultValue(expr(null));
+		}
+		return p;
+	}
+
+	fClassConstructor classConstructor() {
+		fClassConstructor cc = new fClassConstructor();
+
+		return cc;
+	}
+
 	fClassDef classDef(boolean isCase) {
 		h.accept(fTokenKind.T_CLASS);
 		fClassDef cls = new fClassDef((NamedToken) h.next(), isCase);
-//		if(h.isTkLBracket()){
-//			cls.setTypeParams(funTypeParams());
-//		}
-//		if(h.isTkExtends()){
-//			h.next();
-//			cls.setExtendsType(type());
-//		}
+		if(h.isTkLBracket()){
+			cls.setTypeParams(variantTypeParams());
+		}
+		cls.setClassParamClauses(classParamClauses());
+		if(h.isTkExtends()){
+			h.next();
+			//cls.setExtendsType(type());
+		}
 //		if(h.isTkLCurl()){
 //			h.next();
 //			cls.setBody(block());
@@ -539,7 +604,7 @@ public class fParser {
 			}
 			break;
 		}
-		h.accept(fTokenKind.T_RBRACKET);
+		h.accept(T_RBRACKET);
 		return params;
 	}
 
@@ -555,7 +620,7 @@ public class fParser {
 			}
 			break;
 		}
-		h.accept(fTokenKind.T_RBRACKET);
+		h.accept(T_RBRACKET);
 		return params;
 	}
 

@@ -60,6 +60,10 @@ public class ParseHelp {
 		return token.kind == T_LBRACKET;
 	}
 
+	boolean isTkExtends() {
+		return token.kind == T_EXTENDS;
+	}
+
 	boolean isTkLCurl() {
 		return token.kind == T_LCURL;
 	}
