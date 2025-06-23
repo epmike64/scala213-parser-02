@@ -159,7 +159,7 @@ public class fParser {
 	}
 
 	List<fParamType> typeLParen(Ast a, boolean isSimpleType) {
-		List<fParamType> ps = null;
+		List<fParamType> ps;
 		switch (a.astLastNKnd()){
 			case AST_ROOT_OPERATOR: case AST_OPERATOR:{
 				h.accept(fTokenKind.T_LPAREN);
@@ -494,9 +494,24 @@ public class fParser {
 		return p;
 	}
 
-	fClassConstructor classConstructor() {
-		fClassConstructor cc = new fClassConstructor();
+	fClassParents classParents() {
+		fClassParents parents = new fClassParents(classConstructor());
+		while(h.isTkWith()) {
+			h.next();
+			parents.addWithType(simpleType());
+		}
+		return parents;
+	}
 
+	fClassConstructor classConstructor() {
+		fClassConstructor cc = new fClassConstructor(simpleType());
+		if(h.isTkLParen()){
+			h.next();
+			if(!h.isTkRParen()){
+				cc.setArgs(exprs());
+			}
+			h.accept(T_LPAREN);
+		}
 		return cc;
 	}
 
