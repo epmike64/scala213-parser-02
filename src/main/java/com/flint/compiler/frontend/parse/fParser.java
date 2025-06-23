@@ -405,7 +405,7 @@ public class fParser {
 				break;
 			}
 			case T_TRAIT: {
-				a.setRight(traitDef());
+				a.setRight(classDef(false, true));
 				break;
 			}
 			case T_IF: case T_WHILE: case T_FOR: case T_TRY: case T_THROW: case T_RETURN:
@@ -425,16 +425,16 @@ public class fParser {
 			h.next();
 			isCase = true;
 		}
-		if(h.isLa(0, fTokenKind.T_CLASS)){
-
-			return classDef(isCase);
-
-		} else if(h.isLa(0, fTokenKind.T_OBJECT)){
-
-			return objectDef(isCase);
-
+		switch (h.TKnd()){
+			case T_CLASS: {
+				return classDef(isCase, false);
+			}
+			case T_OBJECT: {
+				return objectDef(isCase);
+			}
+			default:
+				throw new RuntimeException("Expected 'class' or 'object' but found: " + h.getToken());
 		}
-		throw new RuntimeException("Expected 'class' or 'object' but found: " + h.getToken());
 	}
 
 	fClassParamClauses classParamClauses() {
@@ -514,38 +514,35 @@ public class fParser {
 		return cc;
 	}
 
-	fClassDef traitDef() {
-		h.accept(T_TRAIT);
-		fClassDef cls = new fClassDef(false, (NamedToken) h.next(), false);
-		if(h.isTkLBracket()){
-			cls.setTypeParams(variantTypeParams());
-		}
-		if(h.isTkExtends()){
-			h.next();
-			cls.setExtendsTemplate(classTemplate(true));
-		}
-		return cls;
-	}
-
-	fClassDef classDef(boolean isCase) {
+	fClassDef classDef(boolean isCase, boolean isTrait) {
 		h.accept(fTokenKind.T_CLASS);
 		fClassDef cls = new fClassDef(false, (NamedToken) h.next(), isCase);
 		if(h.isTkLBracket()){
 			cls.setTypeParams(variantTypeParams());
 		}
-		cls.setClassParamClauses(classParamClauses());
-		if(h.isTkExtends()){
-			h.next();
-			cls.setExtendsTemplate(classTemplate(false));
+		if (!isTrait) {
+			cls.setClassParamClauses(classParamClauses());
 		}
-//		if(h.isTkLCurl()){
-//			h.next();
-//			cls.setBody(block());
-//			h.accept(fTokenKind.T_RCURL);
-//		} else {
-//			throw new RuntimeException("Expected '{' but found: " + h.getToken());
-//		}
+		cls.setExtendsTemplate(classExtends());
 		return cls;
+	}
+
+	fTemplateBody classExtends() {
+		switch (h.TKnd()){
+			case T_LCURL: {
+				return templateBody();
+			}
+			case T_EXTENDS: {
+				h.next();
+				if(h.isLa(0, fTokenKind.T_LCURL)){
+					return templateBody();
+				} else {
+					return classTemplate(false);
+				}
+			}
+			default:
+		}
+		return null;
 	}
 
 	fObject objectDef(boolean isCase) {

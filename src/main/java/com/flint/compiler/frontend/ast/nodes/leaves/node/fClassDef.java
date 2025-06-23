@@ -12,7 +12,7 @@ public class fClassDef extends AstOperandNod {
 	private final NamedToken name;
 	private List<fVariantTypeParam> typeParams;
 	private fClassParamClauses classParamClauses;
-	private fClassTemplate extendsTemplate;
+	private fTemplateBody extendsTemplate;
 
 	public fClassDef(boolean isTrait, NamedToken name, boolean isCaseClass) {
 		this.trait = isTrait;
@@ -29,7 +29,7 @@ public class fClassDef extends AstOperandNod {
 	}
 
 
-	public void setExtendsTemplate(fClassTemplate extendsTemplate) {
+	public void setExtendsTemplate(fTemplateBody extendsTemplate) {
 		this.extendsTemplate = extendsTemplate;
 	}
 
