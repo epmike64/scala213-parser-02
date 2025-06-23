@@ -8,4 +8,7 @@ public class fTemplateBody extends AstOperandNod  {
 	public fTemplateBody(AstProdSubTreeN templateBody) {
 		this.templateBody = templateBody;
 	}
+	public AstProdSubTreeN getTemplateBody() {
+		return templateBody;
+	}
 }

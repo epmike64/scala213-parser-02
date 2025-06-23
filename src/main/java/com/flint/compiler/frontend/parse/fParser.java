@@ -331,7 +331,7 @@ public class fParser {
 
 	fClassTemplate classTemplate(){
 		fClassParents cp = classParents();
-		AstProdSubTreeN tb = null;
+		fTemplateBody tb = null;
 		if(h.isTkLCurl()){
 			tb = templateBody();
 		}
@@ -350,7 +350,7 @@ public class fParser {
 		return new AstProdSubTreeN(GrmPrd.BLOCK, a);
 	}
 
-	AstProdSubTreeN templateBody() {
+	fTemplateBody templateBody() {
 		h.accept(fTokenKind.T_LCURL);
 		Ast a = new Ast();
 		while(true){
@@ -361,7 +361,7 @@ public class fParser {
 			break;
 		}
 		h.accept(fTokenKind.T_RCURL);
-		return new  AstProdSubTreeN(GrmPrd.TEMPLATE_BODY, a);
+		return new fTemplateBody(new AstProdSubTreeN(GrmPrd.TEMPLATE_BODY, a));
 	}
 
 	AstProdSubTreeN templateStat(){
