@@ -314,7 +314,7 @@ public class fParser {
 		}
 	}
 
-	AstProdSubTreeN exprNEW(){
+	fTemplateBody exprNEW(){
 		h.accept(fTokenKind.T_NEW);
 		switch (h.TKnd()){
 			case T_LCURL: {
@@ -329,9 +329,13 @@ public class fParser {
 	}
 
 
-	AstProdSubTreeN classTemplate(){
-		Ast a = new Ast();
-		return new AstProdSubTreeN(GrmPrd.CLASS_TEMPLATE, a);
+	fClassTemplate classTemplate(){
+		fClassParents cp = classParents();
+		AstProdSubTreeN tb = null;
+		if(h.isTkLCurl()){
+			tb = templateBody();
+		}
+		return new fClassTemplate(tb, cp);
 	}
 
 	AstProdSubTreeN block() {
