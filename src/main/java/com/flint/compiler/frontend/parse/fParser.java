@@ -321,7 +321,7 @@ public class fParser {
 				return templateBody();
 			}
 			case T_ID: case T_THIS: case T_SUPER: case T_LPAREN: {
-				return classTemplate();
+				return classTemplate(false);
 			}
 			default:
 				throw new RuntimeException("NEW in unexpected place: " + h.getToken());
@@ -329,13 +329,13 @@ public class fParser {
 	}
 
 
-	fClassTemplate classTemplate(){
-		fClassParents cp = classParents();
+	fClassTemplate classTemplate(boolean isTrait) {
+		fClassParents cp = classParents(isTrait);
 		fTemplateBody tb = null;
 		if(h.isTkLCurl()){
 			tb = templateBody();
 		}
-		return new fClassTemplate(tb, cp);
+		return new fClassTemplate(tb, cp, isTrait);
 	}
 
 	AstProdSubTreeN block() {
@@ -419,11 +419,6 @@ public class fParser {
 		return new AstProdSubTreeN(prd, a);
 	}
 
-	AstOperandNod traitDef() {
-		fTraitDef trait = new fTraitDef((NamedToken) h.next());
-		return trait;
-	}
-
 	AstOperandNod classObjectDef(){
 		boolean isCase = false;
 		if(h.isLa(0, fTokenKind.T_CASE)){
@@ -498,8 +493,8 @@ public class fParser {
 		return p;
 	}
 
-	fClassParents classParents() {
-		fClassParents parents = new fClassParents(classConstructor());
+	fClassParents classParents(boolean isTrait) {
+		fClassParents parents = new fClassParents(classConstructor(isTrait));
 		while(h.isTkWith()) {
 			h.next();
 			parents.addWithType(simpleType());
@@ -507,9 +502,9 @@ public class fParser {
 		return parents;
 	}
 
-	fClassConstructor classConstructor() {
+	fClassConstructor classConstructor(boolean isTrait) {
 		fClassConstructor cc = new fClassConstructor(simpleType());
-		if(h.isTkLParen()){
+		if(!isTrait && h.isTkLParen()){
 			h.next();
 			if(!h.isTkRParen()){
 				cc.setArgs(exprs());
@@ -519,16 +514,29 @@ public class fParser {
 		return cc;
 	}
 
+	fClassDef traitDef() {
+		h.accept(T_TRAIT);
+		fClassDef cls = new fClassDef(false, (NamedToken) h.next(), false);
+		if(h.isTkLBracket()){
+			cls.setTypeParams(variantTypeParams());
+		}
+		if(h.isTkExtends()){
+			h.next();
+			cls.setExtendsTemplate(classTemplate(true));
+		}
+		return cls;
+	}
+
 	fClassDef classDef(boolean isCase) {
 		h.accept(fTokenKind.T_CLASS);
-		fClassDef cls = new fClassDef((NamedToken) h.next(), isCase);
+		fClassDef cls = new fClassDef(false, (NamedToken) h.next(), isCase);
 		if(h.isTkLBracket()){
 			cls.setTypeParams(variantTypeParams());
 		}
 		cls.setClassParamClauses(classParamClauses());
 		if(h.isTkExtends()){
 			h.next();
-			//cls.setExtendsType(type());
+			cls.setExtendsTemplate(classTemplate(false));
 		}
 //		if(h.isTkLCurl()){
 //			h.next();
