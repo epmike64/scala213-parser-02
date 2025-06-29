@@ -24,8 +24,26 @@ public class fParser {
 		h = new ParseHelp(lexer);
 	}
 
+	void skipSemi() {
+		if(h.isTkSemicolon()){
+			h.next();
+			return;
+		}
+		while (h.isTkNL()){
+			h.next();
+		}
+	}
+
+	List<NamedToken> ids() {
+		assert h.TKnd() == fTokenKind.T_ID;
+		List<NamedToken> ids = new ArrayList<>();
+		while (h.TKnd() == T_ID) {
+			ids.add((NamedToken) h.next());
+		}
+		return ids;
+	}
+
 	fParamType paramType(boolean isSimpleType) {
-		Ast a = new Ast();
 		boolean isFatArrow = false;
 		boolean isStar = false;
 		if(!isSimpleType){
@@ -96,7 +114,7 @@ public class fParser {
 		while(h.isTkWith()) {
 			switch (a.astLastNKnd()) {
 				case AST_OPERAND: {
-					h.insertOperator(a, fLangOperatorKind.O_WITH, (NamedToken) h.next());
+					h.insertOperator(a, fLangOperatorKind.O_WITH,  h.next());
 					a.setRight(type());
 					continue ;
 				}
@@ -111,7 +129,7 @@ public class fParser {
 		while(true){
 			a.setRight(type());
 			if(h.isTkComma()){
-				h.insertOperator(a, fLangOperatorKind.O_COMMA, (NamedToken)h.next());
+				h.insertOperator(a, fLangOperatorKind.O_COMMA, h.next());
 				continue;
 			}
 			break;
@@ -125,7 +143,7 @@ public class fParser {
 		while(true){
 			ps.add(paramType(isSimpleType));
 			if(h.isTkComma()){
-				h.insertOperator(a, fLangOperatorKind.O_COMMA, (NamedToken)h.next());
+				h.insertOperator(a, fLangOperatorKind.O_COMMA, h.next());
 				continue;
 			}
 			break;
@@ -136,7 +154,7 @@ public class fParser {
 	void typeFatArrow(Ast a) {
 		switch (a.astLastNKnd()) {
 			case AST_OPERAND: {
-				h.insertOperator(a, fLangOperatorKind.O_FAT_ARROW, (NamedToken) h.next());
+				h.insertOperator(a, fLangOperatorKind.O_FAT_ARROW,  h.next());
 				a.setRight(type());
 				break;
 			}
@@ -149,7 +167,7 @@ public class fParser {
 		switch (a.astLastNKnd()) {
 			case AST_OPERAND: {
 				h.accept(fTokenKind.T_LBRACKET);
-				h.insertOperator(a, fLangOperatorKind.O_BRACKETS, (NamedToken) h.next());
+				h.insertOperator(a, fLangOperatorKind.O_BRACKETS,  h.next());
 				a.setRight(types());
 				h.accept(T_RBRACKET);
 			}
@@ -203,7 +221,7 @@ public class fParser {
 				case T_LPAREN: {
 					exprLParen(a);
 					if(h.isLa(0, fTokenKind.T_FAT_ARROW)){
-						h.insertOperator(a, fLangOperatorKind.O_FAT_ARROW, (NamedToken)h.next());
+						h.insertOperator(a, fLangOperatorKind.O_FAT_ARROW, h.next());
 						a.setRight(expr(null));
 						break loop;
 					}
@@ -289,10 +307,10 @@ public class fParser {
 			case AST_OPERAND:{
 				/* ID OPERATOR */
 				if(h.isPoundOpT(0)){
-					h.insertOperator(a, fLangOperatorKind.O_POUND, (NamedToken) h.next());
+					h.insertOperator(a, fLangOperatorKind.O_POUND, h.next());
 					a.setRight(new fStableId(false));
 				} else {
-					h.insertOperator(a, fLangOperatorKind.O_ID_SMBLC_RIGHT_ASSC, (NamedToken) h.next());
+					h.insertOperator(a, fLangOperatorKind.O_ID_SMBLC_RIGHT_ASSC,  h.next());
 				}
 				break;
 			}
@@ -311,16 +329,16 @@ public class fParser {
 			case AST_OPERAND:{
 				/* ID OPERATOR */
 				if(h.isColonOpT(0)){
-					h.insertOperator(a, fLangOperatorKind.O_COLON, (NamedToken)h.next());
+					h.insertOperator(a, fLangOperatorKind.O_COLON, h.next());
 					a.setRight(type());
 					a.setContinue(false);
 				}
 				else if(h.isAssignOpT(0)) {
-					h.insertOperator(a, fLangOperatorKind.O_ASSIGN, (NamedToken) h.next());
+					h.insertOperator(a, fLangOperatorKind.O_ASSIGN, h.next());
 					a.setRight(expr(a));
 					a.setContinue(false);
 				} else {
-					h.insertOperator(a, fLangOperatorKind.getIdSymbolicAssoc(h.getAsNamedToken().isRightAssociative()), (NamedToken) h.next());
+					h.insertOperator(a, fLangOperatorKind.getIdSymbolicAssoc(h.getAsNamedToken().isRightAssociative()), h.next());
 				}
 				break;
 			}
@@ -729,7 +747,7 @@ public class fParser {
 		while(true){
 			a.setRight(pattern());
 			if(h.isTkComma()){
-				h.insertOperator(a, fLangOperatorKind.O_COMMA, (NamedToken)h.next());
+				h.insertOperator(a, fLangOperatorKind.O_COMMA, h.next());
 				continue;
 			}
 			break;
@@ -742,7 +760,7 @@ public class fParser {
 		while (true){
 			a.setRight(pattern1());
 			if(h.isPipeOpT(0)){
-				h.insertOperator(a, fLangOperatorKind.O_PIPE, (NamedToken)h.next());
+				h.insertOperator(a, fLangOperatorKind.O_PIPE, h.next());
 				continue;
 			}
 			break;
@@ -753,7 +771,7 @@ public class fParser {
 	AstProdSubTreeN pattern1() {
 		Ast a = new Ast();
 		a.setRight(stableId(false));
-		h.insertOperator(a, fLangOperatorKind.O_COLON, (NamedToken)h.next());
+		h.insertOperator(a, fLangOperatorKind.O_COLON, h.next());
 		a.setRight(type());
 		return new  AstProdSubTreeN(GrmPrd.PATTERN_1, a);
 	}
@@ -763,16 +781,16 @@ public class fParser {
 		while(true){
 			a.setRight(pattern2());
 			if(h.isTkComma()){
-				h.insertOperator(a, fLangOperatorKind.O_COMMA, (NamedToken)h.next());
+				h.insertOperator(a, fLangOperatorKind.O_COMMA, h.next());
 				continue;
 			}
 			break;
 		}
 		if(h.isColonOpT(0)){
-			h.insertOperator(a, fLangOperatorKind.O_COLON, (NamedToken)h.next());
+			h.insertOperator(a, fLangOperatorKind.O_COLON, h.next());
 			a.setRight(type());
 		}
-		h.insertOperator(a, fLangOperatorKind.O_ASSIGN, (NamedToken) h.acceptOpChar(OpChar.ASSIGN));
+		h.insertOperator(a, fLangOperatorKind.O_ASSIGN,  h.acceptOpChar(OpChar.ASSIGN));
 		a.setRight(expr(null));
 		return new AstProdSubTreeN(GrmPrd.SUBTREE, a);
 	}
@@ -783,7 +801,7 @@ public class fParser {
 			case T_ID: {
 				if(h.isAtOpT(1)){
 					a.setRight(new fStableId(false));
-					h.insertOperator(a, fLangOperatorKind.O_AT, (NamedToken) h.next());
+					h.insertOperator(a, fLangOperatorKind.O_AT,  h.next());
 					a.setRight(pattern3());
 					return new AstProdSubTreeN(GrmPrd.SUBTREE, a);
 				}
@@ -827,7 +845,7 @@ public class fParser {
 			}
 			case AST_OPERAND:{
 				//should be plain T_ID
-				h.insertOperator(a, fLangOperatorKind.getIdSymbolicAssoc(h.getAsNamedToken().isRightAssociative()), (NamedToken) h.next());
+				h.insertOperator(a, fLangOperatorKind.getIdSymbolicAssoc(h.getAsNamedToken().isRightAssociative()),  h.next());
 				break;
 			}
 			default:
@@ -866,7 +884,7 @@ public class fParser {
 		while(true){
 			aPrn.setRight(expr(aChd));
 			while(h.isTkComma()){
-				h.insertOperator(aPrn, fLangOperatorKind.O_COMMA, (NamedToken)h.next());
+				h.insertOperator(aPrn, fLangOperatorKind.O_COMMA, h.next());
 				aPrn.setRight(expr(null));
 			}
 			int n = h.skipRPar(lparSz); assert n > 0;
@@ -967,8 +985,26 @@ public class fParser {
 		return new AstProdSubTreeN(prd, a);
 	}
 
+	fIds packageClause() {
+		h.accept(T_PACKAGE);
+		return new fIds(ids());
+	}
+
+	fPackages packages() {
+		List<fIds> fs = new ArrayList<>();
+		while (h.isTkPackage()){
+			fs.add(packageClause());
+		}
+		return new fPackages(fs);
+	}
+
 	public fCompilationUnit compilationUnit() {
 		final Ast a = new Ast();
+		if(h.isTkPackage()){
+			a.setRight(packages());
+			h.insertSemicolonOperator(a);
+		}
+
 		loop:
 		while (true) {
 			switch (h.TKnd()) {

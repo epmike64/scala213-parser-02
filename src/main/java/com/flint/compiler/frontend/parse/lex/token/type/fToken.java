@@ -8,6 +8,8 @@ public class fToken {
 	public final int pos, endPos;
 	public final fTokenKind kind;
 
+	public static final fToken SEMICOLON = new fToken(fTokenKind.T_SEMICOLON, -1, -1);
+
 	public fToken(fTokenKind kind, int pos, int endPos) {
 		this.kind = kind;
 		this.pos = pos;

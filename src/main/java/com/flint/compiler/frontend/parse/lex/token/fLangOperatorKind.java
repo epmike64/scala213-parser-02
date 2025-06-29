@@ -19,7 +19,7 @@ public enum fLangOperatorKind {
 	O_PIPE("|", 2, false),
 	O_COMMA(",", 2, false),
 	O_LEFT_PAREN("(", 2, false),
-	O_SEMI(";", 1, false),
+	O_SEMICOLON(";", 1, false),
 	O_ID_SMBLC_RIGHT_ASSC("@003", 1, true),
 	O_ID_SMBLC_LEFT_ASSC("@002", 1, false),
 	O_ASSIGN("=", 1, false),

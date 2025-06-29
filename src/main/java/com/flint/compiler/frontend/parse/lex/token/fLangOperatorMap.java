@@ -26,8 +26,8 @@ public class fLangOperatorMap {
 				return fLangOperatorKind.O_COMMA;
 			case T_FAT_ARROW:
 				return fLangOperatorKind.O_FAT_ARROW;
-			case T_SEMI:
-				return fLangOperatorKind.O_SEMI;
+			case T_SEMICOLON:
+				return fLangOperatorKind.O_SEMICOLON;
 			case T_DOT:
 				return fLangOperatorKind.O_DOT;
 			case T_MATCH:

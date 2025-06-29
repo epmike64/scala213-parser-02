@@ -80,8 +80,16 @@ public class ParseHelp {
 		return token.kind == T_FAT_ARROW;
 	}
 
-	boolean isTkSemi(){
-		return token.kind == T_SEMI || token.kind == T_NL;
+	boolean isTkPackage() {
+		return token.kind == T_PACKAGE;
+	}
+
+	boolean isTkSemicolon(){
+		return token.kind == T_SEMICOLON;
+	}
+
+	boolean isTkNL() {
+		return token.kind == T_NL;
 	}
 
 	fTokenKind TKnd() {
@@ -191,12 +199,6 @@ public class ParseHelp {
 		return lparSz;
 	}
 
-	void skipSemi() {
-		while (token.kind == T_SEMI || token.kind == T_NL) {
-			next();
-		}
-	}
-
 	void skipNL() {
 		while (token.kind == T_NL) {
 			next();
@@ -214,7 +216,11 @@ public class ParseHelp {
 		throw new RuntimeException("Unexpected token: " + token.kind);
 	}
 
-	void insertOperator(Ast a, fLangOperatorKind k, NamedToken operatorToken) {
+	void insertSemicolonOperator(Ast a){
+		insertOperator(a, fLangOperatorKind.O_SEMICOLON, fToken.SEMICOLON);
+	}
+
+	void insertOperator(Ast a, fLangOperatorKind k, fToken operatorToken) {
 		AstNod last = a.astLastN();
 		assert !last.isOperator(): "Last node should not be operator";
 		AstOperatorNod prn = last.getAstParentN();

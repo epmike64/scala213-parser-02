@@ -61,7 +61,7 @@ public enum fTokenKind {
 	T_RPAREN(")"),
 	T_LBRACKET("["),
 	T_RBRACKET("]"),
-	T_SEMI(";"),
+	T_SEMICOLON(";"),
 	T_COMMA(","),
 	T_DOT("."),
 	T_FAT_ARROW("=>"),
