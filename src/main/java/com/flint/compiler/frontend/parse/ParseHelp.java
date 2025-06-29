@@ -92,6 +92,10 @@ public class ParseHelp {
 		return token.kind == T_THIS;
 	}
 
+	boolean isTkOpCharAssign() {
+		return token.kind == T_ID && token.opChar() == OpChar.ASSIGN;
+	}
+
 	boolean isTkSemicolon(){
 		return token.kind == T_SEMICOLON;
 	}

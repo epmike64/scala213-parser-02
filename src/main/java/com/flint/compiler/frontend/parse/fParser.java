@@ -531,7 +531,7 @@ public class fParser {
 		if(!isTrait && h.isTkLParen()){
 			h.next();
 			if(!h.isTkRParen()){
-				cc.setArgs(exprs());
+				cc.setArgExprs(exprs());
 			}
 			h.accept(T_LPAREN);
 		}
@@ -585,36 +585,82 @@ public class fParser {
 		return obj;
 	}
 
-	fFunctionDef  funDef(){
+	fFuncDef funDef(){
 		h.accept(fTokenKind.T_DEF);
-		fFunctionDef fun = null;
-		if(h.isTkTID()){
-			fun = new fFunctionDef((NamedToken) h.next());
-			if(h.isTkLBracket()){
-				fun.setTypeParams(funTypeParams());
+		switch (h.TKnd()){
+			case T_ID: {
+				return funSig();
 			}
-			fun.setParamClauses(paramClauses());
-			if(h.isColonOpT(0)){
+			case T_THIS: {
+				return funTHIS();
+			}
+			default:
+				throw new RuntimeException("Expected 'def' followed by identifier or 'this' but found: " + h.getToken());
+		}
+	}
+
+	fFuncDef funTHIS(){
+		fFuncDef fun = fFuncDef.getTHISFunDef(h.next());
+		fun.setParamClauses(paramClauses());
+		if(h.isTkOpCharAssign()){
+			h.next();
+			fConstrBlock cb;
+			if(h.isTkTHIS()){
 				h.next();
-				fun.setReturnType(type());
-				h.acceptOpChar(OpChar.ASSIGN);
-				fun.setBody(expr(null));
-			} else if(h.isAssignOpT(0)){
-				fun.setBody(expr(null));
-			} else if(h.isTkLCurl()){
-				h.next();
-				fun.setBody(block());
-				h.accept(fTokenKind.T_RCURL);
+				cb = new fConstrBlock();
+				cb.setArgExprs(exprs());
+			}else if(h.isTkLCurl()){
+				cb = constrBlock();
 			} else {
-				throw new RuntimeException("Unexpected token: " + h.getToken());
+				throw new RuntimeException("Expected 'this' or '{' after '=' in function definition but found: " + h.getToken());
 			}
-		} else if(h.isTkTHIS()){
-			/*
-			   'this'  paramClause()  paramClasses() ('=' ConstrExpr | ConstrBlock)
-			 */
+			fun.setConstrBlock(cb);
 
 		} else {
-			throw new AssertionError("Unexpected token: " + h.getToken());
+			h.skipNL();
+			fun.setConstrBlock(constrBlock());
+		}
+		return fun;
+	}
+
+	fConstrBlock constrBlock() {
+		fConstrBlock cb = new fConstrBlock();
+		h.accept(T_LCURL);
+		if(h.isTkTHIS()){
+			h.next();
+			cb.setArgExprs(exprs());
+		}
+		while (true){
+			h.skipSemi();
+			if(!h.isTkRParen()){
+				cb.addBlockStat(blockStat());
+			} else {
+				break;
+			}
+		}
+		h.accept(T_RCURL);
+		return cb;
+	}
+
+	fFuncDef funSig() {
+		fFuncDef fun = fFuncDef.getNamedFunDef((NamedToken) h.next());
+		if(h.isTkLBracket()){
+			fun.setTypeParams(funTypeParams());
+		}
+		fun.setParamClauses(paramClauses());
+		if(h.isColonOpT(0)){
+			h.next();
+			fun.setReturnType(type());
+			h.acceptOpChar(OpChar.ASSIGN);
+			fun.setBody(expr(null));
+		} else if(h.isAssignOpT(0)){
+			fun.setBody(expr(null));
+		} else if(h.isTkLCurl()){
+			h.next();
+			fun.setBody(block());
+			h.accept(fTokenKind.T_RCURL);
+		} else {
+			throw new RuntimeException("Unexpected token: " + h.getToken());
 		}
 
 		return fun;

@@ -9,7 +9,7 @@ public class fClassConstructor extends AstOperandNod {
 	public fClassConstructor(fParamType fParamType) {
 		this.fParamType = fParamType;
 	}
-	public void setArgs(AstProdSubTreeN args) {
+	public void setArgExprs(AstProdSubTreeN args) {
 		this.args = args;
 	}
 }
