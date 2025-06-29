@@ -239,10 +239,18 @@ public class fParser {
 	}
 
 	fStableId path(){
-		return stableId(true);
+		return stableId(true, false);
 	}
 
-	fStableId stableId(boolean isPath) {
+	fStableId pathWithKwType(){
+		return stableId(true, true);
+	}
+
+	fStableId stableId(boolean isPath){
+		return stableId(isPath, false);
+	}
+
+	fStableId stableId(boolean isPath, boolean withKwType) {
 		assert h.TKnd() == fTokenKind.T_ID || h.TKnd() == fTokenKind.T_THIS || h.TKnd() == fTokenKind.T_SUPER
 				: "Expected T_ID, T_THIS or T_SUPER but found: " + h.getToken();
 
@@ -254,6 +262,10 @@ public class fParser {
 					if(h.isLa(1, T_ID, T_SUPER, T_THIS)){
 						h.next();
 						continue;
+					}
+					if(withKwType && h.isLa(1, T_TYPE)){
+						h.next();
+						sid.setKwType(h.accept(T_TYPE));
 					}
 					break loop;
 				}
@@ -276,7 +288,7 @@ public class fParser {
 					continue;
 				}
 				default:
-					break;
+					break loop;
 			}
 		}
 		fTokenKind last = sid.getLastTKind();
@@ -291,14 +303,14 @@ public class fParser {
 	void typeTID(Ast a){
 		switch (a.astLastNKnd()){
 			case AST_ROOT_OPERATOR: case AST_OPERATOR:{
-				a.setRight(stableId(false));
+				a.setRight(path());
 				break;
 			}
 			case AST_OPERAND:{
 				/* ID OPERATOR */
 				if(h.isPoundOpT(0)){
 					h.insertOperator(a, fLangOperatorKind.O_POUND, h.next());
-					a.setRight(new fStableId(false));
+					a.setRight(new fId((NamedToken) h.next()));
 				} else {
 					h.insertOperator(a, fLangOperatorKind.O_ID_SMBLC_RIGHT_ASSC,  h.next());
 				}
