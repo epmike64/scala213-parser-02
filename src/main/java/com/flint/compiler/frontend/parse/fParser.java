@@ -405,7 +405,7 @@ public class fParser {
 				break;
 			}
 			case T_TRAIT: {
-				a.setRight(classDef(false, true));
+				a.setRight(traitDef());
 				break;
 			}
 			case T_IF: case T_WHILE: case T_FOR: case T_TRY: case T_THROW: case T_RETURN:
@@ -419,6 +419,7 @@ public class fParser {
 		return new AstProdSubTreeN(prd, a);
 	}
 
+
 	AstOperandNod classObjectDef(){
 		boolean isCase = false;
 		if(h.isLa(0, fTokenKind.T_CASE)){
@@ -427,7 +428,7 @@ public class fParser {
 		}
 		switch (h.TKnd()){
 			case T_CLASS: {
-				return classDef(isCase, false);
+				return classDef(isCase);
 			}
 			case T_OBJECT: {
 				return objectDef(isCase);
@@ -514,20 +515,28 @@ public class fParser {
 		return cc;
 	}
 
-	fClassDef classDef(boolean isCase, boolean isTrait) {
+	fTraitDef traitDef(){
+		h.accept(fTokenKind.T_TRAIT);
+		fTraitDef trait = new fTraitDef((NamedToken) h.next());
+		if(h.isTkLBracket()){
+			trait.setTypeParams(variantTypeParams());
+		}
+		trait.setExtendsTemplate(classExtends(true));
+		return trait;
+	}
+
+	fClassDef classDef(boolean isCase) {
 		h.accept(fTokenKind.T_CLASS);
-		fClassDef cls = new fClassDef(false, (NamedToken) h.next(), isCase);
+		fClassDef cls = new fClassDef((NamedToken) h.next(), isCase);
 		if(h.isTkLBracket()){
 			cls.setTypeParams(variantTypeParams());
 		}
-		if (!isTrait) {
-			cls.setClassParamClauses(classParamClauses());
-		}
-		cls.setExtendsTemplate(classExtends());
+		cls.setClassParamClauses(classParamClauses());
+		cls.setExtendsTemplate(classExtends(false));
 		return cls;
 	}
 
-	fTemplateBody classExtends() {
+	fTemplateBody classExtends(boolean isTrait) {
 		switch (h.TKnd()){
 			case T_LCURL: {
 				return templateBody();
@@ -537,7 +546,7 @@ public class fParser {
 				if(h.isLa(0, fTokenKind.T_LCURL)){
 					return templateBody();
 				} else {
-					return classTemplate(false);
+					return classTemplate(isTrait);
 				}
 			}
 			default:
@@ -548,7 +557,7 @@ public class fParser {
 	fObject objectDef(boolean isCase) {
 		h.accept(fTokenKind.T_OBJECT);
 		fObject obj = new fObject((NamedToken) h.next(), isCase);
-		obj.setExtendsTemplate(classExtends());
+		obj.setExtendsTemplate(classExtends(false));
 		return obj;
 	}
 

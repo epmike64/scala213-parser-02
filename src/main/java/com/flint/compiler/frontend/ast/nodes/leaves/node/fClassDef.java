@@ -6,17 +6,13 @@ import com.flint.compiler.frontend.parse.lex.token.type.fToken;
 
 import java.util.List;
 
-public class fClassDef extends AstOperandNod {
-	private final boolean trait;
+public class fClassDef extends fTraitDef {
 	private final boolean isCaseClass;
-	private final NamedToken name;
-	private List<fVariantTypeParam> typeParams;
 	private fClassParamClauses classParamClauses;
-	private fTemplateBody extendsTemplate;
 
-	public fClassDef(boolean isTrait, NamedToken name, boolean isCaseClass) {
-		this.trait = isTrait;
-		this.name = name;
+
+	public fClassDef(NamedToken name, boolean isCaseClass) {
+		super(name);
 		this.isCaseClass = isCaseClass;
 	}
 
@@ -29,9 +25,6 @@ public class fClassDef extends AstOperandNod {
 	}
 
 
-	public void setExtendsTemplate(fTemplateBody extendsTemplate) {
-		this.extendsTemplate = extendsTemplate;
-	}
 
 	@Override
 	public fToken getFirstToken() {
