@@ -439,7 +439,7 @@ public class fParser {
 				break;
 			}
 			case T_TYPE: {
-				//a.setRight(typeDef());
+				a.setRight(typeDef());
 				break;
 			}
 			case T_CASE: case T_CLASS:  case T_OBJECT: {
@@ -636,6 +636,17 @@ public class fParser {
 		}
 
 		return fun;
+	}
+
+	fTypeDef typeDef() {
+		h.accept(fTokenKind.T_TYPE);
+		fTypeDef t = new fTypeDef((NamedToken) h.next());
+		if(h.isTkLBracket()){
+			t.setTypeParams(variantTypeParams());
+		}
+		h.acceptOpChar(OpChar.ASSIGN);
+		t.setAssignedType(type());
+		return t;
 	}
 
 	fParamClauses  paramClauses(){
