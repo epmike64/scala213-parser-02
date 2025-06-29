@@ -76,6 +76,10 @@ public class ParseHelp {
 		return token.kind == T_WITH;
 	}
 
+	boolean isTkFatArrow() {
+		return token.kind == T_FAT_ARROW;
+	}
+
 	boolean isTkSemi(){
 		return token.kind == T_SEMI || token.kind == T_NL;
 	}

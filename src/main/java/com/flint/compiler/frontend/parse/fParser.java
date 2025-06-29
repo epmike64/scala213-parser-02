@@ -419,7 +419,7 @@ public class fParser {
 
 		switch (h.TKnd()){
 			case T_IMPORT: {
-				//importClause();
+				a.setRight(importClause());
 				break;
 			}
 			case T_LAZY: case T_IMPLICIT: case T_ABSTRACT: case T_FINAL: case T_SEALED:{
@@ -917,10 +917,41 @@ public class fParser {
 
 
 	fImport importClause() {
-//		h.accept(fTokenKind.T_IMPORT);
-//		fImport a = new fImport();
-//
-//		return new fImport(new AstProdSubTreeN(GrmPrd.IMPORT_CLAUSE, a));
-		return null;
+		h.accept(fTokenKind.T_IMPORT);
+		fImport im = new fImport();
+		while (true){
+			fImport.fImportExpr imEx = new fImport.fImportExpr(stableId(false));
+			if(h.isTkLCurl()){
+				imEx.setSelectors(importSelectors());
+			}
+			im.addImportExpr(imEx);
+			if(h.isTkComma()){
+				h.next();
+			} else {
+				break;
+			}
+		}
+		return im;
+	}
+
+	List<fImport.fImportSelector> importSelectors() {
+		h.accept(T_LCURL);
+		List<fImport.fImportSelector> selectors = new ArrayList<>();
+		while (true) {
+			NamedToken from = (NamedToken) h.accept(T_ID);
+			NamedToken to = null;
+			if(h.isTkFatArrow()){
+				h.next();
+				to = (NamedToken) h.accept(T_ID);
+			}
+			selectors.add(new fImport.fImportSelector(from, to));
+			if(h.isTkComma()){
+				h.next();
+				continue;
+			}
+			break;
+		}
+		h.accept(T_RCURL);
+		return selectors;
 	}
 }
