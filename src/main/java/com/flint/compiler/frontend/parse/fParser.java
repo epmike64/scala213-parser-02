@@ -230,25 +230,67 @@ public class fParser {
 		return new AstProdSubTreeN(GrmPrd.EXPR, a);
 	}
 
-	fPath path(Ast a){
-		return (fPath) stableId(a, true);
+	fStableId path(){
+		return stableId(true);
 	}
 
-	StableId stableId(Ast a, boolean isPath){
-		return null;
+	fStableId stableId(boolean isPath) {
+		assert h.TKnd() == fTokenKind.T_ID || h.TKnd() == fTokenKind.T_THIS || h.TKnd() == fTokenKind.T_SUPER
+				: "Expected T_ID, T_THIS or T_SUPER but found: " + h.getToken();
+
+		fStableId sid = new fStableId(isPath);
+		loop:
+		while (true) {
+			switch (h.TKnd()) {
+				case T_DOT: {
+					if(h.isLa(1, T_ID, T_SUPER, T_THIS)){
+						h.next();
+						continue;
+					}
+					break loop;
+				}
+				case T_ID: {
+					sid.addTId((NamedToken) h.next());
+					continue;
+				}
+				case T_THIS: {
+					sid.addThis(h.next());
+					continue;
+				}
+				case T_SUPER: {
+					sid.addSuper(h.next());
+					h.next();
+					if (h.isTkLBracket()) {
+						h.next();
+						sid.addClassQualifier((NamedToken) h.accept(T_ID));
+						h.accept(T_RBRACKET);
+					}
+					continue;
+				}
+				default:
+					break;
+			}
+		}
+		fTokenKind last = sid.getLastTKind();
+		assert last == fTokenKind.T_ID;
+		if(isPath){
+			 assert last == fTokenKind.T_THIS;
+		}
+		return sid;
 	}
+
 
 	void typeTID(Ast a){
 		switch (a.astLastNKnd()){
 			case AST_ROOT_OPERATOR: case AST_OPERATOR:{
-				a.setRight(stableId(a, false));
+				a.setRight(stableId(false));
 				break;
 			}
 			case AST_OPERAND:{
 				/* ID OPERATOR */
 				if(h.isPoundOpT(0)){
 					h.insertOperator(a, fLangOperatorKind.O_POUND, (NamedToken) h.next());
-					a.setRight(new StableId((NamedToken) h.accept(fTokenKind.T_ID)));
+					a.setRight(new fStableId(false));
 				} else {
 					h.insertOperator(a, fLangOperatorKind.O_ID_SMBLC_RIGHT_ASSC, (NamedToken) h.next());
 				}
@@ -263,7 +305,7 @@ public class fParser {
 		switch(a.astLastNKnd()){
 			case AST_ROOT_OPERATOR: case AST_OPERATOR:{
 				/* ID OPERAND */
-				a.setRight(path(a));
+				a.setRight(path());
 				break;
 			}
 			case AST_OPERAND:{
@@ -744,7 +786,7 @@ public class fParser {
 
 	AstProdSubTreeN pattern1() {
 		Ast a = new Ast();
-		a.setRight(stableId(a, false));
+		a.setRight(stableId(false));
 		h.insertOperator(a, fLangOperatorKind.O_COLON, (NamedToken)h.next());
 		a.setRight(type());
 		return new  AstProdSubTreeN(GrmPrd.PATTERN_1, a);
@@ -774,7 +816,7 @@ public class fParser {
 		switch (h.TKnd()){
 			case T_ID: {
 				if(h.isAtOpT(1)){
-					a.setRight(new StableId((NamedToken) h.next()));
+					a.setRight(new fStableId(false));
 					h.insertOperator(a, fLangOperatorKind.O_AT, (NamedToken) h.next());
 					a.setRight(pattern3());
 					return new AstProdSubTreeN(GrmPrd.SUBTREE, a);
@@ -814,7 +856,7 @@ public class fParser {
 	void pattern3Id(Ast a){
 		switch (a.astLastNKnd()){
 			case AST_ROOT_OPERATOR: case AST_OPERATOR:{
-				a.setRight(stableId(a, false));
+				a.setRight(stableId(false));
 				break;
 			}
 			case AST_OPERAND:{
@@ -871,5 +913,14 @@ public class fParser {
 			aPrn = new Ast();
 			aPrn.setRight(new AstProdSubTreeN(GrmPrd.SUBTREE, aChd));
 		}
+	}
+
+
+	fImport importClause() {
+//		h.accept(fTokenKind.T_IMPORT);
+//		fImport a = new fImport();
+//
+//		return new fImport(new AstProdSubTreeN(GrmPrd.IMPORT_CLAUSE, a));
+		return null;
 	}
 }
