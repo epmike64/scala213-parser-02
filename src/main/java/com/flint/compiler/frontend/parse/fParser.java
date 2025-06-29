@@ -24,16 +24,6 @@ public class fParser {
 		h = new ParseHelp(lexer);
 	}
 
-	void skipSemi() {
-		if(h.isTkSemicolon()){
-			h.next();
-			return;
-		}
-		while (h.isTkNL()){
-			h.next();
-		}
-	}
-
 	List<NamedToken> ids() {
 		assert h.TKnd() == fTokenKind.T_ID;
 		List<NamedToken> ids = new ArrayList<>();
@@ -994,6 +984,7 @@ public class fParser {
 		List<fIds> fs = new ArrayList<>();
 		while (h.isTkPackage()){
 			fs.add(packageClause());
+			h.skipSemi();
 		}
 		return new fPackages(fs);
 	}
@@ -1010,19 +1001,21 @@ public class fParser {
 			switch (h.TKnd()) {
 				case T_IMPORT: {
 					a.setRight(importClause());
-					continue;
+					break ;
 				}
 				case T_CASE: case T_CLASS: case T_OBJECT: {
 					a.setRight(classObjectDef());
-					continue;
+					break ;
 				}
 				case T_TRAIT: {
 					a.setRight(traitDef());
-					continue;
+					break ;
 				}
 				default:
 					break loop;
 			}
+			h.skipSemi();
+			h.insertSemicolonOperator(a);
 		}
 		return new fCompilationUnit(new AstProdSubTreeN(GrmPrd.COMPILATION_UNIT, a));
 	}

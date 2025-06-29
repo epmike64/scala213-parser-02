@@ -200,9 +200,17 @@ public class ParseHelp {
 	}
 
 	void skipNL() {
-		while (token.kind == T_NL) {
+		while (isTkNL()) {
 			next();
 		}
+	}
+
+	void skipSemi() {
+		if(isTkSemicolon()){
+			next();
+			return;
+		}
+		skipNL();
 	}
 
 	void expectOneOf(int la, fTokenKind... types) {
