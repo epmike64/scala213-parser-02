@@ -292,9 +292,10 @@ public class fParser {
 			}
 		}
 		fTokenKind last = sid.getLastTKind();
-		assert last == fTokenKind.T_ID;
-		if(isPath){
-			 assert last == fTokenKind.T_THIS;
+		if(!isPath){
+			assert last == fTokenKind.T_ID;
+		} else {
+			assert last == fTokenKind.T_ID || last == fTokenKind.T_THIS;
 		}
 		return sid;
 	}
@@ -303,7 +304,7 @@ public class fParser {
 	void typeTID(Ast a){
 		switch (a.astLastNKnd()){
 			case AST_ROOT_OPERATOR: case AST_OPERATOR:{
-				a.setRight(path());
+				a.setRight(pathWithKwType());
 				break;
 			}
 			case AST_OPERAND:{
