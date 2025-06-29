@@ -422,9 +422,9 @@ public class fParser {
 					h.insertSemicolonOperator(a);
 				}
 				a.setRight(templateStat());
+			} else {
+				break;
 			}
-			h.skipSemi();
-			break;
 		}
 		h.accept(fTokenKind.T_RCURL);
 		if(a == null){
@@ -560,6 +560,7 @@ public class fParser {
 	}
 
 	fTemplateBody classExtends(boolean isTrait) {
+		h.skipNL();
 		switch (h.TKnd()){
 			case T_LCURL: {
 				return templateBody();
@@ -587,7 +588,7 @@ public class fParser {
 	fFunctionDef  funDef(){
 		h.accept(fTokenKind.T_DEF);
 		fFunctionDef fun = null;
-		if(h.isLa(0, fTokenKind.T_ID)){
+		if(h.isTkTID()){
 			fun = new fFunctionDef((NamedToken) h.next());
 			if(h.isTkLBracket()){
 				fun.setTypeParams(funTypeParams());
@@ -607,7 +608,7 @@ public class fParser {
 			} else {
 				throw new RuntimeException("Unexpected token: " + h.getToken());
 			}
-		} else if(h.isLa(0, fTokenKind.T_THIS)){
+		} else if(h.isTkTHIS()){
 			/*
 			   'this'  paramClause()  paramClasses() ('=' ConstrExpr | ConstrBlock)
 			 */
@@ -631,6 +632,7 @@ public class fParser {
 	}
 
 	fParamClauses  paramClauses(){
+		h.skipNL();
 		fParamClauses pcs = new fParamClauses();
 		while(h.isTkLParen()) {
 			if(h.isLa(1, fTokenKind.T_IMPLICIT)){
@@ -948,6 +950,7 @@ public class fParser {
 	}
 
 	AstProdSubTreeN blockOrTemplateStat(GrmPrd prd) {
+		h.skipNL();
 		final Ast a = new Ast();
 		switch (h.TKnd()){
 			case T_IMPORT: {
@@ -990,6 +993,7 @@ public class fParser {
 			default:
 				return null;
 		}
+		h.skipSemi();
 		return new AstProdSubTreeN(prd, a);
 	}
 
@@ -1009,6 +1013,7 @@ public class fParser {
 
 	public fCompilationUnit compilationUnit() {
 		final Ast a = new Ast();
+		h.skipNL();
 		if(h.isTkPackage()){
 			a.setRight(packages());
 			h.insertSemicolonOperator(a);

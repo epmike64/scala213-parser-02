@@ -84,6 +84,14 @@ public class ParseHelp {
 		return token.kind == T_PACKAGE;
 	}
 
+	boolean isTkTID() {
+		return token.kind == T_ID;
+	}
+
+	boolean isTkTHIS() {
+		return token.kind == T_THIS;
+	}
+
 	boolean isTkSemicolon(){
 		return token.kind == T_SEMICOLON;
 	}
