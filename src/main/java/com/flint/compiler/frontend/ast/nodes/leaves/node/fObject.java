@@ -8,9 +8,15 @@ public class fObject extends AstOperandNod  {
 
 	private boolean isCaseClass;
 	private final NamedToken name;
+	private fTemplateBody extendsTemplate;
+
 	public fObject(NamedToken name, boolean isCaseClass) {
 		this.name = name;
 		this.isCaseClass = isCaseClass;
+	}
+
+	public void setExtendsTemplate(fTemplateBody extendsTemplate) {
+		this.extendsTemplate = extendsTemplate;
 	}
 
 	@Override

@@ -548,20 +548,7 @@ public class fParser {
 	fObject objectDef(boolean isCase) {
 		h.accept(fTokenKind.T_OBJECT);
 		fObject obj = new fObject((NamedToken) h.next(), isCase);
-//		if(h.isTkLBracket()){
-//			obj.setTypeParams(funTypeParams());
-//		}
-//		if(h.isTkExtends()){
-//			h.next();
-//			obj.setExtendsType(type());
-//		}
-//		if(h.isTkLCurl()){
-//			h.next();
-//			obj.setBody(block());
-//			h.accept(fTokenKind.T_RCURL);
-//		} else {
-//			throw new RuntimeException("Expected '{' but found: " + h.getToken());
-//		}
+		obj.setExtendsTemplate(classExtends());
 		return obj;
 	}
 
