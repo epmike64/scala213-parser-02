@@ -389,30 +389,51 @@ public class fParser {
 	}
 
 	AstProdSubTreeN block() {
-		Ast a = new Ast();
+		Ast a = null;
 		while(true){
-			a.setRight(blockStat());
-			if(h.isTkSemi()){
-				h.next(); continue;
+			AstProdSubTreeN t = blockStat();
+			if(t != null){
+				if(a == null){
+					a = new Ast();
+				} else {
+					h.insertSemicolonOperator(a);
+				}
+				a.setRight(t);
+				h.skipSemi();
+			} else {
+				break;
 			}
-			break;
+		}
+		if(a == null){
+			return null;
 		}
 		return new AstProdSubTreeN(GrmPrd.BLOCK, a);
 	}
 
 	fTemplateBody templateBody() {
 		h.accept(fTokenKind.T_LCURL);
-		Ast a = new Ast();
+		Ast a = null;
 		while(true){
-			a.setRight(templateStat());
-			if(h.isTkSemi()){
-				h.next(); continue;
+			AstProdSubTreeN t = templateStat();
+			if(t != null){
+				if(a == null) {
+					a = new Ast();
+				}else {
+					h.insertSemicolonOperator(a);
+				}
+				a.setRight(templateStat());
 			}
+			h.skipSemi();
 			break;
 		}
 		h.accept(fTokenKind.T_RCURL);
+		if(a == null){
+			return null;
+		}
 		return new fTemplateBody(new AstProdSubTreeN(GrmPrd.TEMPLATE_BODY, a));
 	}
+
+
 
 	AstProdSubTreeN templateStat(){
 		return blockOrTemplateStat(GrmPrd.TEMPLATE_STAT);
@@ -421,9 +442,6 @@ public class fParser {
 	AstProdSubTreeN blockStat(){
 		return blockOrTemplateStat(GrmPrd.BLOCK_STAT);
 	}
-
-
-
 
 	AstOperandNod classObjectDef(){
 		boolean isCase = false;
@@ -970,7 +988,7 @@ public class fParser {
 				a.setRight(expr(null));
 			}
 			default:
-				break;
+				return null;
 		}
 		return new AstProdSubTreeN(prd, a);
 	}
