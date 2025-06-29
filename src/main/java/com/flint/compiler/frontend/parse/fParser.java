@@ -414,52 +414,7 @@ public class fParser {
 		return blockOrTemplateStat(GrmPrd.BLOCK_STAT);
 	}
 
-	AstProdSubTreeN blockOrTemplateStat(GrmPrd prd) {
-		Ast a = new Ast();
 
-		switch (h.TKnd()){
-			case T_IMPORT: {
-				a.setRight(importClause());
-				break;
-			}
-			case T_LAZY: case T_IMPLICIT: case T_ABSTRACT: case T_FINAL: case T_SEALED:{
-				//modifiers();
-				break;
-			}
-			case T_VAL: {
-				a.setRight(patDef());
-				break;
-			}
-			case T_VAR: {
-				a.setRight(varDef());
-				break;
-			}
-			case T_DEF: {
-				a.setRight(funDef());
-				break;
-			}
-			case T_TYPE: {
-				a.setRight(typeDef());
-				break;
-			}
-			case T_CASE: case T_CLASS:  case T_OBJECT: {
-				a.setRight(classObjectDef());
-				break;
-			}
-			case T_TRAIT: {
-				a.setRight(traitDef());
-				break;
-			}
-			case T_IF: case T_WHILE: case T_FOR: case T_TRY: case T_THROW: case T_RETURN:
-			case T_ID: case T_THIS: case T_SUPER: case T_LPAREN: case T_LCURL: case T_NEW:
-			{
-				a.setRight(expr(null));
-			}
-			default:
-				break;
-		}
-		return new AstProdSubTreeN(prd, a);
-	}
 
 
 	AstOperandNod classObjectDef(){
@@ -964,5 +919,75 @@ public class fParser {
 		}
 		h.accept(T_RCURL);
 		return selectors;
+	}
+
+	AstProdSubTreeN blockOrTemplateStat(GrmPrd prd) {
+		final Ast a = new Ast();
+		switch (h.TKnd()){
+			case T_IMPORT: {
+				a.setRight(importClause());
+				break;
+			}
+			case T_CASE: case T_CLASS:  case T_OBJECT: {
+				a.setRight(classObjectDef());
+				break;
+			}
+			case T_TRAIT: {
+				a.setRight(traitDef());
+				break;
+			}
+			case T_LAZY: case T_IMPLICIT: case T_ABSTRACT: case T_FINAL: case T_SEALED:{
+				//modifiers();
+				break;
+			}
+			case T_VAL: {
+				a.setRight(patDef());
+				break;
+			}
+			case T_VAR: {
+				a.setRight(varDef());
+				break;
+			}
+			case T_DEF: {
+				a.setRight(funDef());
+				break;
+			}
+			case T_TYPE: {
+				a.setRight(typeDef());
+				break;
+			}
+			case T_IF: case T_WHILE: case T_FOR: case T_TRY: case T_THROW: case T_RETURN:
+			case T_ID: case T_THIS: case T_SUPER: case T_LPAREN: case T_LCURL: case T_NEW:
+			{
+				a.setRight(expr(null));
+			}
+			default:
+				break;
+		}
+		return new AstProdSubTreeN(prd, a);
+	}
+
+	public fCompilationUnit compilationUnit() {
+		final Ast a = new Ast();
+		loop:
+		while (true) {
+			switch (h.TKnd()) {
+				case T_IMPORT: {
+					a.setRight(importClause());
+					continue;
+				}
+				case T_CASE: case T_CLASS: case T_OBJECT: {
+					a.setRight(classObjectDef());
+					continue;
+				}
+				case T_TRAIT: {
+					a.setRight(traitDef());
+					continue;
+				}
+				default:
+					break loop;
+			}
+		}
+		return new fCompilationUnit(new AstProdSubTreeN(GrmPrd.COMPILATION_UNIT, a));
 	}
 }
