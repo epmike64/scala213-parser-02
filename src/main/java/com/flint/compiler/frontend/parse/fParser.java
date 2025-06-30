@@ -156,10 +156,10 @@ public class fParser {
 	void typeLBracket(Ast a) {
 		switch (a.astLastNKnd()) {
 			case AST_OPERAND: {
-				h.accept(fTokenKind.T_LBRACKET);
-				h.insertOperator(a, fLangOperatorKind.O_BRACKETS,  h.next());
+				h.insertOperator(a, fLangOperatorKind.O_BRACKETS,  h.accept(fTokenKind.T_LBRACKET));
 				a.setRight(types());
 				h.accept(T_RBRACKET);
+				break;
 			}
 			default:
 				throw new RuntimeException("LBracket in unexpected place: " + a.astLastNKnd());
@@ -179,12 +179,40 @@ public class fParser {
 				throw new RuntimeException("LParen in unexpected place: " + a.astLastNKnd());
 		}
 	}
+	aaa
+	AstProdSubTreeN postfixExpr(){
+		Ast a = new Ast();
+		loop:
+		while (true) {
+			switch (h.TKnd()) {
+				case T_NEW: {
+					a.setRight(exprNEW());
+					continue;
+				}
+				case T_LCURL: {
+					exprLCURL(a);
+					continue;
+				}
+				case T_ID: case T_THIS: case T_SUPER: {
+					exprTID(a);
+					if(a.isContinue()) continue;
+					break loop;
+				}
+				case T_LPAREN:{
+					exprLParen(a);
+
+				}
+			}
+		}
+		return null;
+	}
 
 	AstProdSubTreeN expr(Ast a) {
 		if(a == null) a = new Ast();
 		loop:
 		while (true) {
 			switch (h.TKnd()) {
+				bbb
 				case T_IF: case T_WHILE: case T_FOR: case T_TRY: case T_THROW: case T_RETURN:{
 					break loop;
 				}
@@ -201,11 +229,8 @@ public class fParser {
 				case T_MATCH:{
 					h.next();
 					h.accept(fTokenKind.T_LCURL);
-					caseClauses(a);
+					caseClauses();
 					h.accept(fTokenKind.T_RCURL);
-					break loop;
-				}
-				case T_RPAREN: {
 					break loop;
 				}
 				case T_LPAREN: {
@@ -231,7 +256,7 @@ public class fParser {
 					break loop;
 				}
 				default:
-					throw new AssertionError("Unexpected token: " + h.getToken());
+					break loop;
 			}
 		}
 
@@ -667,13 +692,17 @@ public class fParser {
 			h.acceptOpChar(OpChar.ASSIGN);
 			fun.setBody(expr(null));
 		} else if(h.isAssignOpT(0)){
-			fun.setBody(expr(null));
-		} else if(h.isTkLCurl()){
 			h.next();
-			fun.setBody(block());
-			h.accept(fTokenKind.T_RCURL);
+			fun.setBody(expr(null));
 		} else {
-			throw new RuntimeException("Unexpected token: " + h.getToken());
+			h.skipNL();
+			if(h.isTkLCurl()) {
+				h.next();
+				fun.setBody(block());
+				h.accept(fTokenKind.T_RCURL);
+			}else {
+				throw new RuntimeException("Unexpected token: " + h.getToken());
+			}
 		}
 
 		return fun;
@@ -928,9 +957,9 @@ public class fParser {
 			case AST_ROOT_OPERATOR: case AST_OPERATOR:{
 				h.accept(fTokenKind.T_LCURL);
 				if(h.TKnd() == fTokenKind.T_CASE){
-					caseClauses(a);
+					a.setRight(caseClauses());
 				} else {
-					block();
+					a.setRight(block());
 				}
 				h.accept(fTokenKind.T_RCURL);
 				break;
@@ -940,7 +969,20 @@ public class fParser {
 		}
 	}
 
-	void caseClauses(Ast a) {}
+	fCaseClauses caseClauses() {
+		List<fCaseClauses.fCaseClause> clauses = new ArrayList<>();
+		while(h.isTkCase()){
+			h.next();
+			fCaseClauses.fCaseClause cc = new fCaseClauses.fCaseClause(pattern());
+			if(h.isTkIF()){
+				h.next();
+				cc.setGuard(postfixExpr());
+			}
+			h.accept(T_FAT_ARROW);
+			cc.setBlock(block());
+		}
+		return new fCaseClauses(clauses);
+	}
 
 	AstProdSubTreeN typeArgs() {
 		return null;

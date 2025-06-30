@@ -68,6 +68,14 @@ public class ParseHelp {
 		return token.kind == T_LCURL;
 	}
 
+	boolean isTkCase() {
+		return token.kind == T_CASE;
+	}
+
+	boolean isTkIF() {
+		return token.kind == T_IF;
+	}
+
 	boolean isTkComma() {
 		return token.kind == T_COMMA;
 	}
@@ -260,5 +268,6 @@ public class ParseHelp {
 				op.setAstLeftN(prn);
 			}
 		}
+		a.setAstLastN(op);
 	}
 }
