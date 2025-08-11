@@ -2,6 +2,7 @@ package com.flint.compiler.frontend.parse.lex.token;
 
 public enum fLangOperatorKind {
 	O_BRACKETS("@[]", 10, false),
+	O_PARENS("@()", 9, false),
 	O_DOT(".", 9, false),
 	O_COLON(":", 8, true),
 	O_FAT_ARROW("=>", 7, false),

@@ -65,7 +65,7 @@ public enum fTokenKind {
 	T_COMMA(","),
 	T_DOT("."),
 	T_FAT_ARROW("=>"),
-	T_LEFT_ARROW("<-"),
+	T_IN("<-"),
 	T_UPPER_BOUND("<:"),
 	T_LOWER_BOUND(">:");
 

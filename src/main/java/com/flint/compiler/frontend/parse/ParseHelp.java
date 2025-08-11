@@ -36,6 +36,10 @@ public class ParseHelp {
 		}
 	}
 
+	boolean isTkOpChar() {
+		return token.kind == T_ID && token.opChar() != OpChar.INVALID;
+	}
+
 	boolean isTkLowerBound() {
 		return token.kind == T_LOWER_BOUND;
 	}
@@ -74,6 +78,17 @@ public class ParseHelp {
 
 	boolean isTkIF() {
 		return token.kind == T_IF;
+	}
+
+	boolean isTkElse() {
+		return token.kind == T_ELSE;
+	}
+
+	boolean isTkDot() {
+		return token.kind == T_DOT;
+	}
+	boolean isTkId() {
+		return token.kind == T_ID;
 	}
 
 	boolean isTkComma() {
@@ -116,10 +131,11 @@ public class ParseHelp {
 		return token.kind;
 	}
 
+	int tc = 0;
 	fToken next() {
 		prevToken = token;
 		token = lexer.nextToken();
-		System.out.println("Token: " + token);
+		System.out.println((tc++) + " : " + token);
 		return prevToken;
 	}
 
