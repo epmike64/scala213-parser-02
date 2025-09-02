@@ -16,7 +16,6 @@ import java.nio.file.Paths;
 public class App {
 	public static void main(String[] args) {
       App app = new App();
-
       try {
          app.testParser(args[0]);
          System.out.println("Done");

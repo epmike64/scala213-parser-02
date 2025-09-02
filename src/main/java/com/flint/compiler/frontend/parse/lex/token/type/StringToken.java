@@ -10,6 +10,10 @@ public class StringToken extends fToken {
 	public StringToken(fTokenKind kind, int pos, int endPos, String stringVal) {
 		super(kind, pos, endPos);
 		this.stringVal = stringVal;
+
+	}
+
+	protected void assertIt() {
 		assert kind.tag == fTokenTag.STRING;
 	}
 

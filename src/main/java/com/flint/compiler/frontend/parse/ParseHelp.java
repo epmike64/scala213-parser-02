@@ -11,6 +11,8 @@ import com.flint.compiler.frontend.parse.lex.token.type.NamedToken;
 import com.flint.compiler.frontend.parse.lex.token.type.fToken;
 import com.flint.compiler.frontend.parse.utils.Ast;
 
+import java.util.Stack;
+
 import static com.flint.compiler.frontend.parse.lex.token.fTokenKind.*;
 
 public class ParseHelp {
@@ -18,11 +20,111 @@ public class ParseHelp {
 	private fToken prevToken;
 	private fToken token;
 	private fLexer lexer;
+	private int tc = 0;
+	private final Stack<Boolean> isNLEnabledStack = new Stack<>();
 
 	ParseHelp(fLexer lexer) {
 		this.lexer = lexer;
-		this.token = lexer.nextToken();
+		next();
 	}
+
+	void pushNLEnabled(boolean enabled) {
+		isNLEnabledStack.push(enabled);
+	}
+
+	boolean popNLEnabled() {
+		return isNLEnabledStack.pop();
+	}
+
+	boolean isNLEnabled() {
+		return isNLEnabledStack.isEmpty() || isNLEnabledStack.peek();
+	}
+
+	private fToken firstNonNL(int from) {
+		for(int i = from;; i++){
+			fToken t = lookAhead(i);
+			if(t.kind != T_NL) {
+				return t;
+			}
+		}
+	}
+
+	fToken next(){
+		prevToken = token;
+		loop:
+		while(true){
+			token = lexer.nextToken();
+			if(token.kind != T_NL){
+				break;
+			}
+			while(isLa(1, T_NL)){
+				lexer.nextToken();
+			}
+			//1. Test previous token to see if it can terminate a statement
+			switch (prevToken.kind){
+				case T_ID: case T_INT_LIT: case T_STRING_LIT: case T_CHAR_LIT: case T_FLOAT_LIT:
+				case T_THIS: case T_NULL: case T_TRUE: case T_FALSE: case T_RETURN: case T_TYPE:{
+					break ;// Previous can terminate a statement, but what about the next token ?
+				}
+				default:
+					//Previous cannot terminate a statement, so continue
+					continue loop; // NL is discarded
+			}
+			//2. Test LookAhead token to see if it can start a statement
+			fToken la = lexer.lookAhead(1);
+			switch (la.kind){
+				//can NOT start a statement
+				case T_CATCH: case T_ELSE: case T_EXTENDS: case T_FINALLY: case T_MATCH:
+				case T_WITH: case T_YIELD: case T_COMMA: case T_DOT: case T_COLON: case T_ASSIGN:
+				case T_FAT_ARROW: case T_IN: case T_UPPER_BOUND: case T_LOWER_BOUND: case T_CONTEXT_BOUND:
+				case T_POUND: case T_LBRACKET: case T_RPAREN: case T_RBRACKET: case T_RCURL:{
+					continue loop; // NL is discarded
+				}
+				case T_CASE: {
+					fToken f = firstNonNL(2);
+					if(f.kind != T_CLASS && f.kind != T_OBJECT) {
+						continue loop; // NL is discarded
+					}
+					break loop;
+				}
+				default:
+					if(isNLEnabled) {
+						break loop;
+					}
+					continue loop;
+			}
+		}
+		System.out.println((tc++) + " : " + token);
+		return prevToken;
+	}
+
+	fTokenKind getTokenKind() {
+		return token.kind;
+	}
+
+	boolean isTkYield() {
+		return token.kind == T_YIELD;
+	}
+
+	boolean isTkRCurl() {
+		return token.kind == T_RCURL;
+	}
+
+	boolean isTkIf() {
+		return token.kind == T_IF;
+	}
+
+	boolean isTkCatch() {
+		return token.kind == T_CATCH;
+	}
+	boolean isTkFinally() {
+		return token.kind == T_FINALLY;
+	}
+
+	boolean isTkStar() {
+		return token.kind == T_STAR;
+	}
+
 
 	fToken getToken() {
 		return token;
@@ -131,13 +233,13 @@ public class ParseHelp {
 		return token.kind;
 	}
 
-	int tc = 0;
-	fToken next() {
-		prevToken = token;
-		token = lexer.nextToken();
-		System.out.println((tc++) + " : " + token);
-		return prevToken;
-	}
+//	int tc = 0;
+//	fToken next() {
+//		prevToken = token;
+//		token = lexer.nextToken();
+//		System.out.println((tc++) + " : " + token);
+//		return prevToken;
+//	}
 
 	fToken acceptOpChar(OpChar opChar) {
 		assert token.kind == T_ID && token.opChar() == opChar;

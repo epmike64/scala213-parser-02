@@ -38,7 +38,6 @@ public class fTokenizer {
 
 		int pos = 0;
 		int endPos = 0;
-		OpChar opChar = OpChar.INVALID;
 
 		wlp:
 		while (true) {
@@ -206,7 +205,7 @@ public class fTokenizer {
 						scanLitChar(pos);
 						if (reader.ch == '\'') {
 							reader.scanChar();
-							tk = fTokenKind.T_CHR_LIT;
+							tk = fTokenKind.T_CHAR_LIT;
 						} else {
 							lexError(pos, "unclosed.char.lit");
 						}
@@ -220,7 +219,7 @@ public class fTokenizer {
 				default: {
 
 					if (isOpChar(reader.ch)) {
-						opChar = scanIdent(pos);
+						scanIdent(pos);
 						break wlp;
 					}
 
@@ -231,7 +230,7 @@ public class fTokenizer {
 		endPos = reader.bp;
 		switch (tk.tag) {
 			case DEFAULT: return new fToken(tk, pos, endPos);
-			case NAMED: return new NamedToken(tk, pos, endPos, tname, opChar);
+			case NAMED: return new NamedToken(tk, pos, endPos, tname);
 			case STRING: return new StringToken(tk, pos, endPos, tname);
 			case NUMERIC: return new NumericToken(tk, pos, endPos, tname, radix);
 			default: throw new AssertionError();
@@ -243,7 +242,7 @@ public class fTokenizer {
 		while (reader.ch != '\"' && reader.ch != CR && reader.ch != LF && reader.bp < reader.buflen)
 			scanLitChar(pos);
 		if (reader.ch == '\"') {
-			tk = fTokenKind.T_STR_LIT;
+			tk = fTokenKind.T_STRING_LIT;
 			reader.scanChar();
 		} else {
 			lexError(pos, "unclosed.str.lit");
@@ -308,7 +307,7 @@ public class fTokenizer {
 		}
 	}
 
-	private OpChar getOpChar(char ch) {
+	public static OpChar getOpChar(char ch) {
 		switch (ch) {
 			case '!': return OpChar.BANG;
 			case '#': return OpChar.POUND;
@@ -333,7 +332,7 @@ public class fTokenizer {
 		}
 	}
 
-	private OpChar scanIdent(int pos) {
+	private void scanIdent(int pos) {
 
 		boolean seenOpChar = false;
 		if (isOpChar(reader.ch)) {
@@ -380,10 +379,6 @@ public class fTokenizer {
 
 		tname = reader.name();
 		tk = fTokenMap.lookupKind(tname);
-		if (tk == fTokenKind.T_ID && tname.length() == 1) {
-			return getOpChar(tname.charAt(0));
-		}
-		return OpChar.INVALID;
 	}
 
 	private void scanDigits(int pos, int digitRadix) {

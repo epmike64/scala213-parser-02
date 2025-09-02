@@ -9,15 +9,12 @@ public class fToken {
 	public final fTokenKind kind;
 
 	public static final fToken SEMICOLON = new fToken(fTokenKind.T_SEMICOLON, -1, -1);
+	public static final fToken ENTITY_SEP = new fToken(fTokenKind.T_ENTITY_SEP, -1, -1);
 
 	public fToken(fTokenKind kind, int pos, int endPos) {
 		this.kind = kind;
 		this.pos = pos;
 		this.endPos = endPos;
-	}
-
-	public OpChar opChar() {
-		return OpChar.INVALID;
 	}
 
 	public String name() {
