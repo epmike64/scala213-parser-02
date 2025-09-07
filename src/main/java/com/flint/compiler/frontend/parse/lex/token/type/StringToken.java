@@ -10,7 +10,7 @@ public class StringToken extends fToken {
 	public StringToken(fTokenKind kind, int pos, int endPos, String stringVal) {
 		super(kind, pos, endPos);
 		this.stringVal = stringVal;
-
+		assertIt();
 	}
 
 	protected void assertIt() {

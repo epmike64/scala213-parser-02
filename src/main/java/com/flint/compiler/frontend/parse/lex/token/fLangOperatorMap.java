@@ -7,39 +7,39 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class fLangOperatorMap {
-	private static final Map<String, fLangOperatorKind> map = new HashMap<>();
+	private static final Map<String, fLangOperKind> map = new HashMap<>();
 
 	static {
-		for (fLangOperatorKind token : fLangOperatorKind.values()) {
+		for (fLangOperKind token : fLangOperKind.values()) {
 			if(!token.opname.startsWith("@")) map.put(token.opname, token);
 		}
 	}
 
 
-	public static fLangOperatorKind getOperatorKind(fToken token) {
+	public static fLangOperKind getOperatorKind(fToken token) {
 		switch (token.kind) {
 			case T_IF:
-				return fLangOperatorKind.O_IF;
+				return fLangOperKind.O_IF;
 			case T_ELSE:
-				return fLangOperatorKind.O_ELSE;
+				return fLangOperKind.O_ELSE;
 			case T_COMMA:
-				return fLangOperatorKind.O_COMMA;
+				return fLangOperKind.O_COMMA;
 			case T_FAT_ARROW:
-				return fLangOperatorKind.O_FAT_ARROW;
+				return fLangOperKind.O_FAT_ARROW;
 			case T_SEMICOLON:
-				return fLangOperatorKind.O_SEMICOLON;
+				return fLangOperKind.O_SEMICOLON;
 			case T_DOT:
-				return fLangOperatorKind.O_DOT;
+				return fLangOperKind.O_DOT;
 			case T_MATCH:
-				return fLangOperatorKind.O_MATCH;
+				return fLangOperKind.O_MATCH;
 			case T_ID:
-				fLangOperatorKind op = map.get(token.name());
+				fLangOperKind op = map.get(token.name());
 				if(op != null) return op;
 				if(MethNameCheck.isMNameValid(token.name())) {
 					if(token.name().endsWith(":")) {
-						return fLangOperatorKind.O_ID_SMBLC_RIGHT_ASSC;
+						return fLangOperKind.O_ID_SMBLC_RIGHT_ASSC;
 					}
-					return fLangOperatorKind.O_ID_SMBLC_LEFT_ASSC;
+					return fLangOperKind.O_ID_SMBLC_LEFT_ASSC;
 				}
 				throw new RuntimeException("Invalid Symbolic Method Name: "+token.name());
 			default:

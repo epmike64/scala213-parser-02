@@ -9,7 +9,7 @@ public class fClassParam extends AstOperandNod {
 	private NamedToken identifier;
 	private fParamType paramType;
 	private AstProdSubTreeN defaultValue;
-
+	private fModifiers modifiers;
 	public  void  setValVar(fValVar valVar) {
 		this.valVar = valVar;
 	}
@@ -21,5 +21,8 @@ public class fClassParam extends AstOperandNod {
 	}
 	public void setDefaultValue(AstProdSubTreeN defaultValue) {
 		this.defaultValue = defaultValue;
+	}
+	public void setModifiers(fModifiers modifiers) {
+		this.modifiers = modifiers;
 	}
 }

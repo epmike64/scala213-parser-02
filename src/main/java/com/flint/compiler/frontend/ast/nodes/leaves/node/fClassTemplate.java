@@ -8,4 +8,9 @@ public class fClassTemplate extends fTemplateBody {
 		this.parents = parents;
 		this.isTrait = isTrait;
 	}
+	public fClassTemplate(fClassParents parents, boolean isTrait) {
+		super(null);
+		this.parents = parents;
+		this.isTrait = isTrait;
+	}
 }

@@ -1,7 +1,7 @@
 package com.flint.compiler.frontend.parse.lex.token;
 
-public enum fLangOperatorKind {
-	O_ENTITY_SEPARATOR("@004", 20, false),
+public enum fLangOperKind {
+	O_STMT_SEP("@004", 20, false),
 	O_BRACKETS("@[]", 10, false),
 	O_PARENS("@()", 9, false),
 	O_CURLY_BRACES("@{}", 9, false),
@@ -30,7 +30,7 @@ public enum fLangOperatorKind {
 
 	O_RIGHT_PAREN(")", -1, false);
 
-	fLangOperatorKind(String opname, int precedence, boolean isRightAssociative) {
+	fLangOperKind(String opname, int precedence, boolean isRightAssociative) {
 		assert opname != null && opname.trim().length() > 0;
 		this.opname = opname;
 		this._prec = precedence;
@@ -46,10 +46,26 @@ public enum fLangOperatorKind {
 		return _prec;
 	}
 
-	public static fLangOperatorKind getIdSymbolicAssoc(boolean isRightAssociative) {
+	public static fLangOperKind getIdSymbolicAssoc(boolean isRightAssociative) {
 		if(isRightAssociative){
-			return  fLangOperatorKind.O_ID_SMBLC_RIGHT_ASSC;
+			return  fLangOperKind.O_ID_SMBLC_RIGHT_ASSC;
 		}
-		return   fLangOperatorKind.O_ID_SMBLC_LEFT_ASSC;
+		return   fLangOperKind.O_ID_SMBLC_LEFT_ASSC;
+	}
+	public static fLangOperKind getMathOperKind(fTokenKind kind) {
+		switch (kind) {
+			case T_PLUS:
+				return O_PLUS;
+			case T_MINUS:
+				return O_MINUS;
+			case T_STAR:
+				return O_MULTIPLY;
+			case T_FORWARD_SLASH:
+				return O_DIVIDE;
+			case T_PERCENT:
+				return O_MODULO;
+			default:
+				throw new IllegalArgumentException("Not a math operator: " + kind);
+		}
 	}
 }

@@ -2,20 +2,20 @@ package com.flint.compiler.frontend.parse.lex.token;
 
 
 public enum fTokenKind {
-	T_EOF(),
+	T_SOF(),
+		T_EOF(),
 	T_ERROR(),
 	T_NL(),
-	T_ENTITY_SEP(),
+	T_STMT_SEP(),
 	T_ROOT_OPERATOR(),
 	T_CLASS_QUALIFIER(fTokenTag.NAMED),
 	T_ID(fTokenTag.NAMED),
 	T_INT_LIT(fTokenTag.NUMERIC),
-	T_LONG_LIT(fTokenTag.NUMERIC),
+
 	T_FLOAT_LIT(fTokenTag.NUMERIC),
 
 	T_CHAR_LIT(fTokenTag.NUMERIC),
 	T_STRING_LIT(fTokenTag.STRING),
-	T_BOOL_LIT(fTokenTag.NAMED),
 
 	T_ABSTRACT("abstract"),
 	T_CASE("case"),
@@ -64,7 +64,11 @@ public enum fTokenKind {
 	T_EXCLAMATION("!"),
 	T_POUND("#"),
 	T_PERCENT("%"),
-	T_TILDE("~"),
+	T_AMPERSAND("&"),
+		T_AT("@"),
+		T_PIPE("|"),
+		T_COLON(":"),
+		T_TILDE("~"),
 	T_PLUS("+"),
 	T_MINUS("-"),
 	T_STAR("*"),
@@ -84,7 +88,6 @@ public enum fTokenKind {
 	T_LBRACKET("["),
 	T_RBRACKET("]"),
 	T_SEMICOLON(";"),
-	T_COLON(":"),
 	T_COMMA(","),
 	T_DOT("."),
 	T_FAT_ARROW("=>"),
