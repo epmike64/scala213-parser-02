@@ -177,7 +177,7 @@ public class fParser {
 
 	List<fParamType> paramTypes(boolean isSimpleType) {
 		List<fParamType> ps = new ArrayList<>();
-		Ast a = new Ast();
+//		Ast a = new Ast();
 		while (true) {
 			ps.add(paramType(isSimpleType));
 			if (h.isTkComma()) {
@@ -359,7 +359,7 @@ public class fParser {
 					continue;
 				}
 				case T_NL: {
-					if (h.isLa(1, T_LCURL)) {
+					if (!h.isLa(1, T_LCURL)) {
 						break loop;
 					}
 					h.next();
@@ -381,7 +381,7 @@ public class fParser {
 					if (a.astLastNKnd() == AstNodKind.AST_ROOT_OPERATOR || a.astLastNKnd() == AstNodKind.AST_OPERATOR) {
 						switch (h.lookAhead(1).kind) {
 							case T_NEW: case T_ID: case T_THIS: case T_SUPER: case T_LPAREN: case T_UNDERSCORE:
-							case T_INT_LIT: case T_FLOAT_LIT: case T_STRING_LIT: case T_TRUE: case T_FALSE: case T_NULL: {
+							case T_INT_LIT: case T_FLOAT_LIT: case T_STRING_LIT: case T_CHAR_LIT: case T_TRUE: case T_FALSE: case T_NULL: {
 								h.next();
 								continue; //prefix operator
 							}
@@ -398,7 +398,7 @@ public class fParser {
 					exprMathOper(a);
 					continue;
 				}
-				case T_INT_LIT: case T_FLOAT_LIT: case T_STRING_LIT: case T_TRAIT: case T_FALSE: case T_NULL: {
+				case T_INT_LIT: case T_FLOAT_LIT: case T_STRING_LIT: case T_CHAR_LIT: case T_TRUE: case T_FALSE: case T_NULL: {
 					exprLit(a);
 					continue;
 				}
@@ -496,6 +496,10 @@ public class fParser {
 				fTry tr = new fTry(expr(null));
 				if (h.isTkCatch()) {
 					h.next();
+					tr.setCatchBlock(expr(null));
+				}
+				if(h.isTkFinally()){
+					h.next();
 					tr.setFinallyBlock(expr(null));
 				}
 				return tr;
@@ -544,20 +548,25 @@ public class fParser {
 				fFor f4 = null;
 				switch (h.tKnd()) {
 					case T_LPAREN: {
+						int sz = h.pushNLEnabled(false);
 						h.accept(T_LPAREN);
 						fFor ff = new fFor(enumerators());
+						h.popNLEnabled(sz, false);
 						h.accept(fTokenKind.T_RPAREN);
 						break;
 					}
 					case T_LCURL: {
+						int sz = h.pushNLEnabled(true);
 						h.accept(T_LCURL);
 						fFor ff = new fFor(enumerators());
+						h.popNLEnabled(sz, true);
 						h.accept(T_RCURL);
 						break;
 					}
 					default:
 						throw new RuntimeException("Expected '(' or '{' after 'for' but found: " + h.getToken());
 				}
+				h.skipNL();
 				if (h.isTkYield()) {
 					h.next();
 					f4.setYield(true);
@@ -590,6 +599,7 @@ public class fParser {
 			fGenerator g = new fGenerator(p1, isCase);
 			gens.add(g);
 			h.accept(fTokenKind.T_IN);
+			g.setInitExpr(expr(null));
 			innerloop:
 			while (true) {
 				h.skipSemi();
@@ -598,6 +608,7 @@ public class fParser {
 						continue outerloop;
 					}
 					case T_IF: {
+						h.next();
 						g.setGuard(postfixExpr());
 						continue innerloop;
 					}
@@ -616,7 +627,7 @@ public class fParser {
 								continue outerloop;
 							}
 							default:
-								throw new RuntimeException("Expected '=' or 'in' but found: " + h.getToken());
+								break outerloop;
 						}
 					}
 					default:
@@ -742,6 +753,11 @@ public class fParser {
 				a.setRight(new fUnderscore(h.next()));
 				break;
 			}
+			case AST_OPERAND:{
+				h.insertOper(a, fLangOperKind.O_ETA_EXPANSION, h.getToken());
+				a.setRight(new fUnderscore(h.next()));
+				break;
+			}
 			default:
 				throw new RuntimeException("Underscore in unexpected place: " + a.astLastNKnd());
 		}
@@ -766,7 +782,6 @@ public class fParser {
 						a.setContinue(false);
 					} else {
 						h.insertOper(a, fLangOperKind.getIdSymbolicAssoc(h.getAsNamedToken().isRightAssociative()), h.next());
-						h.skipNL();
 					}
 					break;
 				}
@@ -937,7 +952,7 @@ public class fParser {
 				break;
 			}
 		}
-		h.popNLEnabled(sz, true);
+		h.popNLEnabled(sz, false);
 		h.accept(T_RPAREN);
 		return params;
 	}
@@ -1151,7 +1166,7 @@ public class fParser {
 	}
 
 	fParamClauses paramClauses() {
-		h.skipNL();
+
 		fParamClauses pcs = new fParamClauses();
 		while (h.isTkLParen()) {
 			if (h.isLa(1, fTokenKind.T_IMPLICIT)) {
@@ -1386,8 +1401,11 @@ public class fParser {
 					break loop;
 				}
 				case T_LPAREN: {
+					int sz = h.pushNLEnabled(false);
 					h.accept(fTokenKind.T_LPAREN);
+					h.insertOper(a, fLangOperKind.O_PARENS, h.getToken());
 					a.setRight(patterns());
+					h.popNLEnabled(sz, false);
 					h.accept(fTokenKind.T_RPAREN);
 					continue;
 				}
@@ -1600,6 +1618,7 @@ public class fParser {
 					continue;
 				}
 				case T_PROTECTED: case T_PRIVATE:{
+					h.next();
 					if(h.isTkLBracket()){
 						int sz = h.pushNLEnabled(false);
 						h.accept(T_LBRACKET);
@@ -1644,7 +1663,7 @@ public class fParser {
 			}
 			case T_CASE: {
 				if (h.isLa(1, T_CLASS, T_OBJECT)) {
-					isCase = true;
+					isCase = true; h.next();
 					//fall through
 				} else {
 					break;
@@ -1720,7 +1739,7 @@ public class fParser {
 				}
 				case T_CASE: {
 					if (h.isLa(1, T_CLASS, T_OBJECT)) {
-						isCase = true;
+						isCase = true; h.next();
 						//fall through
 					} else {
 						break loop;
