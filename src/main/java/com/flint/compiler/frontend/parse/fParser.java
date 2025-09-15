@@ -1587,6 +1587,7 @@ public class fParser {
 			}
 		}
 
+		int prevLParSz = lparSz;
 		while (true) {
 			box.setRight(expr(curr));
 
@@ -1612,6 +1613,8 @@ public class fParser {
 				}
 			}
 			assert lparSz >= 0;
+			assert prevLParSz > lparSz: "Unclosed right parentheses";
+			prevLParSz = lparSz;
 			if(lparSz == 0) {
 				return new AstProdSubTreeN(GrmPrd.EXPRS_OR_BINDINGS, box);
 			}
