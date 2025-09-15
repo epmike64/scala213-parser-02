@@ -168,8 +168,8 @@ public class ParseHelp {
 	}
 
 	fNamedToken getAsNamedToken() {
-		if (token instanceof fNamedToken namedToken) {
-			return namedToken;
+		if (token instanceof fNamedToken) {
+			return  (fNamedToken) token;
 		} else {
 			throw new AssertionError("Expected NamedToken but found " + token.kind);
 		}
