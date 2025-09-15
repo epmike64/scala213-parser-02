@@ -6,7 +6,6 @@ import com.flint.compiler.frontend.ast.nodes.leaves.node.*;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.*;
 import com.flint.compiler.frontend.lang.grammar.GrmPrd;
 import com.flint.compiler.frontend.parse.lex.fLexer;
-
 import com.flint.compiler.frontend.parse.lex.token.fLangOperatorKind;
 import com.flint.compiler.frontend.parse.lex.token.fTokenKind;
 import com.flint.compiler.frontend.parse.lex.token.type.NamedToken;
@@ -1352,7 +1351,7 @@ public class fParser {
 		return p;
 	}
 
-	AstProdSubTreeN varDef(fModifiers mods) {
+	fValue varDef(fModifiers mods) {
 		// patDef() + "ids: Type = _"
 		return patDef(false, mods);
 	}
@@ -1409,23 +1408,27 @@ public class fParser {
 		return new AstProdSubTreeN(GrmPrd.PATTERN_1, a);
 	}
 
-	AstProdSubTreeN patDef(boolean isVal, fModifiers mods) {
-		Ast a = new Ast();
+	fValue patDef(boolean isVal, fModifiers mods) {
+		fValue value;
+		if(isVal) value = new fValueDef(mods);
+		else  value = new fValueDecl(mods);
+
 		while (true) {
-			a.setRight(pattern2());
+			value.addName(pattern2());
 			if (h.isTkComma()) {
-				h.insertOperator(a, fLangOperatorKind.O_COMMA, h.next());
-				continue;
+				h.next(); continue;
 			}
 			break;
 		}
 		if (h.isTkColon()) {
-			h.insertOperator(a, fLangOperatorKind.O_COLON, h.next());
-			a.setRight(type());
+			h.next();
+			value.setType(type());
 		}
-		h.insertOperator(a, fLangOperatorKind.O_ASSIGN, h.accept(T_ASSIGN));
-		a.setRight(expr(null));
-		return new AstProdSubTreeN(GrmPrd.SUBTREE, a);
+		if(h.isTkAssign()){
+			h.next();
+			value.setAssignExpr(expr(null));
+		}
+		return value;
 	}
 
 	AstProdSubTreeN pattern2() {
