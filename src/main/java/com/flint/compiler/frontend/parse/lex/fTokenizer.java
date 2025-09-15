@@ -5,9 +5,9 @@ package com.flint.compiler.frontend.parse.lex;
 import com.flint.compiler.frontend.parse.lex.token.OpChar;
 import com.flint.compiler.frontend.parse.lex.token.fTokenKind;
 import com.flint.compiler.frontend.parse.lex.token.fTokenMap;
-import com.flint.compiler.frontend.parse.lex.token.type.NamedToken;
-import com.flint.compiler.frontend.parse.lex.token.type.NumericToken;
-import com.flint.compiler.frontend.parse.lex.token.type.StringToken;
+import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
+import com.flint.compiler.frontend.parse.lex.token.type.fNumericToken;
+import com.flint.compiler.frontend.parse.lex.token.type.fStringToken;
 import com.flint.compiler.frontend.parse.lex.token.type.fToken;
 import static com.flint.compiler.frontend.parse.lex.util.LayoutCharacters.*;
 
@@ -230,9 +230,9 @@ public class fTokenizer {
 		endPos = reader.bp;
 		switch (tk.tag) {
 			case DEFAULT: return new fToken(tk, pos, endPos);
-			case NAMED: return new NamedToken(tk, pos, endPos, tname);
-			case STRING: return new StringToken(tk, pos, endPos, tname);
-			case NUMERIC: return new NumericToken(tk, pos, endPos, tname, radix);
+			case NAMED: return new fNamedToken(tk, pos, endPos, tname);
+			case STRING: return new fStringToken(tk, pos, endPos, tname);
+			case NUMERIC: return new fNumericToken(tk, pos, endPos, tname, radix);
 			default: throw new AssertionError();
 		}
 	}

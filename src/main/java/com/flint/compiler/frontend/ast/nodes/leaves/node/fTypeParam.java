@@ -1,14 +1,14 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
-import com.flint.compiler.frontend.parse.lex.token.type.NamedToken;
+import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
 
 import java.util.List;
 
 public class fTypeParam {
-	private NamedToken name;
+	private fNamedToken name;
 	private List<fVariantTypeParam> variantTypeParams;
 	private fType type, lowerBound, upperBound;
-	public fTypeParam(NamedToken name) {
+	public fTypeParam(fNamedToken name) {
 		this.name = name;
 	}
 

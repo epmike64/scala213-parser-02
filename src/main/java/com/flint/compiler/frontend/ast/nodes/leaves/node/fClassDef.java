@@ -1,7 +1,6 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
-import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
-import com.flint.compiler.frontend.parse.lex.token.type.NamedToken;
+import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
 import com.flint.compiler.frontend.parse.lex.token.type.fToken;
 
 import java.util.List;
@@ -11,7 +10,7 @@ public class fClassDef extends fTraitDef {
 	private fClassParamClauses classParamClauses;
 
 
-	public fClassDef(NamedToken name, boolean isCaseClass) {
+	public fClassDef(fNamedToken name, boolean isCaseClass) {
 		super(name);
 		this.isCaseClass = isCaseClass;
 	}

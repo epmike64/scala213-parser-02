@@ -3,12 +3,12 @@ package com.flint.compiler.frontend.parse.lex.token.type;
 import com.flint.compiler.frontend.parse.lex.token.fTokenKind;
 import com.flint.compiler.frontend.parse.lex.token.fTokenTag;
 
-public class NamedToken extends fToken {
+public class fNamedToken extends fToken {
 	/** The name of this token */
 	public final String name;
-	public static final NamedToken ROOT_OPERATOR_TOKEN = new NamedToken(fTokenKind.T_ROOT_OPERATOR, -1, -1, "");
+	public static final fNamedToken ROOT_OPERATOR_TOKEN = new fNamedToken(fTokenKind.T_ROOT_OPERATOR, -1, -1, "");
 
-	public NamedToken(fTokenKind kind, int pos, int endPos, String name) {
+	public fNamedToken(fTokenKind kind, int pos, int endPos, String name) {
 		super(kind, pos, endPos);
 		this.name = name;
 	}
