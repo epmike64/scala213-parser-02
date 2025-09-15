@@ -1,6 +1,6 @@
 package com.flint.compiler.frontend.parse.lex.token;
 
-public enum fLangOperKind {
+public enum fLangOperatorKind {
 	O_STMT_SEP("@004", 20, false),
 	O_BRACKETS("@[]", 10, false),
 	O_PARENS("@()", 9, false),
@@ -17,6 +17,12 @@ public enum fLangOperKind {
 	O_MODULO("%", 6, false),
 	O_PLUS("+", 5, false),
 	O_MINUS("-", 5, false),
+	O_EQUAL("==", 4, false),
+	O_NOT_EQUAL("!=", 4, false),
+	O_LESS("<", 4, false),
+	O_LESS_EQUAL("<=", 4, false),
+	O_GREATER(">", 4, false),
+	O_GREATER_EQUAL(">=", 4, false),
 	O_IF("if", 4, false),
 	O_ELSE("else", 4, false),
 	O_MATCH("match", 3, false),
@@ -31,7 +37,7 @@ public enum fLangOperKind {
 
 	O_RIGHT_PAREN(")", -1, false);
 
-	fLangOperKind(String opname, int precedence, boolean isRightAssociative) {
+	fLangOperatorKind(String opname, int precedence, boolean isRightAssociative) {
 		assert opname != null && opname.trim().length() > 0;
 		this.opname = opname;
 		this._prec = precedence;
@@ -47,13 +53,45 @@ public enum fLangOperKind {
 		return _prec;
 	}
 
-	public static fLangOperKind getIdSymbolicAssoc(boolean isRightAssociative) {
+	public static fLangOperatorKind getIdSymbolicAssoc(boolean isRightAssociative) {
 		if(isRightAssociative){
-			return  fLangOperKind.O_ID_SMBLC_RIGHT_ASSC;
+			return  fLangOperatorKind.O_ID_SMBLC_RIGHT_ASSC;
 		}
-		return   fLangOperKind.O_ID_SMBLC_LEFT_ASSC;
+		return   fLangOperatorKind.O_ID_SMBLC_LEFT_ASSC;
 	}
-	public static fLangOperKind getMathOperKind(fTokenKind kind) {
+
+	public static fLangOperatorKind getLogicalOperatorKind(fTokenKind kind) {
+		switch (kind) {
+			case T_LOGICAL_AND:
+				return O_PIPE; // Using O_PIPE for logical AND
+			case T_LOGICAL_OR:
+				return O_COMMA; // Using O_COMMA for logical OR
+//			case T_EXCLAMATION:
+//				return O_NOT_EQUAL; // Using O_NOT_EQUAL for logical NOT
+			default:
+				throw new IllegalArgumentException("Not a logical operator: " + kind);
+		}
+	}
+
+	public static fLangOperatorKind getRelationalOperatorKind(fTokenKind kind) {
+		switch (kind) {
+			case T_EQUAL:
+				return O_EQUAL;
+			case T_NOT_EQUAL:
+				return O_NOT_EQUAL;
+			case T_LT:
+				return O_LESS;
+			case T_LTE:
+				return O_LESS_EQUAL;
+			case T_GT:
+				return O_GREATER;
+			case T_GTE:
+				return O_GREATER_EQUAL;
+			default:
+				throw new IllegalArgumentException("Not a relational operator: " + kind);
+		}
+	}
+	public static fLangOperatorKind getMathOperatorKind(fTokenKind kind) {
 		switch (kind) {
 			case T_PLUS:
 				return O_PLUS;

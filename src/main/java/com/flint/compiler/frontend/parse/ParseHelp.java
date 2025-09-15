@@ -4,7 +4,7 @@ import com.flint.compiler.frontend.ast.nodes.AstNod;
 import com.flint.compiler.frontend.ast.nodes.AstOperatorNod;
 import com.flint.compiler.frontend.parse.lex.fLexer;
 
-import com.flint.compiler.frontend.parse.lex.token.fLangOperKind;
+import com.flint.compiler.frontend.parse.lex.token.fLangOperatorKind;
 import com.flint.compiler.frontend.parse.lex.token.fLangOperatorMap;
 import com.flint.compiler.frontend.parse.lex.token.fTokenKind;
 import com.flint.compiler.frontend.parse.lex.token.type.NamedToken;
@@ -267,6 +267,10 @@ public class ParseHelp {
 		return token.kind == T_UNDERSCORE;
 	}
 
+	boolean isTkImport() {
+		return token.kind == T_IMPORT;
+	}
+
 	fTokenKind tKnd() {
 		return token.kind;
 	}
@@ -294,7 +298,7 @@ public class ParseHelp {
 	}
 
 
-	fLangOperKind getOperatorKind(fToken token) {
+	fLangOperatorKind getOperatorKind(fToken token) {
 		return fLangOperatorMap.getOperatorKind(token);
 	}
 
@@ -334,10 +338,10 @@ public class ParseHelp {
 	}
 
 	void insertStmtSepOper(Ast a) {
-		insertOper(a, fLangOperKind.O_STMT_SEP, fToken.STMT_SEP);
+		insertOperator(a, fLangOperatorKind.O_STMT_SEP, fToken.STMT_SEP);
 	}
 
-	void insertOper(Ast a, fLangOperKind k, fToken operatorToken) {
+	void insertOperator(Ast a, fLangOperatorKind k, fToken operatorToken) {
 		AstNod last = a.astLastN();
 		assert !last.isOperator() : "Last node should not be operator";
 		AstOperatorNod prn = last.getAstParentN();
