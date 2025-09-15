@@ -1798,7 +1798,7 @@ public class fParser {
 
 	public fCompilationUnit compilationUnit() {
 		final Ast a = new Ast();
-		h.skipNL();
+
 		if (h.isTkPackage()) {
 			a.setRight(packages());
 			h.insertStmtSepOper(a);
