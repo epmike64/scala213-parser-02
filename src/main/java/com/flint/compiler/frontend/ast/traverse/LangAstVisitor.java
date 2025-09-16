@@ -37,6 +37,29 @@ public class LangAstVisitor extends AstNodVisitor  {
 	}
 
 	@Override
+	public void visit(fImport node) {
+
+	}
+
+	@Override
+	public void visit(fClassDef cls) {
+		cls.getName();
+		for(fTypeParam tp: cls.getTypeParams()) {
+			tp.accept(this);
+		}
+	}
+
+	@Override
+	public void visit(fVariantTypeParam node) {
+
+	}
+
+	@Override
+	public void visit(fObject node) {
+
+	}
+
+	@Override
 	public void visit(fCaseClauses node) {
 
 	}
@@ -51,20 +74,7 @@ public class LangAstVisitor extends AstNodVisitor  {
 
 	}
 
-	@Override
-	public void visit(fImport node) {
 
-	}
-
-	@Override
-	public void visit(fClassDef node) {
-
-	}
-
-	@Override
-	public void visit(fObject node) {
-
-	}
 
 	@Override
 	public void visit(fTraitDef node) {

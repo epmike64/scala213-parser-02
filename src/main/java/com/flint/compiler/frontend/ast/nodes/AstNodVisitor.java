@@ -47,5 +47,6 @@ public abstract class AstNodVisitor {
 	public abstract void visit(fIds node);
 	public abstract void visit(fLiteral node);
 	public abstract void visit(fTypeArgs node);
+	public abstract void visit(fVariantTypeParam node);
 	public abstract void visit(fCompilationUnit node);
 }

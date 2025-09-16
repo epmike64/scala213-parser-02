@@ -980,10 +980,10 @@ public class fParser {
 	AstOperandNod classObjectDef(boolean isCase, fModifiers mods) {
 		switch (h.tKnd()) {
 			case T_CLASS: {
-				return classDef(isCase);
+				return classDef(isCase, mods);
 			}
 			case T_OBJECT: {
-				return objectDef(isCase);
+				return objectDef(isCase, mods);
 			}
 			default:
 				throw new RuntimeException("Expected 'class' or 'object' but found: " + h.getToken());
@@ -1084,7 +1084,7 @@ public class fParser {
 
 	fTraitDef traitDef(fModifiers mods) {
 		h.accept(fTokenKind.T_TRAIT);
-		fTraitDef trait = new fTraitDef((fNamedToken) h.next());
+		fTraitDef trait = new fTraitDef((fNamedToken) h.next(), mods);
 		if (h.isTkLBracket()) {
 			trait.setTypeParams(variantTypeParams());
 		}
@@ -1092,9 +1092,9 @@ public class fParser {
 		return trait;
 	}
 
-	fClassDef classDef(boolean isCase) {
+	fClassDef classDef(boolean isCase, fModifiers mods) {
 		h.accept(fTokenKind.T_CLASS);
-		fClassDef cls = new fClassDef((fNamedToken) h.next(), isCase);
+		fClassDef cls = new fClassDef((fNamedToken) h.next(), isCase, mods);
 		if (h.isTkLBracket()) {
 			cls.setTypeParams(variantTypeParams());
 		}
@@ -1128,9 +1128,9 @@ public class fParser {
 		return null;
 	}
 
-	fObject objectDef(boolean isCase) {
+	fObject objectDef(boolean isCase, fModifiers mods) {
 		h.accept(fTokenKind.T_OBJECT);
-		fObject obj = new fObject((fNamedToken) h.next(), isCase);
+		fObject obj = new fObject((fNamedToken) h.next(), isCase, mods);
 		obj.setExtendsTemplate(classExtends(false));
 		return obj;
 	}

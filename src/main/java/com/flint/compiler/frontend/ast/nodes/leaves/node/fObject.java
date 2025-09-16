@@ -10,10 +10,11 @@ public class fObject extends AstOperandNod  {
 	private boolean isCaseClass;
 	private final fNamedToken name;
 	private fTemplateBody extendsTemplate;
-
-	public fObject(fNamedToken name, boolean isCaseClass) {
+	private final fModifiers modifiers;
+	public fObject(fNamedToken name, boolean isCaseClass, fModifiers modifiers) {
 		this.name = name;
 		this.isCaseClass = isCaseClass;
+		this.modifiers = modifiers;
 	}
 
 	public void setExtendsTemplate(fTemplateBody extendsTemplate) {
@@ -23,5 +24,21 @@ public class fObject extends AstOperandNod  {
 	@Override
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
+	}
+
+	public fNamedToken getName() {
+		return name;
+	}
+
+	public fTemplateBody getExtendsTemplate() {
+		return extendsTemplate;
+	}
+
+	public boolean isCaseClass() {
+		return isCaseClass;
+	}
+
+	public fModifiers getModifiers() {
+		return modifiers;
 	}
 }

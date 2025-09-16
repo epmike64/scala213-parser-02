@@ -11,13 +11,9 @@ public class fClassDef extends fTraitDef {
 	private fClassParamClauses classParamClauses;
 
 
-	public fClassDef(fNamedToken name, boolean isCaseClass) {
-		super(name);
+	public fClassDef(fNamedToken name, boolean isCaseClass, fModifiers modifiers) {
+		super(name, modifiers);
 		this.isCaseClass = isCaseClass;
-	}
-
-	public void  setTypeParams(List<fVariantTypeParam> typeParams) {
-		this.typeParams = typeParams;
 	}
 
 	public void setClassParamClauses(fClassParamClauses classParamClauses) {
@@ -27,5 +23,13 @@ public class fClassDef extends fTraitDef {
 	@Override
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
+	}
+
+	public boolean isCaseClass() {
+		return isCaseClass;
+	}
+
+	public fClassParamClauses getClassParamClauses() {
+		return classParamClauses;
 	}
 }
