@@ -47,6 +47,15 @@ public class LangAstVisitor extends AstNodVisitor  {
 		for(fTypeParam tp: cls.getTypeParams()) {
 			tp.accept(this);
 		}
+		if(cls.getConstrAccessModifier() != null) {
+			cls.getConstrAccessModifier().accept(this);
+		}
+		if(cls.getClassParamClauses() != null) {
+			cls.getClassParamClauses().accept(this);
+		}
+		if(cls.getExtendsTemplate() != null) {
+			cls.getExtendsTemplate().accept(this);
+		}
 	}
 
 	@Override
@@ -55,13 +64,19 @@ public class LangAstVisitor extends AstNodVisitor  {
 	}
 
 	@Override
-	public void visit(fAccessModifier node) {
-
+	public void visit(fAccessModifier am) {
+		am.getKind();
+		if(am.getQualifier() != null) {
+			am.getQualifier().accept(this);
+		}
 	}
 
 	@Override
-	public void visit(fAccessQualifier node) {
-
+	public void visit(fAccessQualifier aq) {
+		aq.getKind();
+		if(aq.getKind() == fAccessQualifier.Kind.ID) {
+			aq.getId();
+		}
 	}
 
 	@Override
@@ -117,6 +132,11 @@ public class LangAstVisitor extends AstNodVisitor  {
 	}
 
 	@Override
+	public void visit(fClassTemplate ct) {
+		ct.getParents().accept(this);
+	}
+
+	@Override
 	public void visit(fTemplateBody node) {
 
 	}
@@ -147,8 +167,11 @@ public class LangAstVisitor extends AstNodVisitor  {
 	}
 
 	@Override
-	public void visit(fClassConstructor node) {
-
+	public void visit(fClassConstr cc) {
+		cc.getParamType().accept(this);
+		if(cc.getArgs() != null) {
+			cc.getArgs().accept(this);
+		}
 	}
 
 	@Override

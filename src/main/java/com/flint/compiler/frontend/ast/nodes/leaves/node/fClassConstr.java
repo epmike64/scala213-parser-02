@@ -4,15 +4,23 @@ import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstProdSubTreeN;
 
-public class fClassConstructor extends AstOperandNod {
+public class fClassConstr extends AstOperandNod {
 	private fParamType fParamType;
 	private AstProdSubTreeN args;
-	public fClassConstructor(fParamType fParamType) {
+	public fClassConstr(fParamType fParamType) {
 		this.fParamType = fParamType;
 	}
 	public void setArgExprs(AstProdSubTreeN args) {
 		this.args = args;
 	}
+
+	public fParamType getParamType() {
+		return fParamType;
+	}
+	public AstProdSubTreeN getArgs() {
+		return args;
+	}
+
 
 	@Override
 	public void accept(AstNodVisitor v) {

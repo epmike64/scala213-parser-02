@@ -2,9 +2,6 @@ package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
-import com.flint.compiler.frontend.parse.lex.token.type.fToken;
-
-import java.util.List;
 
 public class fClassDef extends fTraitDef {
 	private final boolean isCaseClass;
@@ -23,7 +20,7 @@ public class fClassDef extends fTraitDef {
 	public void setConstructorAccessModifier(fAccessModifier constructorAccessModifier) {
 		this.constructorAccessModifier = constructorAccessModifier;
 	}
-	public fAccessModifier getConstructorAccessModifier() {
+	public fAccessModifier getConstrAccessModifier() {
 		return constructorAccessModifier;
 	}
 	@Override

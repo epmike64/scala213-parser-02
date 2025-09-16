@@ -17,6 +17,15 @@ public class fAccessQualifier extends AstOperandNod {
 			this.id = null;
 		}
 	}
+
+	public Kind getKind() {
+		return kind;
+	}
+
+	public fNamedToken getId() {
+		return id;
+	}
+
 	@Override
 	public void accept(com.flint.compiler.frontend.ast.nodes.AstNodVisitor v) {
 		v.visit(this);

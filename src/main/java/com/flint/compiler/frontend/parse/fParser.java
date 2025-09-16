@@ -1074,8 +1074,8 @@ public class fParser {
 		return parents;
 	}
 
-	fClassConstructor classConstructor(boolean isTrait) {
-		fClassConstructor cc = new fClassConstructor(simpleType());
+	fClassConstr classConstructor(boolean isTrait) {
+		fClassConstr cc = new fClassConstr(simpleType());
 		if (!isTrait && h.isTkLParen()) {
 			cc.setArgExprs(exprs());
 		}

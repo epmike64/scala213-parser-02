@@ -16,6 +16,14 @@ public class fClassTemplate extends fTemplateBody {
 		this.isTrait = isTrait;
 	}
 
+	public fClassParents getParents() {
+		return parents;
+	}
+
+	public boolean isTrait() {
+		return isTrait;
+	}
+
 	@Override
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
