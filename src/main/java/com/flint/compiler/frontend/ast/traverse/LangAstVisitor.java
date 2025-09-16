@@ -137,8 +137,10 @@ public class LangAstVisitor extends AstNodVisitor  {
 	}
 
 	@Override
-	public void visit(fTemplateBody node) {
-
+	public void visit(fTemplateBody tb) {
+		for(AstNod s: tb.getStmts()) {
+			s.accept(this);
+		}
 	}
 
 	@Override

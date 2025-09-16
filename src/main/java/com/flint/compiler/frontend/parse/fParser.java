@@ -941,7 +941,7 @@ public class fParser {
 	}
 
 	fTemplateBody templateBody() {
-		Ast a = new Ast();
+		final fTemplateBody tb = new fTemplateBody();
 		if (h.isTkNL()) h.next();
 		int sz = h.pushNLEnabled(true);
 		h.accept(fTokenKind.T_LCURL);
@@ -954,8 +954,7 @@ public class fParser {
 				case T_IF: case T_WHILE: case T_FOR: case T_TRY: case T_THROW: case T_RETURN: case T_NEW:
 				case T_LCURL: case T_LPAREN: case T_ID: case T_THIS: case T_SUPER: case T_INT_LIT: case T_FLOAT_LIT:
 				case T_STRING_LIT: case T_CHAR_LIT: case T_NULL: case T_TRUE: case T_FALSE: {
-					a.setRight(templateStat());
-					h.insertStmtSepOper(a);
+					tb.addStmt(templateStat());
 					h.skipSemi();
 					continue;
 				}
@@ -965,7 +964,7 @@ public class fParser {
 		}
 		h.popNLEnabled(sz, true);
 		h.accept(fTokenKind.T_RCURL);
-		return new fTemplateBody(new AstProdSubTreeN(GrmPrd.TEMPLATE_BODY, a));
+		return tb;
 	}
 
 

@@ -4,13 +4,18 @@ import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstProdSubTreeN;
 
+import java.util.List;
+
 public class fTemplateBody extends AstOperandNod  {
-	private final AstProdSubTreeN templateBody;
-	public fTemplateBody(AstProdSubTreeN templateBody) {
-		this.templateBody = templateBody;
+	private final List<AstProdSubTreeN> stmts = new java.util.ArrayList<>();
+
+	public void addStmt(AstProdSubTreeN s) {
+		assert s != null;
+		this.stmts.add(s);
 	}
-	public AstProdSubTreeN getTemplateBody() {
-		return templateBody;
+
+	public List<AstProdSubTreeN> getStmts() {
+		return stmts;
 	}
 
 	@Override
