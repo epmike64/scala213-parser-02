@@ -1,13 +1,15 @@
 package com.flint.compiler.frontend.parse;
 
 import com.flint.compiler.frontend.ast.nodes.AstNod;
+import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
+import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.fImport;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.fPackage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class fCompilationUnit {
+public class fCompilationUnit extends AstOperandNod {
 
 	private List<fPackage> packages;
 	private List<fImport> imports = new ArrayList<>();
@@ -38,5 +40,10 @@ public class fCompilationUnit {
 
 	public List<AstNod> getStatements() {
 		return statements;
+	}
+
+	@Override
+	public void accept(AstNodVisitor visitor) {
+		visitor.visit(this);
 	}
 }

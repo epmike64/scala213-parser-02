@@ -3,8 +3,15 @@ package com.flint.compiler.frontend.ast.traverse;
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperatorNod;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.*;
+import com.flint.compiler.frontend.parse.fCompilationUnit;
 
 public class LangItemVisitor extends AstNodVisitor  {
+
+	@Override
+	public void visit(fCompilationUnit node) {
+
+	}
+
 	@Override
 	public void visit(fPackage node) {
 
@@ -204,4 +211,6 @@ public class LangItemVisitor extends AstNodVisitor  {
 	public void visit(fTypeArgs node) {
 
 	}
+
+
 }

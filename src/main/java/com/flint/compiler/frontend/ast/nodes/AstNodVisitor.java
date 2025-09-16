@@ -2,6 +2,7 @@ package com.flint.compiler.frontend.ast.nodes;
 
 import com.flint.compiler.frontend.ast.nodes.leaves.node.fPackage;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.*;
+import com.flint.compiler.frontend.parse.fCompilationUnit;
 
 public abstract class AstNodVisitor {
 	public abstract void visit(fPackage node);
@@ -46,9 +47,5 @@ public abstract class AstNodVisitor {
 	public abstract void visit(fIds node);
 	public abstract void visit(fLiteral node);
 	public abstract void visit(fTypeArgs node);
-
-
-
-
-
+	public abstract void visit(fCompilationUnit node);
 }
