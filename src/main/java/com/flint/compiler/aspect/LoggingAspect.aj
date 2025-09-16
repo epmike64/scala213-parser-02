@@ -5,10 +5,10 @@ aspect LoggingAspect {
      pointcut tokenMethods() : execution(* com.flint.compiler.frontend.parse.lex.token.*(..));
 
     before() : fParserMethods() {
-        System.out.println("-----------> " + thisJoinPoint);
+        System.out.println("-----------> " + thisJoinPoint.toString().replace("com.flint.compiler.frontend.", ""));
     }
 
     before() : tokenMethods() {
-        System.out.println("-----------> " + thisJoinPoint);
+        System.out.println("-----------> " + thisJoinPoint.toString().replace("com.flint.compiler.frontend.", ""));
     }
 }
