@@ -1,5 +1,6 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
+import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
 
@@ -34,5 +35,10 @@ public class fImport extends AstOperandNod {
 	private final List<fImportExpr> importExprs = new ArrayList<>();
 	public void addImportExpr(fImportExpr importExpr) {
 		importExprs.add(importExpr);
+	}
+
+	@Override
+	public void accept(AstNodVisitor v) {
+		v.visit(this);
 	}
 }

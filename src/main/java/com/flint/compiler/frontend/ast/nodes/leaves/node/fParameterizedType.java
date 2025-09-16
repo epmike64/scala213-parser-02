@@ -12,4 +12,6 @@ public class fParameterizedType extends fType{
         this.typeName = null;// (AstOperatorNod) typeName;
         this.typeArgs = typeArgs;
     }
+
+
 }

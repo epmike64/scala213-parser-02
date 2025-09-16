@@ -1,5 +1,6 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
+import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
 import com.flint.compiler.frontend.parse.lex.token.type.fToken;
 
@@ -21,5 +22,10 @@ public class fClassDef extends fTraitDef {
 
 	public void setClassParamClauses(fClassParamClauses classParamClauses) {
 		this.classParamClauses = classParamClauses;
+	}
+
+	@Override
+	public void accept(AstNodVisitor v) {
+		v.visit(this);
 	}
 }

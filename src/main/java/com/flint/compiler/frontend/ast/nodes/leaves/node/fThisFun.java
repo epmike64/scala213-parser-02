@@ -1,5 +1,7 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
+import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
+
 public class fThisFun extends fFun {
 
 	private fParamClauses paramClauses;
@@ -14,5 +16,10 @@ public class fThisFun extends fFun {
 	}
 	public void setConstrBlock(fConstrBlock constructorBlock) {
 		this.constructorBlock = constructorBlock;
+	}
+
+	@Override
+	public void accept(AstNodVisitor v) {
+		v.visit(this);
 	}
 }

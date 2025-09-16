@@ -1,5 +1,7 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
+import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
+
 import java.util.List;
 
 public class fParamClauses {
@@ -15,5 +17,10 @@ public class fParamClauses {
 
 	public void setImplicitParams(List<fParam> implicitParams) {
 		this.implicitParams = implicitParams;
+	}
+
+	@Override
+	public void accept(AstNodVisitor v) {
+		v.visit(this);
 	}
 }

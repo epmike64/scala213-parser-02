@@ -512,7 +512,7 @@ public class fParser {
 				h.accept(fTokenKind.T_IF);
 				int sz = h.pushNLEnabled(false);
 				h.accept(fTokenKind.T_LPAREN);
-				fIF ff = new fIF(expr(null));
+				fIf ff = new fIf(expr(null));
 				h.popNLEnabled(sz, false);
 				h.accept(fTokenKind.T_RPAREN);
 				h.skipAllNLs();
@@ -1787,33 +1787,32 @@ public class fParser {
 		return new AstProdSubTreeN(prd, a);
 	}
 
-	fIds packageClause() {
+	fPackage packageClause() {
 		h.accept(T_PACKAGE);
-		return new fIds(ids(true));
+		return new fPackage(ids(true));
 	}
 
-	fPackages packages() {
-		List<fIds> fs = new ArrayList<>();
+	List<fPackage> packages() {
+		List<fPackage> ps = new ArrayList<>();
 		while (h.isTkPackage()) {
-			fs.add(packageClause());
+			ps.add(packageClause());
 			h.skipSemi();
 		}
-		return new fPackages(fs);
+		return ps;
 	}
 
 	public fCompilationUnit compilationUnit() {
-		final Ast a = new Ast();
 
+		fCompilationUnit cu = new fCompilationUnit();
 		if (h.isTkPackage()) {
-			a.setRight(packages());
-			h.insertStmtSepOper(a);
+			cu.setPackages(packages());
 		}
 		loop:
 		while (true) {
 
 			if(h.isTkImport()){
 
-				a.setRight(importClause());
+				cu.addImport(importClause());
 
 			} else {
 
@@ -1842,11 +1841,11 @@ public class fParser {
 						}
 					}
 					case T_CLASS: case T_OBJECT: {
-						a.setRight(classObjectDef(isCase, mods));
+						cu.addStatement(classObjectDef(isCase, mods));
 						break;
 					}
 					case T_TRAIT: {
-						a.setRight(traitDef(mods));
+						cu.addStatement(traitDef(mods));
 						break;
 					}
 					default:
@@ -1854,8 +1853,7 @@ public class fParser {
 				}
 			}
 			h.skipSemi();
-			h.insertStmtSepOper(a);
 		}
-		return new fCompilationUnit(new AstProdSubTreeN(GrmPrd.COMPILATION_UNIT, a));
+		return cu;
 	}
 }

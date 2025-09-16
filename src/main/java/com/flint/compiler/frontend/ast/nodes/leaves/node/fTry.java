@@ -1,5 +1,6 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
+import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 
 public class fTry extends AstOperandNod {
@@ -13,5 +14,10 @@ public class fTry extends AstOperandNod {
 	}
 	public void setFinallyBlock(AstOperandNod finallyBlock) {
 		this.finallyBlock = finallyBlock;
+	}
+
+	@Override
+	public void accept(AstNodVisitor v) {
+		v.visit(this);
 	}
 }

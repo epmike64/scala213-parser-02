@@ -1,5 +1,6 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
+import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 
 import java.util.ArrayList;
@@ -15,5 +16,10 @@ public class fClassParamClauses extends AstOperandNod  {
 
 	public void addParams(List<fClassParam> params) {
 		this.params.add(params);
+	}
+
+	@Override
+	public void accept(AstNodVisitor v) {
+		v.visit(this);
 	}
 }

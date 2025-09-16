@@ -1,5 +1,6 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
+import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 
 import java.util.ArrayList;
@@ -13,5 +14,9 @@ public class fClassParents extends AstOperandNod {
 	}
 	public void addWithType(fParamType withType) {
 		withTypes.add(withType);
+	}
+	@Override
+	public void accept(AstNodVisitor v) {
+		v.visit(this);
 	}
 }

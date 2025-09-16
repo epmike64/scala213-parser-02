@@ -14,6 +14,10 @@ public class AstTraverse {
 		postOrder(a.rootOp);
 	}
 
+	void postOrder(AstProdSubTreeN tree){
+		postOrder(tree.rootOpNod);
+	}
+
 	void postOrder(AstNod node) {
 		if (node == null) return;
 		postOrder(node.getAstLeftN());

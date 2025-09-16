@@ -1,5 +1,7 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
+import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
+
 public class fParamType extends fType{
     public final boolean isFatArrow, isStar;
 
@@ -8,4 +10,9 @@ public class fParamType extends fType{
         this.isFatArrow = isFatArrow;
         this.isStar = isStar;
     }
+
+	@Override
+	public void accept(AstNodVisitor v) {
+		v.visit(this);
+	}
 }

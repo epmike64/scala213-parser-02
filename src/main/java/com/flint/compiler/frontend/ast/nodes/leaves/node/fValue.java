@@ -1,5 +1,6 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
+import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstProdSubTreeN;
 
@@ -23,5 +24,10 @@ public class fValue extends AstOperandNod {
 	}
 	public void setAssignExpr(AstProdSubTreeN assignExpr) {
 		this.assignExpr = assignExpr;
+	}
+
+	@Override
+	public void accept(AstNodVisitor v) {
+		v.visit(this);
 	}
 }

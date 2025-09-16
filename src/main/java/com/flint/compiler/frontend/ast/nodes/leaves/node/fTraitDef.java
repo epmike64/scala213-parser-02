@@ -1,5 +1,6 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
+import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
 
@@ -20,6 +21,11 @@ public class fTraitDef extends AstOperandNod {
 
 	public void setExtendsTemplate(fTemplateBody extendsTemplate) {
 		this.extendsTemplate = extendsTemplate;
+	}
+
+	@Override
+	public void accept(AstNodVisitor v) {
+		v.visit(this);
 	}
 
 }

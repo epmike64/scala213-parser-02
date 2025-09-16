@@ -25,5 +25,6 @@ public abstract class AstNod {
 	public abstract void setAstLeftN(AstNod astLeftN);
 	public abstract void setAstRightN(AstNod astRightN);
 
+	public abstract void accept(AstNodVisitor visitor);
 }
 

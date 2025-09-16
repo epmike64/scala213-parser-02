@@ -39,4 +39,9 @@ public class AstOperatorNod extends AstNod {
 		this.astLeftN = astLeftN;
 		astLeftN.setAstParentN(this);
 	}
+
+	@Override
+	public void accept(AstNodVisitor v) {
+		v.visit(this);
+	}
 }

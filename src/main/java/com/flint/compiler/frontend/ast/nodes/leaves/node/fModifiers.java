@@ -1,5 +1,6 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
+import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 import com.flint.compiler.frontend.parse.lex.token.type.fToken;
 
@@ -18,5 +19,10 @@ public class fModifiers extends AstOperandNod {
 	}
 	public List<fToken> getModifiers() {
 		return modifiers;
+	}
+
+	@Override
+	public void accept(AstNodVisitor v) {
+		v.visit(this);
 	}
 }

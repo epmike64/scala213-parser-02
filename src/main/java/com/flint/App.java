@@ -40,10 +40,6 @@ public class App {
       fCompilationUnit n = parser.compilationUnit();
       System.out.println("> Done parsing !\n\n");
 		traverse(n);
-//      DotScriptWriter dsw = new DotScriptWriter();
-//      String dotScript = dsw.generateDotFile(filePath + ".dot", n, readFileToString(filePath));
-//      System.out.println("dotScript>>>");
-//      System.out.println(dotScript);
    }
 
 	void traverse(fCompilationUnit n) {

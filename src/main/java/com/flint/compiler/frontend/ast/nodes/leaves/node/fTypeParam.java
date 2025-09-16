@@ -1,5 +1,6 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
+import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
 
 import java.util.List;
@@ -23,5 +24,10 @@ public class fTypeParam {
 	}
 	public void setUpperBound(fType upperBound) {
 		this.upperBound = upperBound;
+	}
+
+	@Override
+	public void accept(AstNodVisitor v) {
+		v.visit(this);
 	}
 }

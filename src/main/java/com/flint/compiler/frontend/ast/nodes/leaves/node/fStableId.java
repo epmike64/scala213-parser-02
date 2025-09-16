@@ -1,5 +1,6 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
+import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 import com.flint.compiler.frontend.parse.lex.token.fTokenKind;
 import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
@@ -62,4 +63,9 @@ public class fStableId extends AstOperandNod {
       assert t.kind == fTokenKind.T_TYPE;
       isKwType = true;
    }
+
+	@Override
+	public void accept(AstNodVisitor v) {
+		v.visit(this);
+	}
 }

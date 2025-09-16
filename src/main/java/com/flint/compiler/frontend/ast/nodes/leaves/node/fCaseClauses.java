@@ -1,5 +1,6 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
+import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstProdSubTreeN;
 
@@ -23,5 +24,10 @@ public class fCaseClauses extends AstOperandNod {
 	private final List<fCaseClause> caseClauses;
 	public fCaseClauses(List<fCaseClause> caseClauses) {
 		this.caseClauses = caseClauses;
+	}
+
+	@Override
+	public void accept(AstNodVisitor v) {
+		v.visit(this);
 	}
 }
