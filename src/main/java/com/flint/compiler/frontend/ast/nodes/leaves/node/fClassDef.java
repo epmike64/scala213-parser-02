@@ -22,11 +22,4 @@ public class fClassDef extends fTraitDef {
 	public void setClassParamClauses(fClassParamClauses classParamClauses) {
 		this.classParamClauses = classParamClauses;
 	}
-
-
-
-	@Override
-	public fToken getFirstToken() {
-		return null;
-	}
 }

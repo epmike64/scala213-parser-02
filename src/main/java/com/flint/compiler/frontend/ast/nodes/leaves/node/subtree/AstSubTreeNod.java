@@ -10,9 +10,4 @@ public class AstSubTreeNod extends AstOperandNod {
 	public AstSubTreeNod(AstRootOpNod rootOpNod) {
 		this.rootOpNod = rootOpNod;
 	}
-
-	@Override
-	public fToken getFirstToken() {
-		return null;
-	}
 }

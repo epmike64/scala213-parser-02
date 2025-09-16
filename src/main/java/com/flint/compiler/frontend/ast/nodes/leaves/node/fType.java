@@ -9,9 +9,4 @@ public class fType extends AstOperandNod {
     public fType(AstProdSubTreeN astProdSubTreeN) {
         this.astProdSubTreeN = astProdSubTreeN;
     }
-
-    @Override
-    public fToken getFirstToken() {
-        return null;
-    }
 }

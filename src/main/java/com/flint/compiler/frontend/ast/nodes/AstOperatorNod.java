@@ -39,9 +39,4 @@ public class AstOperatorNod extends AstNod {
 		this.astLeftN = astLeftN;
 		astLeftN.setAstParentN(this);
 	}
-
-	@Override
-	public fToken getFirstToken() {
-		return operatorToken;
-	}
 }

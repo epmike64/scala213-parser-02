@@ -18,9 +18,4 @@ public class fObject extends AstOperandNod  {
 	public void setExtendsTemplate(fTemplateBody extendsTemplate) {
 		this.extendsTemplate = extendsTemplate;
 	}
-
-	@Override
-	public fToken getFirstToken() {
-		return null;
-	}
 }

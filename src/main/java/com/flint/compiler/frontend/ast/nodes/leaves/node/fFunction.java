@@ -12,9 +12,4 @@ public class fFunction extends AstOperandNod {
         this.funName = funName;
         this.funArgs = funArgs;
     }
-
-    @Override
-    public fToken getFirstToken() {
-        return null;
-    }
 }

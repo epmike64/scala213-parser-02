@@ -7,29 +7,23 @@ public abstract class AstNod {
 	protected AstNod astLeftN, astRightN;
 	protected AstOperatorNod astParentN;
 
-	public abstract AstNodKind astNKind();
-	public abstract boolean isOperator();
-
-
-	public void setAstParentN(AstOperatorNod astParentN) {
-		this.astParentN = astParentN;
+	public AstNod getAstLeftN() {
+		return astLeftN;
 	}
-
+	public AstNod getAstRightN() {
+		return astRightN;
+	}
 	public AstOperatorNod getAstParentN() {
 		return astParentN;
 	}
 
-	public AstNod getAstLeftN() {
-		return astLeftN;
+	public abstract AstNodKind astNKind();
+	public abstract boolean isOperator();
+	public void setAstParentN(AstOperatorNod astParentN) {
+		this.astParentN = astParentN;
 	}
-
-	public AstNod getAstRightN() {
-		return astRightN;
-	}
-
 	public abstract void setAstLeftN(AstNod astLeftN);
 	public abstract void setAstRightN(AstNod astRightN);
 
-	public fToken getFirstToken() {return null;};
 }
 
