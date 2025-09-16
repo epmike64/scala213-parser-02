@@ -80,6 +80,16 @@ public class LangAstVisitor extends AstNodVisitor  {
 	}
 
 	@Override
+	public void visit(fLocalModifier node) {
+
+	}
+
+	@Override
+	public void visit(fOverrideModifier node) {
+
+	}
+
+	@Override
 	public void visit(fObject node) {
 
 	}

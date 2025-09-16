@@ -1,12 +1,12 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
-import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
+public class fAccessModifier extends fModifier{
+	public enum AccessModKind { PRIVATE, PROTECTED }
 
-public class fAccessModifier extends AstOperandNod {
-	public enum Kind { PRIVATE, PROTECTED }
-	private final Kind kind;
+	private final AccessModKind kind;
 	private fAccessQualifier qualifier;
-	public fAccessModifier(Kind kind) {
+
+	public fAccessModifier(AccessModKind kind) {
 		this.kind = kind;
 	}
 	public void setQualifier(fAccessQualifier qualifier) {
@@ -15,12 +15,25 @@ public class fAccessModifier extends AstOperandNod {
 	public fAccessQualifier getQualifier() {
 		return qualifier;
 	}
-	public Kind getKind() {
+	public AccessModKind getKind() {
 		return kind;
 	}
 
 	@Override
 	public void accept(com.flint.compiler.frontend.ast.nodes.AstNodVisitor v) {
 		v.visit(this);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == null || getClass() != o.getClass()) return false;
+
+		fAccessModifier that = (fAccessModifier) o;
+		return kind == that.kind;
+	}
+
+	@Override
+	public int hashCode() {
+		return kind.hashCode();
 	}
 }

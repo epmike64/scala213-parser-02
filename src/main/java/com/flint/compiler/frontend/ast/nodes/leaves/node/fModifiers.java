@@ -1,28 +1,37 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
-import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
-import com.flint.compiler.frontend.parse.lex.token.type.fToken;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class fModifiers extends AstOperandNod {
-	private final List<fToken> modifiers = new ArrayList<>();
-	public fModifiers() {
+
+	private fAccessModifier accessModifier;
+	private fOverrideModifier overrideModifier;
+	private fLocalModifier localModifier;
+
+	public void setAccessModifier(fAccessModifier accessModifier) {
+		assert this.accessModifier == null && accessModifier != null;
+		this.accessModifier = accessModifier;
 	}
-	public void addModifier(fToken token) {
-		modifiers.add(token);
+	public void setOverrideModifier(fOverrideModifier overrideModifier) {
+		assert this.overrideModifier == null && overrideModifier != null;
+		this.overrideModifier = overrideModifier;
 	}
-	public void addSpecialModifier(fToken token) {
-		throw new RuntimeException("Not implemented");
+	public void setLocalModifier(fLocalModifier localModifier) {
+		assert this.localModifier == null && localModifier != null;
+		this.localModifier = localModifier;
 	}
-	public List<fToken> getModifiers() {
-		return modifiers;
+	public fAccessModifier getAccessModifier() {
+		return accessModifier;
+	}
+	public fOverrideModifier getOverrideModifier() {
+		return overrideModifier;
+	}
+	public fLocalModifier getLocalModifier() {
+		return localModifier;
 	}
 
 	@Override
-	public void accept(AstNodVisitor v) {
+	public void accept(com.flint.compiler.frontend.ast.nodes.AstNodVisitor v) {
 		v.visit(this);
 	}
 }

@@ -12,7 +12,9 @@ import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
 import com.flint.compiler.frontend.parse.utils.Ast;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.flint.compiler.frontend.parse.lex.token.fTokenKind.*;
 
@@ -1017,16 +1019,18 @@ public class fParser {
 
 	fClassParam classParam() {
 		fClassParam p = new fClassParam();
-		//Modifier
-		switch (h.tKnd()) {
-			case T_ABSTRACT: case T_FINAL: case T_SEALED: case T_LAZY: case T_IMPLICIT:
-			case T_PRIVATE: case T_PROTECTED: case T_OVERRIDE: {
-				p.setModifiers(modifiers());
-				break;
-			}
-			default:
-				break;
-		}
+//		//Modifier
+//		switch (h.tKnd()) {
+//			case T_ABSTRACT: case T_FINAL: case T_SEALED: case T_LAZY: case T_IMPLICIT:
+//			case T_PRIVATE: case T_PROTECTED: case T_OVERRIDE: {
+//				p.setModifiers(modifiers());
+//				break;
+//			}
+//			default:
+//				break;
+//		}
+
+		p.setModifiers(modifiers());
 
 		switch (h.tKnd()) {
 			case T_VAL: {
@@ -1082,17 +1086,62 @@ public class fParser {
 		return trait;
 	}
 
+	Set<fLocalModifier> localModifiers(){
+		Set<fLocalModifier> lms = new HashSet<>();
+		loop:
+		while(true){
+			switch (h.tKnd()){
+				case T_ABSTRACT: case T_FINAL: case T_SEALED: case T_IMPLICIT: case T_LAZY:{
+					fLocalModifier lm = localModifier();
+					assert !lms.contains(lm) : "Multiple local modifiers of the same kind";
+					lms.add(lm);
+					continue loop;
+				}
+				default:
+					break loop;
+			}
+		}
+		return lms;
+	}
+
+	fLocalModifier localModifier(){
+		switch (h.tKnd()){
+			case T_ABSTRACT: {
+				h.next();
+				return new fLocalModifier(fLocalModifier.LocalModKind.ABSTRACT);
+			}
+			case T_FINAL: {
+				h.next();
+				return new fLocalModifier(fLocalModifier.LocalModKind.FINAL);
+			}
+			case T_SEALED: {
+				h.next();
+				return new fLocalModifier(fLocalModifier.LocalModKind.SEALED);
+			}
+			case T_IMPLICIT: {
+				h.next();
+				return new fLocalModifier(fLocalModifier.LocalModKind.IMPLICIT);
+			}
+			case T_LAZY: {
+				h.next();
+				return new fLocalModifier(fLocalModifier.LocalModKind.LAZY);
+			}
+			default:
+				throw new RuntimeException("Expected local modifier but found: " + h.getToken());
+		}
+	}
+
 	fAccessModifier accessModifier(){
 		fAccessModifier am;
 		switch(h.tKnd()) {
 			case T_PROTECTED: {
 				h.next();
-				am = new fAccessModifier(fAccessModifier.Kind.PROTECTED);
+				am = new fAccessModifier(fAccessModifier.AccessModKind.PROTECTED);
 				break;
 			}
 			case T_PRIVATE: {
 				h.next();
-				am = new fAccessModifier(fAccessModifier.Kind.PRIVATE);
+				am = new fAccessModifier(fAccessModifier.AccessModKind.PRIVATE);
 				break;
 			}
 			default:
@@ -1119,6 +1168,51 @@ public class fParser {
 			h.accept(T_RBRACKET);
 		}
 		assert am != null; return am;
+	}
+
+	fModifier modifier(){
+		switch (h.tKnd()) {
+			case T_ABSTRACT: case T_FINAL: case T_SEALED: case T_IMPLICIT: case T_LAZY: {
+				return localModifier();
+			}
+			case T_PRIVATE: case T_PROTECTED: {
+				return accessModifier();
+			}
+			case T_OVERRIDE: {
+				h.next();
+				return new fOverrideModifier();
+			}
+			default:
+				throw new RuntimeException("Expected modifier but found: " + h.getToken());
+		}
+	}
+
+	fModifiers modifiers(){
+		fModifiers mods = new fModifiers();
+		loop:
+		while(true){
+			switch (h.tKnd()) {
+				case T_ABSTRACT: case T_FINAL: case T_SEALED: case T_IMPLICIT: case T_LAZY:{
+					assert mods.getLocalModifier() == null : "Multiple local modifiers of the same kind";
+					mods.setLocalModifier(localModifier());
+					continue loop;
+				}
+				case T_PRIVATE: case T_PROTECTED:{
+					assert mods.getAccessModifier() == null : "Multiple access modifiers";
+					mods.setAccessModifier(accessModifier());
+					continue loop;
+				}
+				 case T_OVERRIDE: {
+					 assert mods.getOverrideModifier() == null : "Multiple override modifiers";
+					 h.next();
+					 mods.setOverrideModifier(new fOverrideModifier());
+					 continue loop;
+				}
+				default:
+					break loop;
+			}
+		}
+		return mods;
 	}
 
 	fClassDef classDef(boolean isCase, fModifiers mods) {
@@ -1714,46 +1808,46 @@ public class fParser {
 		return selectors;
 	}
 
-	fModifiers modifiers() {
-		fModifiers mods = new fModifiers();
-		loop:
-		while (true) {
-			switch (h.tKnd()) {
-				case T_OVERRIDE:{
-					mods.addModifier(h.next());
-					break loop;
-				}
-				case T_ABSTRACT: case T_FINAL: case T_SEALED: case T_IMPLICIT: case T_LAZY:
-				{
-					mods.addModifier(h.next());
-					continue;
-				}
-				case T_PROTECTED: case T_PRIVATE:{
-					h.next();
-					if(h.isTkLBracket()){
-						int sz = h.pushNLEnabled(false);
-						h.accept(T_LBRACKET);
-						switch (h.tKnd()) {
-							case T_ID: case T_THIS: {
-								mods.addSpecialModifier(h.next());
-								break;
-							}
-							default:
-								throw new RuntimeException("Expected id or 'this' in access modifier but found: " + h.getToken());
-						}
-						h.popNLEnabled(sz, false);
-						h.accept(T_RBRACKET);
-					} else {
-						mods.addModifier(h.next());
-					}
-					break loop;
-				}
-				default:
-					break loop;
-			}
-		}
-		return mods;
-	}
+//	fModifiers modifiers() {
+//		fModifiers mods = new fModifiers();
+//		loop:
+//		while (true) {
+//			switch (h.tKnd()) {
+//				case T_OVERRIDE:{
+//					mods.addModifier(h.next());
+//					break loop;
+//				}
+//				case T_ABSTRACT: case T_FINAL: case T_SEALED: case T_IMPLICIT: case T_LAZY:
+//				{
+//					mods.addModifier(h.next());
+//					continue;
+//				}
+//				case T_PROTECTED: case T_PRIVATE:{
+//					h.next();
+//					if(h.isTkLBracket()){
+//						int sz = h.pushNLEnabled(false);
+//						h.accept(T_LBRACKET);
+//						switch (h.tKnd()) {
+//							case T_ID: case T_THIS: {
+//								mods.addSpecialModifier(h.next());
+//								break;
+//							}
+//							default:
+//								throw new RuntimeException("Expected id or 'this' in access modifier but found: " + h.getToken());
+//						}
+//						h.popNLEnabled(sz, false);
+//						h.accept(T_RBRACKET);
+//					} else {
+//						mods.addModifier(h.next());
+//					}
+//					break loop;
+//				}
+//				default:
+//					break loop;
+//			}
+//		}
+//		return mods;
+//	}
 
 	AstOperandNod tmplDef(fModifiers mods){
 		boolean isCase = false;
@@ -1787,16 +1881,7 @@ public class fParser {
 			return importClause();
 		}
 
-		fModifiers mods = null;
-		switch (h.tKnd()) {
-			case T_ABSTRACT: case T_FINAL: case T_SEALED: case T_IMPLICIT: case T_LAZY:
-			case T_OVERRIDE: case T_PROTECTED: case T_PRIVATE: {
-				mods = modifiers();
-				break;
-			}
-			default:
-				break;
-		}
+		fModifiers mods = modifiers();
 
 		switch (h.tKnd()) {
 			case T_CASE: case T_CLASS: case T_OBJECT: case T_TRAIT: {
@@ -1857,16 +1942,7 @@ public class fParser {
 
 			} else {
 
-				fModifiers mods = null;
-				switch (h.tKnd()) {
-					case T_ABSTRACT: case T_FINAL: case T_SEALED: case T_IMPLICIT: case T_LAZY:
-					case T_OVERRIDE: case T_PROTECTED: case T_PRIVATE: {
-						mods = modifiers();
-						break;
-					}
-					default:
-						break;
-				}
+				fModifiers mods = modifiers();
 				switch (h.tKnd()){
 					case T_CASE: case T_CLASS: case T_OBJECT: case T_TRAIT: {
 						cu.addStmt(tmplDef(mods));

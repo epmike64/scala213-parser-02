@@ -5,6 +5,7 @@ import com.flint.compiler.frontend.ast.nodes.leaves.node.*;
 import com.flint.compiler.frontend.parse.fCompilationUnit;
 
 public abstract class AstNodVisitor {
+	public abstract void visit(fCompilationUnit node);
 	public abstract void visit(fPackage node);
 	public abstract void visit(fCaseClauses node);
 	public abstract void visit(fType node);
@@ -51,6 +52,10 @@ public abstract class AstNodVisitor {
 	public abstract void visit(fVariantTypeParam node);
 	public abstract void visit(fAccessModifier node);
 	public abstract void visit(fAccessQualifier node);
-	public abstract void visit(fCompilationUnit node);
+	public abstract void visit(fLocalModifier node);
+	public abstract void visit(fOverrideModifier node);
+
+
+
 
 }
