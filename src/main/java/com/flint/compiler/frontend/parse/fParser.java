@@ -1092,11 +1092,58 @@ public class fParser {
 		return trait;
 	}
 
+	fAccessModifier accessModifier(){
+		fAccessModifier am;
+		switch(h.tKnd()) {
+			case T_PROTECTED: {
+				h.next();
+				am = new fAccessModifier(fAccessModifier.Kind.PROTECTED);
+				break;
+			}
+			case T_PRIVATE: {
+				h.next();
+				am = new fAccessModifier(fAccessModifier.Kind.PRIVATE);
+				break;
+			}
+			default:
+				throw new RuntimeException("Expected access modifier but found: " + h.getToken());
+		}
+
+		if(h.isLa(0, T_LBRACKET)){
+			int sz = h.pushNLEnabled(false);
+			h.accept(T_LBRACKET);
+			switch (h.tKnd()){
+				case T_ID: {
+					am.setQualifier(new fAccessQualifier(fAccessQualifier.Kind.ID, (fNamedToken) h.accept(T_ID)));
+					break;
+				}
+				case T_THIS: {
+					h.next();
+					am.setQualifier(new fAccessQualifier(fAccessQualifier.Kind.THIS, null));
+					break;
+				}
+				default:
+					throw new RuntimeException("Expected identifier or 'this' after '[' in access modifier but found: " + h.getToken());
+			}
+			h.popNLEnabled(sz, false);
+			h.accept(T_RBRACKET);
+		}
+		assert am != null; return am;
+	}
+
 	fClassDef classDef(boolean isCase, fModifiers mods) {
 		h.accept(fTokenKind.T_CLASS);
 		fClassDef cls = new fClassDef((fNamedToken) h.next(), isCase, mods);
 		if (h.isTkLBracket()) {
 			cls.setTypeParams(variantTypeParams());
+		}
+		switch(h.tKnd()){
+			case T_PRIVATE: case T_PROTECTED: {
+				cls.setConstructorAccessModifier(accessModifier());
+				break;
+			}
+			default:
+				//pass
 		}
 		cls.setClassParamClauses(classParamClauses());
 		cls.setExtendsTemplate(classExtends(false));

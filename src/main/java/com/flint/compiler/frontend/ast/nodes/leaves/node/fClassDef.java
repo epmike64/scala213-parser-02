@@ -9,7 +9,7 @@ import java.util.List;
 public class fClassDef extends fTraitDef {
 	private final boolean isCaseClass;
 	private fClassParamClauses classParamClauses;
-
+	private fAccessModifier constructorAccessModifier;
 
 	public fClassDef(fNamedToken name, boolean isCaseClass, fModifiers modifiers) {
 		super(name, modifiers);
@@ -20,6 +20,12 @@ public class fClassDef extends fTraitDef {
 		this.classParamClauses = classParamClauses;
 	}
 
+	public void setConstructorAccessModifier(fAccessModifier constructorAccessModifier) {
+		this.constructorAccessModifier = constructorAccessModifier;
+	}
+	public fAccessModifier getConstructorAccessModifier() {
+		return constructorAccessModifier;
+	}
 	@Override
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
