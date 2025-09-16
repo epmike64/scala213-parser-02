@@ -20,6 +20,35 @@ public abstract class AstNodVisitor {
 	public abstract void visit(fFor node);
 	public abstract void visit(fReturn node);
 	public abstract void visit(fTemplateBody node);
+	public abstract void visit(fClassParents node);
+	public abstract void visit(fParamType node);
+	public abstract void visit(fValueDecl node);
+	public abstract void visit(fValueDef node);
+	public abstract void visit(fFunSig node);
+	public abstract void visit(fClassConstructor node);
+	public abstract void visit(fTry node);
+	public abstract void visit(fGenerator node);
+	public abstract void visit(fClassParamClauses node);
+	public abstract void visit(fParamTypeList node);
+	public abstract void visit(fThrow node);
+	public abstract void visit(fThisFun node);
+	public abstract void visit(fTypeDef node);
+	public abstract void visit(fTypeParam node);
+	public abstract void visit(fUnderscore node);
+	public abstract void visit(fValue node);
+	public abstract void visit(fFun node);
+	public abstract void visit(fParamClauses node);
+	public abstract void visit(fConstrBlock node);
+	public abstract void visit(AstOperatorNod node);
+	public abstract void visit(fClassParam node);
+	public abstract void visit(fStableId node);
+	public abstract void visit(fId node);
+	public abstract void visit(fIds node);
+	public abstract void visit(fLiteral node);
+	public abstract void visit(fTypeArgs node);
+
+
+
 
 
 }

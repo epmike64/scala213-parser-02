@@ -1,10 +1,11 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
+import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 
 import java.util.List;
 
-public class fParamClauses {
+public class fParamClauses extends AstOperandNod {
 	private List<List<fParam>> paramsLists;
 	private List<fParam> implicitParams;
 

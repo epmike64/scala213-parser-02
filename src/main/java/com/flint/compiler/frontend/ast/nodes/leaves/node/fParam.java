@@ -1,10 +1,11 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
+import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstProdSubTreeN;
 import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
 
-public class fParam {
+public class fParam extends AstOperandNod {
 	private final fNamedToken name;
 	private fParamType paramType;
 	private AstProdSubTreeN defaultValue;
