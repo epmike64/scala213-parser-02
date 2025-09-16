@@ -1019,17 +1019,6 @@ public class fParser {
 
 	fClassParam classParam() {
 		fClassParam p = new fClassParam();
-//		//Modifier
-//		switch (h.tKnd()) {
-//			case T_ABSTRACT: case T_FINAL: case T_SEALED: case T_LAZY: case T_IMPLICIT:
-//			case T_PRIVATE: case T_PROTECTED: case T_OVERRIDE: {
-//				p.setModifiers(modifiers());
-//				break;
-//			}
-//			default:
-//				break;
-//		}
-
 		p.setModifiers(modifiers());
 
 		switch (h.tKnd()) {
