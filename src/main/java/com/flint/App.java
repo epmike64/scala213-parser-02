@@ -1,7 +1,7 @@
 package com.flint;
 
-import com.flint.compiler.frontend.ast.traverse.AstTraverse;
-import com.flint.compiler.frontend.ast.traverse.LangAstTraverse;
+
+import com.flint.compiler.frontend.ast.traverse.LangAstVisitor;
 import com.flint.compiler.frontend.parse.fCompilationUnit;
 import com.flint.compiler.frontend.parse.fParser;
 import com.flint.compiler.frontend.parse.lex.fReader;
@@ -43,8 +43,8 @@ public class App {
    }
 
 	void traverse(fCompilationUnit n) {
-		LangAstTraverse trav = new LangAstTraverse(n);
-		trav.traverse();
+		LangAstVisitor v = new LangAstVisitor(n);
+		v.visit();
 	}
 
    public static String readFileToString(String filePath) {

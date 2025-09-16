@@ -1,15 +1,34 @@
 package com.flint.compiler.frontend.ast.traverse;
 
+import com.flint.compiler.frontend.ast.nodes.AstNod;
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperatorNod;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.*;
 import com.flint.compiler.frontend.parse.fCompilationUnit;
 
-public class LangItemVisitor extends AstNodVisitor  {
+public class LangAstVisitor extends AstNodVisitor  {
+	private final fCompilationUnit cu;
+	public LangAstVisitor(fCompilationUnit cu){
+		this.cu = cu;
+	}
+
+	public void visit() {
+		cu.accept(this);
+	}
 
 	@Override
 	public void visit(fCompilationUnit node) {
+		for(fPackage p: node.getPackages()) {
+			p.accept(this);
+		}
 
+		for(fImport i: node.getImports()) {
+			i.accept(this);
+		}
+
+		for(AstNod s: node.getStatements()) {
+			s.accept(this);
+		}
 	}
 
 	@Override

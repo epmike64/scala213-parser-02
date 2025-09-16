@@ -11,13 +11,13 @@ import java.util.List;
 
 public class fCompilationUnit extends AstOperandNod {
 
-	private List<fPackage> packages;
-	private List<fImport> imports = new ArrayList<>();
+	private final List<fPackage> packages = new ArrayList<>();
+	private final List<fImport> imports = new ArrayList<>();
 	private final List<AstNod> statements = new ArrayList<>();
 
 	public void setPackages(List<fPackage> packages) {
 		assert packages != null && packages.size() > 0;
-		this.packages = packages;
+		this.packages.addAll(packages);
 	}
 
 	public void addImport(fImport importNod) {
