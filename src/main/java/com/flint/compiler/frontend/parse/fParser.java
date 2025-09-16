@@ -928,7 +928,7 @@ public class fParser {
 				case T_IF: case T_WHILE: case T_FOR: case T_TRY: case T_THROW: case T_RETURN: case T_NEW:
 				case T_LCURL: case T_LPAREN: case T_ID: case T_THIS: case T_SUPER: case T_INT_LIT: case T_FLOAT_LIT:
 				case T_STRING_LIT: case T_CHAR_LIT: case T_NULL: case T_TRUE: case T_FALSE: {
-					a.setRight(blockStat());
+					a.setRight(blockOrTemplateStat());
 					h.skipSemi();
 					h.insertStmtSepOper(a);
 					continue;
@@ -954,7 +954,7 @@ public class fParser {
 				case T_IF: case T_WHILE: case T_FOR: case T_TRY: case T_THROW: case T_RETURN: case T_NEW:
 				case T_LCURL: case T_LPAREN: case T_ID: case T_THIS: case T_SUPER: case T_INT_LIT: case T_FLOAT_LIT:
 				case T_STRING_LIT: case T_CHAR_LIT: case T_NULL: case T_TRUE: case T_FALSE: {
-					tb.addStmt(templateStat());
+					tb.addStmt(blockOrTemplateStat());
 					h.skipSemi();
 					continue;
 				}
@@ -965,15 +965,6 @@ public class fParser {
 		h.popNLEnabled(sz, true);
 		h.accept(fTokenKind.T_RCURL);
 		return tb;
-	}
-
-
-	AstProdSubTreeN templateStat() {
-		return blockOrTemplateStat(GrmPrd.TEMPLATE_STAT);
-	}
-
-	AstProdSubTreeN blockStat() {
-		return blockOrTemplateStat(GrmPrd.BLOCK_STAT);
 	}
 
 	AstOperandNod classObjectDef(boolean isCase, fModifiers mods) {
@@ -1142,7 +1133,7 @@ public class fParser {
 				break;
 			}
 			default:
-				//pass
+				break;
 		}
 		cls.setClassParamClauses(classParamClauses());
 		cls.setExtendsTemplate(classExtends(false));
@@ -1249,7 +1240,7 @@ public class fParser {
 		while (true) {
 			h.skipSemi();
 			if (!h.isTkRParen()) {
-				cb.addBlockStat(blockStat());
+				cb.addBlockStat(blockOrTemplateStat());
 			} else {
 				break;
 			}
@@ -1764,73 +1755,92 @@ public class fParser {
 		return mods;
 	}
 
-	AstProdSubTreeN blockOrTemplateStat(GrmPrd prd) {
-		final Ast a = new Ast();
-		if(h.isTkImport()){
+	AstOperandNod tmplDef(fModifiers mods){
+		boolean isCase = false;
 
-			a.setRight(importClause());
-
-		} else {
-			fModifiers mods = null;
-			switch (h.tKnd()) {
-				case T_ABSTRACT: case T_FINAL: case T_SEALED: case T_IMPLICIT: case T_LAZY:
-				case T_OVERRIDE: case T_PROTECTED: case T_PRIVATE: {
-					mods = modifiers();
-					break;
-				}
-				default:
-					break;
-			}
-			boolean isCase = false;
-			switch (h.tKnd()) {
-
-				case T_CASE: {
-					if (h.isLa(1, T_CLASS, T_OBJECT)) {
-						isCase = true;
-						h.next();
-						//fall through
-					} else {
+		switch (h.tKnd()) {
+			case T_CASE: {
+				isCase = true;
+				h.next();
+				switch (h.tKnd()){
+					case T_CLASS: case T_OBJECT:
 						break;
-					}
+					default:
+						throw new RuntimeException( "'case' must precede 'class' or 'object'");
 				}
-				case T_CLASS: case T_OBJECT: {
-					a.setRight(classObjectDef(isCase, mods));
-					break;
-				}
-				case T_TRAIT: {
-					a.setRight(traitDef(mods));
-					break;
-				}
-				case T_VAL: {
-					h.next();
-					a.setRight(patDef(true, mods));
-					break;
-				}
-				case T_VAR: {
-					h.next();
-					a.setRight(varDef(mods));
-					break;
-				}
-				case T_DEF: {
-					a.setRight(funDef(mods));
-					break;
-				}
-				case T_TYPE: {
-					a.setRight(typeDef());
-					break;
-				}
-				case T_IF: case T_WHILE: case T_FOR: case T_TRY: case T_THROW: case T_RETURN:
-				case T_ID: case T_THIS: case T_SUPER: case T_LPAREN: case T_LCURL: case T_NEW:
-				case T_INT_LIT: case T_FLOAT_LIT: case T_STRING_LIT: case T_CHAR_LIT: case T_TRUE: case T_FALSE:
-				case T_NULL: {
-					a.setRight(expr(null));
-					break;
-				}
-				default:
-					break;
+				//fall through
 			}
+			case T_CLASS: case T_OBJECT: {
+				return classObjectDef(isCase, mods);
+			}
+			case T_TRAIT: {
+				return traitDef(mods);
+			}
+			default:
+				throw new RuntimeException("Expected '[case] class', '[case] object' or 'trait' but found: " + h.getToken());
 		}
-		return new AstProdSubTreeN(prd, a);
+	}
+
+	AstOperandNod blockOrTemplateStat() {
+
+		if(h.isTkImport()){
+			return importClause();
+		}
+
+		fModifiers mods = null;
+		switch (h.tKnd()) {
+			case T_ABSTRACT: case T_FINAL: case T_SEALED: case T_IMPLICIT: case T_LAZY:
+			case T_OVERRIDE: case T_PROTECTED: case T_PRIVATE: {
+				mods = modifiers();
+				break;
+			}
+			default:
+				break;
+		}
+
+		boolean isCase = false;
+
+		switch (h.tKnd()) {
+			case T_CASE: {
+				if (h.isLa(1, T_CLASS, T_OBJECT)) {
+					h.next();
+					isCase = true;
+					//fall through
+				} else {
+					throw new RuntimeException( "'case' must precede 'class' or 'object'");
+				}
+			}
+			case T_CLASS: case T_OBJECT: {
+				return classObjectDef(isCase, mods);
+			}
+			case T_TRAIT: {
+				return traitDef(mods);
+			}
+			case T_VAL: {
+				h.next();
+				return patDef(true, mods);
+			}
+			case T_VAR: {
+				h.next();
+				return varDef(mods);
+			}
+			case T_DEF: {
+				return funDef(mods);
+			}
+			case T_TYPE: {
+				return typeDef();
+			}
+			case T_IF: case T_WHILE: case T_FOR: case T_TRY: case T_THROW: case T_RETURN:
+			case T_ID: case T_THIS: case T_SUPER: case T_LPAREN: case T_LCURL: case T_NEW:
+			case T_INT_LIT: case T_FLOAT_LIT: case T_STRING_LIT: case T_CHAR_LIT: case T_TRUE: case T_FALSE:
+			case T_NULL: {
+				return expr(null);
+			}
+			default:
+				break;
+		}
+
+		throw new RuntimeException( "BlockOrTemplateStat in unexpected place: " + h.getToken() );
 	}
 
 	fPackage packageClause() {
@@ -1857,13 +1867,12 @@ public class fParser {
 		while (true) {
 
 			if(h.isTkImport()){
-
 				cu.addImport(importClause());
 
 			} else {
 
 				fModifiers mods = null;
-				switch (h.tKnd()){
+				switch (h.tKnd()) {
 					case T_ABSTRACT: case T_FINAL: case T_SEALED: case T_IMPLICIT: case T_LAZY:
 					case T_OVERRIDE: case T_PROTECTED: case T_PRIVATE: {
 						mods = modifiers();
@@ -1872,30 +1881,15 @@ public class fParser {
 					default:
 						break;
 				}
-
-				boolean isCase = false;
-
-				switch (h.tKnd()) {
-
-					case T_CASE: {
-						if (h.isLa(1, T_CLASS, T_OBJECT)) {
-							isCase = true;
-							h.next();
-							//fall through
-						} else {
-							break loop;
-						}
-					}
-					case T_CLASS: case T_OBJECT: {
-						cu.addStatement(classObjectDef(isCase, mods));
+				switch (h.tKnd()){
+					case T_CASE: case T_CLASS: case T_OBJECT: case T_TRAIT: {
+						cu.addStmt(tmplDef(mods));
 						break;
 					}
-					case T_TRAIT: {
-						cu.addStatement(traitDef(mods));
-						break;
-					}
-					default:
+					case T_EOF:
 						break loop;
+					default:
+						throw new RuntimeException("Expected '[case] class', '[case] object' or 'trait' but found: " + h.getToken());
 				}
 			}
 			h.skipSemi();

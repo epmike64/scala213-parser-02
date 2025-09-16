@@ -13,7 +13,7 @@ public class fCompilationUnit extends AstOperandNod {
 
 	private final List<fPackage> packages = new ArrayList<>();
 	private final List<fImport> imports = new ArrayList<>();
-	private final List<AstNod> statements = new ArrayList<>();
+	private final List<AstNod> stmts = new ArrayList<>();
 
 	public void setPackages(List<fPackage> packages) {
 		assert packages != null && packages.size() > 0;
@@ -25,9 +25,9 @@ public class fCompilationUnit extends AstOperandNod {
 		imports.add(importNod);
 	}
 
-	public void addStatement(AstNod statementNod) {
-		assert statementNod != null;
-		statements.add(statementNod);
+	public void addStmt(AstNod stmt) {
+		assert stmt != null;
+		stmts.add(stmt);
 	}
 
 	public List<fPackage> getPackages() {
@@ -39,7 +39,7 @@ public class fCompilationUnit extends AstOperandNod {
 	}
 
 	public List<AstNod> getStatements() {
-		return statements;
+		return stmts;
 	}
 
 	@Override
