@@ -1,5 +1,7 @@
 package com.flint;
 
+import com.flint.compiler.frontend.ast.traverse.AstTraverse;
+import com.flint.compiler.frontend.ast.traverse.LangAstTraverse;
 import com.flint.compiler.frontend.parse.fCompilationUnit;
 import com.flint.compiler.frontend.parse.fParser;
 import com.flint.compiler.frontend.parse.lex.fReader;
@@ -36,12 +38,18 @@ public class App {
       fScanner scanner = new fScanner(tknz);
       fParser parser = new fParser(scanner);
       fCompilationUnit n = parser.compilationUnit();
-      System.out.println("> Done parsing !");
+      System.out.println("> Done parsing !\n\n");
+		traverse(n);
 //      DotScriptWriter dsw = new DotScriptWriter();
 //      String dotScript = dsw.generateDotFile(filePath + ".dot", n, readFileToString(filePath));
 //      System.out.println("dotScript>>>");
 //      System.out.println(dotScript);
    }
+
+	void traverse(fCompilationUnit n) {
+		LangAstTraverse trav = new LangAstTraverse(n);
+		trav.traverse();
+	}
 
    public static String readFileToString(String filePath) {
       try {
