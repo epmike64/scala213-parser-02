@@ -1798,23 +1798,9 @@ public class fParser {
 				break;
 		}
 
-		boolean isCase = false;
-
 		switch (h.tKnd()) {
-			case T_CASE: {
-				if (h.isLa(1, T_CLASS, T_OBJECT)) {
-					h.next();
-					isCase = true;
-					//fall through
-				} else {
-					throw new RuntimeException( "'case' must precede 'class' or 'object'");
-				}
-			}
-			case T_CLASS: case T_OBJECT: {
-				return classObjectDef(isCase, mods);
-			}
-			case T_TRAIT: {
-				return traitDef(mods);
+			case T_CASE: case T_CLASS: case T_OBJECT: case T_TRAIT: {
+				return tmplDef(mods);
 			}
 			case T_VAL: {
 				h.next();
