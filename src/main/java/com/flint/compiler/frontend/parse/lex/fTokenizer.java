@@ -68,7 +68,7 @@ public class fTokenizer {
 				case 's': {
 					if (reader.peekChar() == '"') {
 						reader.scanChar();
-						scanLiteralString(reader.bp);
+						scanLiteralString();
 						break wlp;
 					}
 					// fall through
@@ -115,7 +115,7 @@ public class fTokenizer {
 
 				case '.': {
 					reader.scanChar();
-					if (reader.digit(pos, 10) >= 0) {
+					if (reader.digit(10) >= 0) {
 						reader.putChar('.');
 						scanFractionAndSuffix(pos);
 					} else {
@@ -202,7 +202,7 @@ public class fTokenizer {
 					} else {
 						if (reader.ch == CR || reader.ch == LF)
 							lexError(pos, "illegal.line.end.in.char.lit");
-						scanLitChar(pos);
+						scanLitChar();
 						if (reader.ch == '\'') {
 							reader.scanChar();
 							tk = fTokenKind.T_CHAR_LIT;
@@ -213,7 +213,7 @@ public class fTokenizer {
 					break wlp;
 				}
 				case '\"': {
-					scanLiteralString(pos);
+					scanLiteralString();
 					break wlp;
 				}
 				default: {
@@ -237,20 +237,21 @@ public class fTokenizer {
 		}
 	}
 
-	private void scanLiteralString(int pos) {
+	private void scanLiteralString() {
 		assert reader.ch == '\"';
 		reader.scanChar();
 		while (reader.ch != '\"' && reader.ch != CR && reader.ch != LF && reader.bp < reader.buflen)
-			scanLitChar(pos);
+			scanLitChar();
 		if (reader.ch == '\"') {
 			tk = fTokenKind.T_STRING_LIT;
 			reader.scanChar();
+			tname = reader.name();
 		} else {
-			lexError(pos, "unclosed.str.lit");
+			lexError(-1, "unclosed.str.lit");
 		}
 	}
 
-	private void scanLitChar(int pos) {
+	private void scanLitChar() {
 		if (reader.ch == '\\') {
 			if (reader.peekChar() == '\\' && !reader.isUnicode()) {
 				reader.skipChar();
@@ -261,13 +262,13 @@ public class fTokenizer {
 					case '0': case '1': case '2': case '3':
 					case '4': case '5': case '6': case '7':
 						char leadch = reader.ch;
-						int oct = reader.digit(pos, 8);
+						int oct = reader.digit(8);
 						reader.scanChar();
 						if ('0' <= reader.ch && reader.ch <= '7') {
-							oct = oct * 8 + reader.digit(pos, 8);
+							oct = oct * 8 + reader.digit( 8);
 							reader.scanChar();
 							if (leadch <= '3' && '0' <= reader.ch && reader.ch <= '7') {
-								oct = oct * 8 + reader.digit(pos, 8);
+								oct = oct * 8 + reader.digit( 8);
 								reader.scanChar();
 							}
 						}
@@ -385,7 +386,7 @@ public class fTokenizer {
 	private void scanDigits(int pos, int digitRadix) {
 		do {
 			reader.putChar(true);
-		} while (reader.digit(pos, digitRadix) >= 0);
+		} while (reader.digit(digitRadix) >= 0);
 	}
 
 	/**
@@ -399,7 +400,7 @@ public class fTokenizer {
 				reader.putChar(true);
 			}
 
-			if (reader.digit(pos, 10) >= 0) {
+			if (reader.digit(10) >= 0) {
 				scanDigits(pos, 10);
 //				if (!hexFloatsWork)
 				lexError(pos, "unsupported.cross.fp.lit");
@@ -426,7 +427,7 @@ public class fTokenizer {
 	 */
 	private void scanFraction(int pos) {
 
-		if (reader.digit(pos, 10) >= 0) {
+		if (reader.digit(10) >= 0) {
 			scanDigits(pos, 10);
 		}
 		int sp1 = reader.sp;
@@ -437,7 +438,7 @@ public class fTokenizer {
 				reader.putChar(true);
 			}
 
-			if (reader.digit(pos, 10) >= 0) {
+			if (reader.digit(10) >= 0) {
 				scanDigits(pos, 10);
 				return;
 			}
@@ -471,7 +472,7 @@ public class fTokenizer {
 		assert (reader.ch == '.');
 		reader.putChar(true);
 
-		if (reader.digit(pos, 16) >= 0) {
+		if (reader.digit(16) >= 0) {
 			seendigit = true;
 			scanDigits(pos, 16);
 		}
@@ -491,7 +492,7 @@ public class fTokenizer {
 		// for octal, allow base-10 digit in case it's a float literal
 		this.radix = radix;
 		int digitRadix = (radix == 8 ? 10 : radix); //2, 10, 16
-		int firstDigit = reader.digit(pos, Math.max(10, digitRadix)/*10, 16*/);
+		int firstDigit = reader.digit(Math.max(10, digitRadix)/*10, 16*/);
 		boolean seendigit = firstDigit >= 0;
 		boolean seenValidDigit = firstDigit >= 0 && firstDigit < digitRadix;
 		if (seendigit) {

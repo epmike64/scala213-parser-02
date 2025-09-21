@@ -60,7 +60,7 @@ public class fReader {
 		return new String(sbuf, 0, sp);
 	}
 
-	protected int digit(int pos, int base) {
+	protected int digit(int base) {
 		char c = ch;
 		if ('0' <= c && c <= '9')
 			return Character.digit(ch, base); //a fast common case
@@ -87,11 +87,11 @@ public class fReader {
 				} while (ch == 'u');
 				int limit = bp + 3;
 				if (limit < buflen) {
-					int d = digit(bp, 16);
+					int d = digit(16);
 					int code = d;
 					while (bp < limit && d >= 0) {
 						bp++; ch = buf[bp];
-						d = digit(bp, 16);
+						d = digit(16);
 						code = (code << 4) + d;
 					}
 					if (d >= 0) {
