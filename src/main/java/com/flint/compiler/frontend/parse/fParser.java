@@ -25,19 +25,15 @@ public class fParser {
 		h = new ParseHelp(lexer);
 	}
 
-	List<fNamedToken> ids(boolean isQualified) {
-
+	List<fNamedToken> qualIds() {
 		List<fNamedToken> ids = new ArrayList<>();
 		while (true) {
 			assert h.tKnd() == T_ID;
 			ids.add((fNamedToken) h.next());
-			if (isQualified && h.isTkDot()) {
-				h.next();
-			} else if (h.isTkComma()) {
-				h.next();
-			} else {
-				break;
+			if (h.isTkDot()) {
+				h.next(); continue;
 			}
+			break;
 		}
 		return ids;
 	}
@@ -1176,7 +1172,7 @@ public class fParser {
 		}
 		switch(h.tKnd()){
 			case T_PRIVATE: case T_PROTECTED: {
-				cls.setConstructorAccessModifier(accessModifier());
+				cls.setConstrAccessModifier(accessModifier());
 				break;
 			}
 			default:
@@ -1841,7 +1837,7 @@ public class fParser {
 
 	fPackage packageClause() {
 		h.accept(T_PACKAGE);
-		return new fPackage(ids(true));
+		return new fPackage(qualIds());
 	}
 
 	List<fPackage> packages() {

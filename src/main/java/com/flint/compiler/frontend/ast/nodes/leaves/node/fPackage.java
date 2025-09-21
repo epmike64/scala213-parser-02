@@ -22,4 +22,11 @@ public class fPackage extends AstOperandNod {
 	public List<fNamedToken> getIds() {
 		return fIds;
 	}
+
+	@Override
+	public String toString() {
+		return "fPackage{" +
+				"fIds=" + fIds +
+				'}';
+	}
 }

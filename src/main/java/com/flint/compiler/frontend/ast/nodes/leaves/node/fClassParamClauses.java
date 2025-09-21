@@ -22,4 +22,20 @@ public class fClassParamClauses extends AstOperandNod  {
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
 	}
+
+	public List <fClassParam> getImplicitParams() {
+		return implicitParams;
+	}
+
+	public List<List<fClassParam>> getParams() {
+		return params;
+	}
+
+	@Override
+	public String toString() {
+		return "fClassParamClauses{" +
+				"implicitParams=" + implicitParams +
+				", params=" + params +
+				'}';
+	}
 }

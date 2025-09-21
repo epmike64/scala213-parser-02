@@ -47,7 +47,6 @@ public class LangAstVisitor extends AstNodVisitor  {
 	@Override
 	public void visit(fClassDef cls) {
 		System.out.println("Visiting Class: " + cls);
-		cls.getName();
 		for(fTypeParam tp: cls.getTypeParams()) {
 			tp.accept(this);
 		}
@@ -70,7 +69,6 @@ public class LangAstVisitor extends AstNodVisitor  {
 	@Override
 	public void visit(fAccessModifier am) {
 		System.out.println("Visiting Access Modifier: " + am);
-		am.getKind();
 		if(am.getQualifier() != null) {
 			am.getQualifier().accept(this);
 		}
@@ -79,10 +77,6 @@ public class LangAstVisitor extends AstNodVisitor  {
 	@Override
 	public void visit(fAccessQualifier aq) {
 		System.out.println("Visiting Access Qualifier: " + aq);
-		aq.getKind();
-		if(aq.getKind() == fAccessQualifier.Kind.ID) {
-			aq.getId();
-		}
 	}
 
 	@Override
@@ -102,7 +96,7 @@ public class LangAstVisitor extends AstNodVisitor  {
 
 	@Override
 	public void visit(fCaseClauses node) {
-		System.out.println("Visiting Case Clauses");
+		System.out.println("Visiting Case Clauses" + node);
 	}
 
 	@Override
@@ -112,7 +106,7 @@ public class LangAstVisitor extends AstNodVisitor  {
 
 	@Override
 	public void visit(fModifiers node) {
-		System.out.println("Visiting Modifiers");
+		System.out.println("Visiting Modifiers" + node);
 	}
 
 
@@ -124,7 +118,7 @@ public class LangAstVisitor extends AstNodVisitor  {
 
 	@Override
 	public void visit(fIf node) {
-		System.out.println("Visiting If Node");
+		System.out.println("Visiting If Node" + node);
 	}
 
 	@Override
@@ -134,28 +128,28 @@ public class LangAstVisitor extends AstNodVisitor  {
 
 	@Override
 	public void visit(fWhile node) {
-		System.out.println("Visiting While Node");
+		System.out.println("Visiting While Node" + node);
 	}
 
 	@Override
 	public void visit(fFor node) {
-		System.out.println("Visiting For Node");
+		System.out.println("Visiting For Node" + node);
 	}
 
 	@Override
 	public void visit(fReturn node) {
-		System.out.println("Visiting Return Node");
+		System.out.println("Visiting Return Node" + node);
 	}
 
 	@Override
 	public void visit(fClassTemplate ct) {
-		System.out.println("Visiting Class Template");
+		System.out.println("Visiting Class Template" + ct);
 		ct.getParents().accept(this);
 	}
 
 	@Override
 	public void visit(fTemplateBody tb) {
-		System.out.println("Visiting Template Body");
+		System.out.println("Visiting Template Body" + tb);
 		for(AstNod s: tb.getStmts()) {
 			s.accept(this);
 		}
@@ -163,7 +157,7 @@ public class LangAstVisitor extends AstNodVisitor  {
 
 	@Override
 	public void visit(fClassParents node) {
-		System.out.println("Visiting Class Parents");
+		System.out.println("Visiting Class Parents" + node);
 	}
 
 	@Override
@@ -208,7 +202,7 @@ public class LangAstVisitor extends AstNodVisitor  {
 
 	@Override
 	public void visit(fClassConstr cc) {
-		System.out.println("Visiting Class Constructor");
+		System.out.println("Visiting Class Constructor" + cc);
 		cc.getParamType().accept(this);
 		if(cc.getArgs() != null) {
 			cc.getArgs().accept(this);
@@ -217,7 +211,7 @@ public class LangAstVisitor extends AstNodVisitor  {
 
 	@Override
 	public void visit(fTry node) {
-		System.out.println("Visiting Try Node");
+		System.out.println("Visiting Try Node" + node);
 	}
 
 	@Override
@@ -227,22 +221,22 @@ public class LangAstVisitor extends AstNodVisitor  {
 
 	@Override
 	public void visit(fClassParamClauses node) {
-		System.out.println("Visiting Class Param Clauses");
+		System.out.println("Visiting Class Param Clauses" + node);
 	}
 
 	@Override
 	public void visit(fParamTypes node) {
-		System.out.println("Visiting Param Type List");
+		System.out.println("Visiting Param Type List" + node);
 	}
 
 	@Override
 	public void visit(fThrow node) {
-		System.out.println("Visiting Throw Node");
+		System.out.println("Visiting Throw Node" + node);
 	}
 
 	@Override
 	public void visit(fThisFun node) {
-		System.out.println("Visiting This Fun Node");
+		System.out.println("Visiting This Fun Node" + node);
 	}
 
 	@Override
@@ -257,22 +251,22 @@ public class LangAstVisitor extends AstNodVisitor  {
 
 	@Override
 	public void visit(fUnderscore node) {
-		System.out.println("Visiting Underscore Node");
+		System.out.println("Visiting Underscore Node" + node);
 	}
 
 	@Override
 	public void visit(fValue node) {
-		System.out.println("Visiting Value Node");
+		System.out.println("Visiting Value Node" + node);
 	}
 
 	@Override
 	public void visit(fParamClauses node) {
-		System.out.println("Visiting Param Clauses");
+		System.out.println("Visiting Param Clauses" + node);
 	}
 
 	@Override
 	public void visit(fConstrBlock node) {
-		System.out.println("Visiting Constructor Block");
+		System.out.println("Visiting Constructor Block" + node);
 	}
 
 	@Override
@@ -303,7 +297,7 @@ public class LangAstVisitor extends AstNodVisitor  {
 
 	@Override
 	public void visit(fIds node) {
-
+		System.out.println("Visiting Ids: " + node);
 	}
 
 	@Override

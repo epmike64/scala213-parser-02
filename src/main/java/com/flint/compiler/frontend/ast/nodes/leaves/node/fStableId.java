@@ -16,8 +16,17 @@ public class fStableId extends AstOperandNod {
 		final fTokenKind kind;
 
 		fTPair(fToken id, fTokenKind kind) {
+			assert id != null && kind != null;
 			this.id = id;
 			this.kind = kind;
+		}
+
+		@Override
+		public String toString() {
+			return "fTPair{" +
+					"id=" + id +
+					", kind=" + kind +
+					'}';
 		}
 	}
 
@@ -40,12 +49,12 @@ public class fStableId extends AstOperandNod {
 
 	public void addSuper(fToken s) {
 		assert s.kind == fTokenKind.T_SUPER;
-		addTPair(new fTPair(null, fTokenKind.T_SUPER));
+		addTPair(new fTPair(s, fTokenKind.T_SUPER));
 	}
 
 	public void addThis(fToken t) {
 		assert t.kind == fTokenKind.T_THIS;
-		addTPair(new fTPair(null, fTokenKind.T_THIS));
+		addTPair(new fTPair(t, fTokenKind.T_THIS));
 	}
 
 	public void addClassQualifier(fNamedToken tId) {
