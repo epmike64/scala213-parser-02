@@ -28,4 +28,12 @@ public class fClassParents extends AstOperandNod {
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
 	}
+
+	@Override
+	public String toString() {
+		return "fClassParents{" +
+				"constr=" + constr +
+				", withTypes=" + withTypes +
+				'}';
+	}
 }

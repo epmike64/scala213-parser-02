@@ -178,8 +178,14 @@ public class LangAstVisitor extends AstNodVisitor  {
 	}
 
 	@Override
-	public void visit(fClassParents node) {
-		System.out.println("Visiting Class Parents" + node);
+	public void visit(fClassParents cp) {
+		System.out.println("Visiting Class Parents " + cp);
+		cp.getConstr().accept(this);
+		if(cp.getWithTypes().isPresent()) {
+			for(fParamType pt: cp.getWithTypes().get()) {
+				pt.accept(this);
+			}
+		}
 	}
 
 	@Override
@@ -227,7 +233,7 @@ public class LangAstVisitor extends AstNodVisitor  {
 
 	@Override
 	public void visit(fClassConstr cc) {
-		System.out.println("Visiting Class Constructor" + cc);
+		System.out.println("Visiting Class Constructor  " + cc);
 		cc.getParamType().accept(this);
 
 		if(cc.getArgs().isPresent()) {
@@ -237,17 +243,17 @@ public class LangAstVisitor extends AstNodVisitor  {
 
 	@Override
 	public void visit(fTry node) {
-		System.out.println("Visiting Try Node" + node);
+		System.out.println("Visiting Try Node " + node);
 	}
 
 	@Override
 	public void visit(fGenerator node) {
-		System.out.println("Visiting Generator Node" + node);
+		System.out.println("Visiting Generator Node " + node);
 	}
 
 	@Override
 	public void visit(fClassParamClauses cps) {
-		System.out.println("Visiting Class Param Clauses" + cps);
+		System.out.println("Visiting Class Param Clauses " + cps);
 		if(cps.getParams().isPresent()) {
 			for(List<fClassParam> cpList : cps.getParams().get()){
 				for(fClassParam cp : cpList) {
@@ -264,7 +270,10 @@ public class LangAstVisitor extends AstNodVisitor  {
 
 	@Override
 	public void visit(fParamTypes node) {
-		System.out.println("Visiting Param Type List" + node);
+		System.out.println("Visiting Param Type List " + node);
+		for(fParamType pt: node.getParamTypes()) {
+			pt.accept(this);
+		}
 	}
 
 	@Override
