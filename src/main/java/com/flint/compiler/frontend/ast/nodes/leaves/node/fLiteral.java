@@ -15,11 +15,23 @@ public abstract class fLiteral extends AstOperandNod {
 		public fIntLit(fToken token) {
 			super(token);
 		}
+		@Override
+		public String toString() {
+			return "fIntLit{" +
+					"token=" + getToken() +
+					'}';
+		}
 	}
 
 	public static class fBoolLit extends fLiteral {
 		public fBoolLit(fToken token) {
 			super(token);
+		}
+		@Override
+		public String toString() {
+			return "fBoolLit{" +
+					"token=" + getToken() +
+					'}';
 		}
 	}
 
@@ -27,11 +39,23 @@ public abstract class fLiteral extends AstOperandNod {
 		public fStringLit(fToken token) {
 			super(token);
 		}
+		@Override
+		public String toString() {
+			return "fStringLit{" +
+					"token=" + getToken() +
+					'}';
+		}
 	}
 
 	public static class fFloatLit extends fLiteral {
 		public fFloatLit(fToken token) {
 			super(token);
+		}
+		@Override
+		public String toString() {
+			return "fFloatLit{" +
+					"token=" + getToken() +
+					'}';
 		}
 	}
 
@@ -39,11 +63,23 @@ public abstract class fLiteral extends AstOperandNod {
 		public fCharLit(fToken token) {
 			super(token);
 		}
+		@Override
+		public String toString() {
+			return "fCharLit{" +
+					"token=" + getToken() +
+					'}';
+		}
 	}
 
 	public static class fNullLit extends fLiteral {
 		public fNullLit(fToken token) {
 			super(token);
+		}
+		@Override
+		public String toString() {
+			return "fNullLit{" +
+					"token=" + getToken() +
+					'}';
 		}
 	}
 

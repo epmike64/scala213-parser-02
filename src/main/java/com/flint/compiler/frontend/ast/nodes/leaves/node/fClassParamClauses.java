@@ -5,17 +5,22 @@ import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class fClassParamClauses extends AstOperandNod  {
-	private List<fClassParam> implicitParams;
-	private final List<List<fClassParam>> params = new ArrayList<>();
+	private Optional<List<fClassParam>> implicitParams = Optional.empty();
+	private Optional<List<List<fClassParam>>> params = Optional.empty();
 
 	public void setImplicitParams(List<fClassParam> implicitParams) {
-		this.implicitParams = implicitParams;
+		if (this.implicitParams.isPresent()) throw new IllegalStateException("Implicit parameters already set");
+		if (implicitParams == null || implicitParams.isEmpty()) throw new IllegalArgumentException("Implicit parameters cannot be null or empty");
+		this.implicitParams = Optional.of(implicitParams);
 	}
 
 	public void addParams(List<fClassParam> params) {
-		this.params.add(params);
+		if (params == null || params.isEmpty()) throw new IllegalArgumentException("Parameters cannot be null or empty");
+		if (!this.params.isPresent()) this.params = Optional.of(new ArrayList<>());
+		this.params.get().add(params);
 	}
 
 	@Override
@@ -23,11 +28,11 @@ public class fClassParamClauses extends AstOperandNod  {
 		v.visit(this);
 	}
 
-	public List <fClassParam> getImplicitParams() {
+	public Optional<List <fClassParam>> getImplicitParams() {
 		return implicitParams;
 	}
 
-	public List<List<fClassParam>> getParams() {
+	public Optional<List<List<fClassParam>>> getParams() {
 		return params;
 	}
 

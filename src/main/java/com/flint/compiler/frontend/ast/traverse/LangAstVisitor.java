@@ -188,15 +188,15 @@ public class LangAstVisitor extends AstNodVisitor  {
 	@Override
 	public void visit(fFunSig s) {
 		System.out.println("Visiting Fun Sig: " + s);
-		s.getName();
-		if(s.getTypeParams() != null){
-			for(fTypeParam tp: s.getTypeParams()) {
+
+		if (s.getTypeParams().isPresent()) {
+			for (fTypeParam tp : s.getTypeParams().get()) {
 				tp.accept(this);
 			}
 		}
 
-		if(s.getParamClauses() != null) {
-			s.getParamClauses().accept(this);
+		if(s.getParamClauses().isPresent()) {
+			s.getParamClauses().get().accept(this);
 		}
 	}
 
@@ -216,12 +216,13 @@ public class LangAstVisitor extends AstNodVisitor  {
 
 	@Override
 	public void visit(fGenerator node) {
-		System.out.println("Visiting Generator Node");
+		System.out.println("Visiting Generator Node" + node);
 	}
 
 	@Override
 	public void visit(fClassParamClauses node) {
 		System.out.println("Visiting Class Param Clauses" + node);
+
 	}
 
 	@Override
