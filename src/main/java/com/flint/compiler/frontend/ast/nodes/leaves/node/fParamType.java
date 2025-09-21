@@ -6,7 +6,7 @@ public class fParamType extends fType{
     public final boolean isFatArrow, isStar;
 
     public fParamType(fType t, boolean isFatArrow, boolean isStar) {
-        super(t.astProdSubTreeN);
+        super(t.getAstProdSubTreeN());
         this.isFatArrow = isFatArrow;
         this.isStar = isStar;
     }
@@ -19,7 +19,7 @@ public class fParamType extends fType{
 	@Override
 	public String toString() {
 		return "fParamType{" +
-				"astProdSubTreeN=" + astProdSubTreeN +
+				"astProdSubTreeN=" + getAstProdSubTreeN() +
 				", isFatArrow=" + isFatArrow +
 				", isStar=" + isStar +
 				'}';

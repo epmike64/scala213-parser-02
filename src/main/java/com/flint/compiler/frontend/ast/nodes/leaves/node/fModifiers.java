@@ -2,31 +2,36 @@ package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 
+import java.util.Optional;
+
 public class fModifiers extends AstOperandNod {
 
-	private fAccessModifier accessModifier;
-	private fOverrideModifier overrideModifier;
-	private fLocalModifier localModifier;
+	private Optional<fAccessModifier> accessModifier  = Optional.empty();
+	private Optional<fOverrideModifier> overrideModifier = Optional.empty();
+	private Optional<fLocalModifier> localModifier = Optional.empty();
 
-	public void setAccessModifier(fAccessModifier accessModifier) {
-		assert this.accessModifier == null && accessModifier != null;
-		this.accessModifier = accessModifier;
+	public void setAccessModifier(fAccessModifier m) {
+		if( this.accessModifier.isPresent()) throw new RuntimeException("Access modifier already set");
+		if(m == null) throw new RuntimeException("Access modifier cannot be null");
+		this.accessModifier = Optional.of(m);
 	}
-	public void setOverrideModifier(fOverrideModifier overrideModifier) {
-		assert this.overrideModifier == null && overrideModifier != null;
-		this.overrideModifier = overrideModifier;
+	public void setOverrideModifier(fOverrideModifier m) {
+		if( this.overrideModifier.isPresent()) throw new RuntimeException("Override modifier already set");
+		if(m == null) throw new RuntimeException("Override modifier cannot be null");
+		this.overrideModifier = Optional.of(m);
 	}
-	public void setLocalModifier(fLocalModifier localModifier) {
-		assert this.localModifier == null && localModifier != null;
-		this.localModifier = localModifier;
+	public void setLocalModifier(fLocalModifier m) {
+		if( this.localModifier.isPresent()) throw new RuntimeException("Local modifier already set");
+		if(m == null) throw new RuntimeException("Local modifier cannot be null");
+		this.localModifier = Optional.of(m);
 	}
-	public fAccessModifier getAccessModifier() {
+	public Optional<fAccessModifier> getAccessModifier() {
 		return accessModifier;
 	}
-	public fOverrideModifier getOverrideModifier() {
+	public Optional<fOverrideModifier> getOverrideModifier() {
 		return overrideModifier;
 	}
-	public fLocalModifier getLocalModifier() {
+	public Optional<fLocalModifier> getLocalModifier() {
 		return localModifier;
 	}
 

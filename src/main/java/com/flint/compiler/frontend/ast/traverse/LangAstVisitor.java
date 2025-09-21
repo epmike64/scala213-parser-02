@@ -51,14 +51,13 @@ public class LangAstVisitor extends AstNodVisitor  {
 		if(cls.getModifiers().isPresent()) {
 			cls.getModifiers().get().accept(this);
 		}
+		if(cls.getConstrAccessModifier().isPresent());{
+			cls.getConstrAccessModifier().get().accept(this);
+		}
 		if(cls.getTypeParams().isPresent()) {
 			for (fTypeParam tp : cls.getTypeParams().get()) {
 				tp.accept(this);
 			}
-		}
-
-		if(cls.getConstrAccessModifier().isPresent()) {
-			cls.getConstrAccessModifier().get().accept(this);
 		}
 		if(cls.getClassParamClauses().isPresent()) {
 			cls.getClassParamClauses().get().accept(this);
@@ -107,13 +106,23 @@ public class LangAstVisitor extends AstNodVisitor  {
 	}
 
 	@Override
-	public void visit(fType node) {
-		System.out.println("Visiting Type: " + node);
+	public void visit(fType t) {
+		System.out.println("Visiting Type: " + t);
+		t.getAstProdSubTreeN().accept(this);
 	}
 
 	@Override
-	public void visit(fModifiers node) {
-		System.out.println("Visiting Modifiers" + node);
+	public void visit(fModifiers m) {
+		System.out.println("Visiting Modifiers" + m);
+		if(m.getAccessModifier().isPresent()){
+			m.getAccessModifier().get().accept(this);
+		}
+		if(m.getOverrideModifier().isPresent()){
+			m.getOverrideModifier().get().accept(this);
+		}
+		if(m.getLocalModifier().isPresent()){
+			m.getLocalModifier().get().accept(this);
+		}
 	}
 
 
@@ -168,13 +177,14 @@ public class LangAstVisitor extends AstNodVisitor  {
 	}
 
 	@Override
-	public void visit(fParamType node) {
-		System.out.println("Visiting Param Type: " + node);
+	public void visit(fParamType pt) {
+		System.out.println("Visiting Param Type: " + pt);
+		pt.getAstProdSubTreeN().accept(this);
 	}
 
 	@Override
-	public void visit(fValueDecl node) {
-		System.out.println("Visiting Value Decl: " + node);
+	public void visit(fValueDecl vd) {
+		System.out.println("Visiting Value Decl: " + vd);
 	}
 
 	@Override
@@ -303,8 +313,20 @@ public class LangAstVisitor extends AstNodVisitor  {
 	}
 
 	@Override
-	public void visit(fClassParam node) {
-		System.out.println("Visiting Class Param: " + node);
+	public void visit(fClassParam cp) {
+		System.out.println("Visiting Class Param: " + cp);
+		if(cp.getModifiers().isPresent()) {
+			cp.getModifiers().get().accept(this);
+		}
+//		cp.getIdentifier();
+//		cp.getMutability();
+		if(cp.getParamType().isPresent()) {
+			cp.getParamType().get().accept(this);
+		}
+		if(cp.getDefaultValue().isPresent()) {
+			cp.getDefaultValue().get().accept(this);
+		}
+
 	}
 
 	@Override
@@ -357,11 +379,8 @@ public class LangAstVisitor extends AstNodVisitor  {
 	@Override
 	public void visit(AstProdSubTreeN node) {
 		System.out.println("Visiting Prod SubTree Node: " + node);
-		if(node.getRootOpNod().getAstLeftN() != null) {
-			node.getRootOpNod().getAstLeftN().accept(this);
-		}
-		if(node.getRootOpNod().getAstRightN() != null) {
-			node.getRootOpNod().getAstRightN().accept(this);
-		}
+		assert node.getRootOpNod() != null;
+		assert node.getRootOpNod().getAstLeftN() == null;
+		node.getRootOpNod().getAstRightN().accept(this);
 	}
 }
