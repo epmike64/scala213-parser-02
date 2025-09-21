@@ -96,8 +96,14 @@ public class LangAstVisitor extends AstNodVisitor  {
 	}
 
 	@Override
-	public void visit(fObject node) {
-		System.out.println("Visiting Object: " + node);
+	public void visit(fObject o) {
+		System.out.println("Visiting Object: " + o);
+		if(o.getModifiers().isPresent()) {
+			o.getModifiers().get().accept(this);
+		}
+		if(o.getExtendsTemplate().isPresent()) {
+			o.getExtendsTemplate().get().accept(this);
+		}
 	}
 
 	@Override

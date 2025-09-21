@@ -12,6 +12,7 @@ public class fObject extends AstOperandNod  {
 	private final fNamedToken name;
 	private Optional<fTemplateBody> extendsTemplate = Optional.empty();
 	private final Optional<fModifiers> modifiers;
+
 	public fObject(fNamedToken name, boolean isCaseClass, Optional<fModifiers> modifiers) {
 		this.name = name;
 		this.isCaseClass = isCaseClass;
