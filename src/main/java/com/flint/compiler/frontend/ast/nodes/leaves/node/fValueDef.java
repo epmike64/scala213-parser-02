@@ -17,10 +17,10 @@ public class fValueDef extends fValue  {
 	@Override
 	public String toString() {
 		return "fValueDef{" +
-				"modifiers=" + modifiers +
-				", id=" + names +
-				", type=" + type +
-				", expr=" + assignExpr +
+				"modifiers=" + getModifiers() +
+				", id=" + getNames() +
+				", type=" + getType() +
+				", expr=" + getAssignExpr() +
 				'}';
 	}
 }

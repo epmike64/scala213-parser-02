@@ -14,10 +14,10 @@ public class fValueDecl extends fValue{
 	@Override
 	public String toString() {
 		return "fValueDecl{" +
-				"modifiers=" + modifiers +
-				", id=" + names +
-				", type=" + type +
-				", expr=" + assignExpr +
+				"modifiers=" + getModifiers() +
+				", id=" + getNames() +
+				", type=" + getType() +
+				", expr=" + getAssignExpr() +
 				'}';
 	}
 }

@@ -41,7 +41,7 @@ public class fNamedFun extends fFun {
 	@Override
 	public String toString() {
 		return "fNamedFun{" +
-				"mods=" + mods +
+				"mods=" + getMods() +
 				", funSig=" + funSig +
 				", returnType=" + returnType +
 				", body=" + body +

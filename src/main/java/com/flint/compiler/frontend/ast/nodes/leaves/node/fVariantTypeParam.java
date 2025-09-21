@@ -30,7 +30,7 @@ public class fVariantTypeParam extends fTypeParam {
 	public String toString() {
 		return "fVariantTypeParam{" +
 				"variance=" + variance +
-				", name=" + name +
+				", name=" + getName() +
 				'}';
 	}
 }

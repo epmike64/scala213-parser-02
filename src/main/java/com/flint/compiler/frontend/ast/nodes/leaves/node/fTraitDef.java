@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class fTraitDef extends AstOperandNod {
-	protected final fNamedToken name;
-	protected final fModifiers modifiers;
-	protected final List<fVariantTypeParam> typeParams = new ArrayList<>();
-	protected fTemplateBody extendsTemplate;
+	private final fNamedToken name;
+	private final fModifiers modifiers;
+	private final List<fVariantTypeParam> typeParams = new ArrayList<>();
+	private fTemplateBody extendsTemplate;
 
 	public fTraitDef(fNamedToken name, fModifiers modifiers) {
 		this.name = name;

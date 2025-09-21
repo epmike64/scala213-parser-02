@@ -9,10 +9,10 @@ import java.util.List;
 
 public class fValue extends AstOperandNod {
 
-	protected final fModifiers modifiers;
-	protected final List<AstProdSubTreeN> names = new ArrayList<>();
-	protected fType type;
-	protected AstProdSubTreeN assignExpr;
+	private final fModifiers modifiers;
+	private final List<AstProdSubTreeN> names = new ArrayList<>();
+	private fType type;
+	private AstProdSubTreeN assignExpr;
 	public fValue(fModifiers modifiers) {
 		this.modifiers = modifiers;
 	}

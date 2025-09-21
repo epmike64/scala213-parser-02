@@ -34,7 +34,7 @@ public class fThisFun extends fFun {
 	@Override
 	public String toString() {
 		return "fThisFun{" +
-				"mods=" + mods +
+				"mods=" + getMods() +
 				", paramClauses=" + paramClauses +
 				", constructorBlock=" + constructorBlock +
 				'}';

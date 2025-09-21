@@ -40,11 +40,11 @@ public class fClassDef extends fTraitDef {
 	public String toString() {
 		return "fClassDef{" +
 				"isCaseClass=" + isCaseClass +
+				"className=" + getName() +
 				", classParamClauses=" + classParamClauses +
 				", constructorAccessModifier=" + constructorAccessModifier +
-				", name=" + name +
-				", modifiers=" + modifiers +
-				", typeParams=" + typeParams +
+				", modifiers=" + getModifiers() +
+				", typeParams=" + getTypeParams() +
 				'}';
 	}
 }
