@@ -33,15 +33,15 @@ public class fLangOperatorMap {
 			case T_MATCH:
 				return fLangOperatorKind.O_MATCH;
 			case T_ID:
-				fLangOperatorKind op = map.get(token.name());
+				fLangOperatorKind op = map.get(token.getName());
 				if(op != null) return op;
-				if(MethNameCheck.isMNameValid(token.name())) {
-					if(token.name().endsWith(":")) {
+				if(MethNameCheck.isMNameValid(token.getName())) {
+					if(token.getName().endsWith(":")) {
 						return fLangOperatorKind.O_ID_SMBLC_RIGHT_ASSC;
 					}
 					return fLangOperatorKind.O_ID_SMBLC_LEFT_ASSC;
 				}
-				throw new RuntimeException("Invalid Symbolic Method Name: "+token.name());
+				throw new RuntimeException("Invalid Symbolic Method Name: "+token.getName());
 			default:
 				throw new AssertionError("Token is not an operator");
 		}

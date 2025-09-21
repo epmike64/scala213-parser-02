@@ -36,4 +36,13 @@ public class fAccessModifier extends fModifier{
 	public int hashCode() {
 		return kind.hashCode();
 	}
+
+	@Override
+	public String toString() {
+		return "fAccessModifier{" +
+				"kind=" + kind +
+				", qualifier=" + qualifier +
+				'}';
+	}
+
 }

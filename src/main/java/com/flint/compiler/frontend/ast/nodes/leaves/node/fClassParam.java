@@ -26,8 +26,34 @@ public class fClassParam extends AstOperandNod {
 	public void setModifiers(fModifiers modifiers) {
 		this.modifiers = modifiers;
 	}
+	public fMutabilityType getMutability() {
+		return mutability;
+	}
+	public fNamedToken getIdentifier() {
+		return identifier;
+	}
+	public fParamType getParamType() {
+		return paramType;
+	}
+	public AstProdSubTreeN getDefaultValue() {
+		return defaultValue;
+	}
+	public fModifiers getModifiers() {
+		return modifiers;
+	}
+
 	@Override
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
+	}
+	@Override
+	public String toString() {
+		return "fClassParam{" +
+				"mutability=" + mutability +
+				", identifier=" + identifier +
+				", paramType=" + paramType +
+				", defaultValue=" + defaultValue +
+				", modifiers=" + modifiers +
+				'}';
 	}
 }

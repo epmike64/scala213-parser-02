@@ -21,4 +21,11 @@ public class fBlock extends AstOperandNod {
 	public void accept(AstNodVisitor visitor) {
 		visitor.visit(this);
 	}
+
+	@Override
+	public String toString() {
+		return "fBlock{" +
+				"statements=" + statements +
+				'}';
+	}
 }

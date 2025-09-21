@@ -362,8 +362,10 @@ public class fParser {
 
 				case T_MATCH: {
 					h.next();
+					int sz = h.pushNLEnabled(true);
 					h.accept(fTokenKind.T_LCURL);
-					caseClauses();
+					a.setRight(caseClauses());
+					h.popNLEnabled(sz, true);
 					h.accept(fTokenKind.T_RCURL);
 					break loop;
 				}
@@ -1649,10 +1651,11 @@ public class fParser {
 	}
 
 	fCaseClauses caseClauses() {
-		List<fCaseClauses.fCaseClause> clauses = new ArrayList<>();
+		List<fCaseClause> clauses = new ArrayList<>();
 		while (h.isTkCase()) {
 			h.next();
-			fCaseClauses.fCaseClause cc = new fCaseClauses.fCaseClause(pattern());
+			fCaseClause cc = new fCaseClause(pattern());
+			clauses.add(cc);
 			if (h.isTkIF()) {
 				h.next();
 				cc.setGuard(postfixExpr());

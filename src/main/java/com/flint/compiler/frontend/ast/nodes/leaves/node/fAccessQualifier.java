@@ -30,4 +30,13 @@ public class fAccessQualifier extends AstOperandNod {
 	public void accept(com.flint.compiler.frontend.ast.nodes.AstNodVisitor v) {
 		v.visit(this);
 	}
+
+	@Override
+	public String toString() {
+		if (kind == Kind.ID) {
+			return "fAccessQualifier(ID: " + id.getName() + ")";
+		} else {
+			return "fAccessQualifier(THIS)";
+		}
+	}
 }

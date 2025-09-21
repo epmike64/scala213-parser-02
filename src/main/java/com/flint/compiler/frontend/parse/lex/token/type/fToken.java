@@ -16,8 +16,12 @@ public class fToken {
 		this.endPos = endPos;
 	}
 
-	public String name() {
+	public String getName() {
 		return kind.tkName;
+	}
+
+	public fTokenKind getTKind() {
+		return kind;
 	}
 
 	public String stringVal() {
