@@ -5,40 +5,44 @@ import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstProdSubTreeN;
 import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
 
+import java.util.Optional;
+
 public class fClassParam extends AstOperandNod {
 	private fMutabilityType mutability = fMutabilityType.NONE;
 	private fNamedToken identifier;
-	private fParamType paramType;
-	private AstProdSubTreeN defaultValue;
-	private fModifiers modifiers;
-	public  void setMutability(fMutabilityType mutability) {
-		this.mutability = mutability;
-	}
-	public void setIdentifier(fNamedToken identifier) {
-		this.identifier = identifier;
-	}
+	private Optional<fParamType> paramType = Optional.empty();
+	private Optional<AstProdSubTreeN> defaultValue = Optional.empty();
+	private Optional<fModifiers> modifiers = Optional.empty();
+	public  void setMutability(fMutabilityType mutability) {this.mutability = mutability;}
+	public void setIdentifier(fNamedToken identifier) {this.identifier = identifier;}
 	public void setParamType(fParamType paramType) {
-		this.paramType = paramType;
+		if(this.paramType.isPresent()) throw new RuntimeException("Param type already set");
+		if(paramType == null) throw new RuntimeException("Param type cannot be null");
+		this.paramType = Optional.of(paramType);
 	}
-	public void setDefaultValue(AstProdSubTreeN defaultValue) {
-		this.defaultValue = defaultValue;
+	public void setDefaultValue(AstProdSubTreeN df) {
+		if(this.defaultValue.isPresent()) throw new RuntimeException("Default value already set");
+		if(df == null) throw new RuntimeException("Default value cannot be null");
+		this.defaultValue = Optional.of(df);
 	}
-	public void setModifiers(fModifiers modifiers) {
-		this.modifiers = modifiers;
+	public void setModifiers(Optional<fModifiers> mds) {
+		if(this.modifiers.isPresent()) throw new RuntimeException("Modifiers already set");
+		this.modifiers = mds;
 	}
+
 	public fMutabilityType getMutability() {
 		return mutability;
 	}
 	public fNamedToken getIdentifier() {
 		return identifier;
 	}
-	public fParamType getParamType() {
+	public Optional<fParamType> getParamType() {
 		return paramType;
 	}
-	public AstProdSubTreeN getDefaultValue() {
+	public Optional<AstProdSubTreeN> getDefaultValue() {
 		return defaultValue;
 	}
-	public fModifiers getModifiers() {
+	public Optional<fModifiers> getModifiers() {
 		return modifiers;
 	}
 

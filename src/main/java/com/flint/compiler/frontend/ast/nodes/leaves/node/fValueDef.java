@@ -2,10 +2,12 @@ package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 
+import java.util.Optional;
+
 public class fValueDef extends fValue  {
 
 
-	public fValueDef(fModifiers modifiers) {
+	public fValueDef(Optional<fModifiers> modifiers) {
 		super(modifiers);
 	}
 

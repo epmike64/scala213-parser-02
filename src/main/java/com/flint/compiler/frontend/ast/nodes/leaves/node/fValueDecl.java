@@ -1,9 +1,12 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
+import com.flint.compiler.frontend.parse.lex.token.OpChar;
+
+import java.util.Optional;
 
 public class fValueDecl extends fValue{
-	public fValueDecl(fModifiers modifiers) {
+	public fValueDecl(Optional<fModifiers> modifiers) {
 		super(modifiers);
 	}
 	@Override

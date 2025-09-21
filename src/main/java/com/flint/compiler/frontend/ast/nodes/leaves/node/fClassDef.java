@@ -3,24 +3,31 @@ package com.flint.compiler.frontend.ast.nodes.leaves.node;
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
 
+import java.util.Optional;
+
 public class fClassDef extends fTraitDef {
 	private final boolean isCaseClass;
-	private fClassParamClauses classParamClauses;
-	private fAccessModifier constrAccessModifier;
+	private Optional<fClassParamClauses> classParamClauses = Optional.empty();
+	private Optional<fAccessModifier> constrAccessModifier = Optional.empty();
 
-	public fClassDef(fNamedToken name, boolean isCaseClass, fModifiers modifiers) {
+	public fClassDef(fNamedToken name, boolean isCaseClass, Optional<fModifiers> modifiers) {
 		super(name, modifiers);
 		this.isCaseClass = isCaseClass;
 	}
 
-	public void setClassParamClauses(fClassParamClauses classParamClauses) {
-		this.classParamClauses = classParamClauses;
+	public void setClassParamClauses(fClassParamClauses cpcs) {
+		if(classParamClauses.isPresent()) throw new RuntimeException("Class parameter clauses already set");
+		if(cpcs == null) throw new RuntimeException("Class parameter clauses cannot be null");
+		this.classParamClauses = Optional.of(cpcs);
 	}
 
-	public void setConstrAccessModifier(fAccessModifier constrAccessModifier) {
-		this.constrAccessModifier = constrAccessModifier;
+	public void setConstrAccessModifier(fAccessModifier cam) {
+		if(constrAccessModifier.isPresent() ) throw new RuntimeException("Constructor access modifier already set");
+		if(cam == null) throw new RuntimeException("Constructor access modifier cannot be null");
+		this.constrAccessModifier = Optional.of(cam);
 	}
-	public fAccessModifier getConstrAccessModifier() {
+
+	public Optional<fAccessModifier> getConstrAccessModifier() {
 		return constrAccessModifier;
 	}
 	@Override
@@ -32,7 +39,7 @@ public class fClassDef extends fTraitDef {
 		return isCaseClass;
 	}
 
-	public fClassParamClauses getClassParamClauses() {
+	public Optional<fClassParamClauses> getClassParamClauses() {
 		return classParamClauses;
 	}
 

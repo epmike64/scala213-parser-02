@@ -36,6 +36,22 @@ public class fTypeParam extends AstOperandNod {
 		return name;
 	}
 
+	public List<fVariantTypeParam> getVariantTypeParams() {
+		return variantTypeParams;
+	}
+
+	public fType getType() {
+		return type;
+	}
+
+	public fType getLowerBound() {
+		return lowerBound;
+	}
+
+	public fType getUpperBound() {
+		return upperBound;
+	}
+
 	@Override
 	public String toString() {
 		return "fTypeParam{" +

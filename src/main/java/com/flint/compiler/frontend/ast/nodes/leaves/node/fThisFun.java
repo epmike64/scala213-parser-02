@@ -2,12 +2,14 @@ package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 
+import java.util.Optional;
+
 public class fThisFun extends fFun {
 
 	private fParamClauses paramClauses;
 	private fConstrBlock constructorBlock;
 
-	public fThisFun(fModifiers mods) {
+	public fThisFun(Optional<fModifiers> mods) {
 		super(mods);
 	}
 

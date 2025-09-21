@@ -47,17 +47,23 @@ public class LangAstVisitor extends AstNodVisitor  {
 	@Override
 	public void visit(fClassDef cls) {
 		System.out.println("Visiting Class: " + cls);
-		for(fTypeParam tp: cls.getTypeParams()) {
-			tp.accept(this);
+		if(cls.getModifiers() != null) {
+			cls.getModifiers().get().accept(this);
 		}
-		if(cls.getConstrAccessModifier() != null) {
-			cls.getConstrAccessModifier().accept(this);
+		if(cls.getTypeParams().isPresent()) {
+			for (fTypeParam tp : cls.getTypeParams().get()) {
+				tp.accept(this);
+			}
 		}
-		if(cls.getClassParamClauses() != null) {
-			cls.getClassParamClauses().accept(this);
+
+		if(cls.getConstrAccessModifier().isPresent()) {
+			cls.getConstrAccessModifier().get().accept(this);
 		}
-		if(cls.getExtendsTemplate() != null) {
-			cls.getExtendsTemplate().accept(this);
+		if(cls.getClassParamClauses().isPresent()) {
+			cls.getClassParamClauses().get().accept(this);
+		}
+		if(cls.getExtendsTemplate().isPresent()) {
+			cls.getExtendsTemplate().get().accept(this);
 		}
 	}
 
@@ -173,15 +179,17 @@ public class LangAstVisitor extends AstNodVisitor  {
 	@Override
 	public void visit(fValueDef node) {
 		System.out.println("Visiting Value Def: " + node);
-		node.getModifiers().accept(this);
+		if(node.getModifiers().isPresent()){
+			node.getModifiers().get().accept(this);
+		}
 		for(AstProdSubTreeN name: node.getNames()) {
 			name.accept(this);
 		}
-		if(node.getType() != null) {
-			node.getType().accept(this);
+		if(node.getType().isPresent()) {
+			node.getType().get().accept(this);
 		}
-		if(node.getAssignExpr() != null) {
-			node.getAssignExpr().accept(this);
+		if(node.getAssignExpr().isPresent()) {
+			node.getAssignExpr().get().accept(this);
 		}
 	}
 
@@ -333,12 +341,12 @@ public class LangAstVisitor extends AstNodVisitor  {
 
 	@Override
 	public void visit(AstSubTreeNod node) {
-		System.out.println("Visiting SubTree Node");
+		System.out.println("Visiting SubTree Node " + node);
 	}
 
 	@Override
 	public void visit(AstProdSubTreeN node) {
-		System.out.println("Visiting Prod SubTree Node");
+		System.out.println("Visiting Prod SubTree Node: " + node);
 		if(node.rootOpNod.getAstLeftN() != null) {
 			node.rootOpNod.getAstLeftN().accept(this);
 		}

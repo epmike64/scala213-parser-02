@@ -3,22 +3,25 @@ package com.flint.compiler.frontend.ast.nodes.leaves.node;
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
-import com.flint.compiler.frontend.parse.lex.token.type.fToken;
+
+import java.util.Optional;
 
 public class fObject extends AstOperandNod  {
 
-	private boolean isCaseClass;
+	private final boolean isCaseClass;
 	private final fNamedToken name;
-	private fTemplateBody extendsTemplate;
-	private final fModifiers modifiers;
-	public fObject(fNamedToken name, boolean isCaseClass, fModifiers modifiers) {
+	private Optional<fTemplateBody> extendsTemplate = Optional.empty();
+	private final Optional<fModifiers> modifiers;
+	public fObject(fNamedToken name, boolean isCaseClass, Optional<fModifiers> modifiers) {
 		this.name = name;
 		this.isCaseClass = isCaseClass;
 		this.modifiers = modifiers;
 	}
 
-	public void setExtendsTemplate(fTemplateBody extendsTemplate) {
-		this.extendsTemplate = extendsTemplate;
+	public void setExtendsTemplate(fTemplateBody et) {
+		if( this.extendsTemplate.isPresent()) throw new RuntimeException("Extends template already set");
+		if(et == null) throw new RuntimeException("Extends template cannot be null");
+		this.extendsTemplate = Optional.of(et);
 	}
 
 	@Override
@@ -30,7 +33,7 @@ public class fObject extends AstOperandNod  {
 		return name;
 	}
 
-	public fTemplateBody getExtendsTemplate() {
+	public Optional<fTemplateBody> getExtendsTemplate() {
 		return extendsTemplate;
 	}
 
@@ -38,7 +41,7 @@ public class fObject extends AstOperandNod  {
 		return isCaseClass;
 	}
 
-	public fModifiers getModifiers() {
+	public Optional<fModifiers> getModifiers() {
 		return modifiers;
 	}
 
