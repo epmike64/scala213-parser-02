@@ -9,9 +9,11 @@ import java.util.Optional;
 public class fClassConstr extends AstOperandNod {
 	private final fParamType fParamType;
 	private Optional<AstProdSubTreeN> args = Optional.empty();
+
 	public fClassConstr(fParamType fParamType) {
 		this.fParamType = fParamType;
 	}
+
 	public void setArgExprs(AstProdSubTreeN as) {
 		if(this.args.isPresent()) {throw new IllegalStateException("Args already set");}
 		if(as == null) {throw new IllegalArgumentException("Args cannot be null");}

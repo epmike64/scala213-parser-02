@@ -3,7 +3,6 @@ package com.flint.compiler.frontend.ast.nodes;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.fPackage;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.*;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstProdSubTreeN;
-import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstSubTreeNod;
 import com.flint.compiler.frontend.parse.fCompilationUnit;
 
 public abstract class AstNodVisitor {
@@ -58,9 +57,4 @@ public abstract class AstNodVisitor {
 	public abstract void visit(fOverrideModifier node);
 	public abstract void visit(fBlock node);
 	public abstract void visit(AstProdSubTreeN node);
-	public abstract void visit(AstSubTreeNod node);
-
-
-
-
 }

@@ -5,8 +5,9 @@ import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperatorNod;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.*;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstProdSubTreeN;
-import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstSubTreeNod;
 import com.flint.compiler.frontend.parse.fCompilationUnit;
+
+import java.util.List;
 
 public class LangAstVisitor extends AstNodVisitor  {
 	private final fCompilationUnit cu;
@@ -212,6 +213,7 @@ public class LangAstVisitor extends AstNodVisitor  {
 	public void visit(fClassConstr cc) {
 		System.out.println("Visiting Class Constructor" + cc);
 		cc.getParamType().accept(this);
+
 		if(cc.getArgs().isPresent()) {
 			cc.getArgs().get().accept(this);
 		}
@@ -228,9 +230,20 @@ public class LangAstVisitor extends AstNodVisitor  {
 	}
 
 	@Override
-	public void visit(fClassParamClauses node) {
-		System.out.println("Visiting Class Param Clauses" + node);
-
+	public void visit(fClassParamClauses cps) {
+		System.out.println("Visiting Class Param Clauses" + cps);
+		if(cps.getParams().isPresent()) {
+			for(List<fClassParam> cpList : cps.getParams().get()){
+				for(fClassParam cp : cpList) {
+					cp.accept(this);
+				}
+			}
+		}
+		if(cps.getImplicitParams().isPresent()) {
+			for(fClassParam cp : cps.getImplicitParams().get()){
+				cp.accept(this);
+			}
+		}
 	}
 
 	@Override
@@ -334,24 +347,21 @@ public class LangAstVisitor extends AstNodVisitor  {
 	@Override
 	public void visit(fBlock node) {
 		System.out.println("Visiting Block Node");
-		for(AstNod s: node.getStatements()) {
-			s.accept(this);
+		if(node.getStmts().isPresent()) {
+			for(AstNod s: node.getStmts().get()) {
+				s.accept(this);
+			}
 		}
-	}
-
-	@Override
-	public void visit(AstSubTreeNod node) {
-		System.out.println("Visiting SubTree Node " + node);
 	}
 
 	@Override
 	public void visit(AstProdSubTreeN node) {
 		System.out.println("Visiting Prod SubTree Node: " + node);
-		if(node.rootOpNod.getAstLeftN() != null) {
-			node.rootOpNod.getAstLeftN().accept(this);
+		if(node.getRootOpNod().getAstLeftN() != null) {
+			node.getRootOpNod().getAstLeftN().accept(this);
 		}
-		if(node.rootOpNod.getAstRightN() != null) {
-			node.rootOpNod.getAstRightN().accept(this);
+		if(node.getRootOpNod().getAstRightN() != null) {
+			node.getRootOpNod().getAstRightN().accept(this);
 		}
 	}
 }

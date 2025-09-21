@@ -17,10 +17,10 @@ public class fClassParamClauses extends AstOperandNod  {
 		this.implicitParams = Optional.of(implicitParams);
 	}
 
-	public void addParams(List<fClassParam> params) {
-		if (params == null || params.isEmpty()) throw new IllegalArgumentException("Parameters cannot be null or empty");
+	public void addParams(List<fClassParam> ps) {
+		if (ps == null || ps.isEmpty()) throw new IllegalArgumentException("Parameters cannot be null or empty");
 		if (!this.params.isPresent()) this.params = Optional.of(new ArrayList<>());
-		this.params.get().add(params);
+		this.params.get().add(ps);
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class fClassParamClauses extends AstOperandNod  {
 		v.visit(this);
 	}
 
-	public Optional<List <fClassParam>> getImplicitParams() {
+	public Optional<List<fClassParam>> getImplicitParams() {
 		return implicitParams;
 	}
 
