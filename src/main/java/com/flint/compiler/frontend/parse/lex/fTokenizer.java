@@ -238,6 +238,7 @@ public class fTokenizer {
 	}
 
 	private void scanLiteralString(int pos) {
+		assert reader.ch == '\"';
 		reader.scanChar();
 		while (reader.ch != '\"' && reader.ch != CR && reader.ch != LF && reader.bp < reader.buflen)
 			scanLitChar(pos);
