@@ -24,4 +24,12 @@ public class fParamClauses extends AstOperandNod {
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
 	}
+
+	@Override
+	public String toString() {
+		return "fParamClauses{" +
+				"paramsLists=" + paramsLists +
+				", implicitParams=" + implicitParams +
+				'}';
+	}
 }

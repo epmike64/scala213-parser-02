@@ -231,7 +231,7 @@ public class LangAstVisitor extends AstNodVisitor  {
 	}
 
 	@Override
-	public void visit(fParamTypeList node) {
+	public void visit(fParamTypes node) {
 		System.out.println("Visiting Param Type List");
 	}
 

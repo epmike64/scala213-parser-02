@@ -15,4 +15,13 @@ public class fParamType extends fType{
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
 	}
+
+	@Override
+	public String toString() {
+		return "fParamType{" +
+				"astProdSubTreeN=" + astProdSubTreeN +
+				", isFatArrow=" + isFatArrow +
+				", isStar=" + isStar +
+				'}';
+	}
 }

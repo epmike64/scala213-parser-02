@@ -51,4 +51,8 @@ public abstract class fLiteral extends AstOperandNod {
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
 	}
+
+	public fToken getToken() {
+		return token;
+	}
 }

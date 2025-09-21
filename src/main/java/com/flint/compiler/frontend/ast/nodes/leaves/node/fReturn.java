@@ -14,4 +14,15 @@ public class fReturn extends AstOperandNod {
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
 	}
+
+	public AstProdSubTreeN getExpr() {
+		return expr;
+	}
+
+	@Override
+	public String toString() {
+		return "fReturn{" +
+				"expr=" + expr +
+				'}';
+	}
 }

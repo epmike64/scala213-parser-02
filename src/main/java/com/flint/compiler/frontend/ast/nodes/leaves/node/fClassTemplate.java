@@ -26,4 +26,12 @@ public class fClassTemplate extends fTemplateBody {
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
 	}
+
+	@Override
+	public String toString() {
+		return "fClassTemplate{" +
+				"parents=" + parents +
+				", isTrait=" + isTrait +
+				'}';
+	}
 }

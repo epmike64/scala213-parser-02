@@ -26,4 +26,12 @@ public class fClassConstr extends AstOperandNod {
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
 	}
+
+	@Override
+	public String toString() {
+		return "fClassConstr{" +
+				"fParamType=" + fParamType +
+				", args=" + args +
+				'}';
+	}
 }

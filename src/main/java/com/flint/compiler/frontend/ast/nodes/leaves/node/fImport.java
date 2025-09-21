@@ -41,4 +41,15 @@ public class fImport extends AstOperandNod {
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
 	}
+
+	public List<fImportExpr> getImportExprs() {
+		return importExprs;
+	}
+
+	@Override
+	public String toString() {
+		return "fImport{" +
+				"importExprs=" + importExprs +
+				'}';
+	}
 }

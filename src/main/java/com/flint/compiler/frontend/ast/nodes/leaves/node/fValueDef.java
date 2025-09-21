@@ -13,4 +13,14 @@ public class fValueDef extends fValue  {
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
 	}
+
+	@Override
+	public String toString() {
+		return "fValueDef{" +
+				"modifiers=" + modifiers +
+				", id=" + names +
+				", type=" + type +
+				", expr=" + assignExpr +
+				'}';
+	}
 }

@@ -26,4 +26,12 @@ public class fConstrBlock extends AstOperandNod {
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
 	}
+
+	@Override
+	public String toString() {
+		return "fConstrBlock{" +
+				"argExprs=" + argExprs +
+				", blockStatements=" + blockStatements +
+				'}';
+	}
 }

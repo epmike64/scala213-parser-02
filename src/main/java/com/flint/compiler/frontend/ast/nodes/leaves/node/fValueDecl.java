@@ -10,4 +10,14 @@ public class fValueDecl extends fValue{
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
 	}
+
+	@Override
+	public String toString() {
+		return "fValueDecl{" +
+				"modifiers=" + modifiers +
+				", id=" + names +
+				", type=" + type +
+				", expr=" + assignExpr +
+				'}';
+	}
 }

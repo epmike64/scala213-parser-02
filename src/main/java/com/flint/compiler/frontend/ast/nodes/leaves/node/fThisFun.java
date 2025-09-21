@@ -22,4 +22,21 @@ public class fThisFun extends fFun {
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
 	}
+
+	public fParamClauses getParamClauses() {
+		return paramClauses;
+	}
+
+	public fConstrBlock getConstructorBlock() {
+		return constructorBlock;
+	}
+
+	@Override
+	public String toString() {
+		return "fThisFun{" +
+				"mods=" + mods +
+				", paramClauses=" + paramClauses +
+				", constructorBlock=" + constructorBlock +
+				'}';
+	}
 }

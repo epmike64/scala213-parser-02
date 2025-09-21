@@ -41,4 +41,14 @@ public class fObject extends AstOperandNod  {
 	public fModifiers getModifiers() {
 		return modifiers;
 	}
+
+	@Override
+	public String toString() {
+		return "fObject{" +
+				"isCaseClass=" + isCaseClass +
+				", name=" + name +
+				", extendsTemplate=" + extendsTemplate +
+				", modifiers=" + modifiers +
+				'}';
+	}
 }

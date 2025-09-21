@@ -23,4 +23,11 @@ public class fTemplateBody extends AstOperandNod  {
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
 	}
+
+	@Override
+	public String toString() {
+		return "fTemplateBody{" +
+				"stmts=" + stmts +
+				'}';
+	}
 }

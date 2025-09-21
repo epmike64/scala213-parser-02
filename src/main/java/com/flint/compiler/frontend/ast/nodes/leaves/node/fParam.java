@@ -24,4 +24,22 @@ public class fParam extends AstOperandNod {
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
 	}
+
+	public fNamedToken getName() {
+		return name;
+	}
+	public fParamType getParamType() {
+		return paramType;
+	}
+	public AstProdSubTreeN getDefaultValue() {
+		return defaultValue;
+	}
+	@Override
+	public String toString() {
+		return "fParam{" +
+				"name=" + name +
+				", paramType=" + paramType +
+				", defaultValue=" + defaultValue +
+				'}';
+	}
 }

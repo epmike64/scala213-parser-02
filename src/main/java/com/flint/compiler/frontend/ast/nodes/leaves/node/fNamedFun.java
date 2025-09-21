@@ -37,4 +37,14 @@ public class fNamedFun extends fFun {
 	public AstOperandNod getBody() {
 		return body;
 	}
+
+	@Override
+	public String toString() {
+		return "fNamedFun{" +
+				"mods=" + mods +
+				", funSig=" + funSig +
+				", returnType=" + returnType +
+				", body=" + body +
+				'}';
+	}
 }

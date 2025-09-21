@@ -68,4 +68,21 @@ public class fStableId extends AstOperandNod {
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
 	}
+
+	public boolean isPath() {
+		return isPath;
+	}
+
+	public boolean isKwType() {
+		return isKwType;
+	}
+
+	@Override
+	public String toString() {
+		return "fStableId{" +
+				"isPath=" + isPath +
+				", isKwType=" + isKwType +
+				", tpairs=" + tpairs +
+				'}';
+	}
 }

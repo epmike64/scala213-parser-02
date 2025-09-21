@@ -34,4 +34,13 @@ public class fModifiers extends AstOperandNod {
 	public void accept(com.flint.compiler.frontend.ast.nodes.AstNodVisitor v) {
 		v.visit(this);
 	}
+
+	@Override
+	public String toString() {
+		return "fModifiers{" +
+				"accessModifier=" + accessModifier +
+				", overrideModifier=" + overrideModifier +
+				", localModifier=" + localModifier +
+				'}';
+	}
 }

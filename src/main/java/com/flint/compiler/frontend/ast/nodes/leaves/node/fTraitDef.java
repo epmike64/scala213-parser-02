@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class fTraitDef extends AstOperandNod {
-	private final fNamedToken name;
-	private final fModifiers modifiers;
-	private final List<fVariantTypeParam> typeParams = new ArrayList<>();
+	protected final fNamedToken name;
+	protected final fModifiers modifiers;
+	protected final List<fVariantTypeParam> typeParams = new ArrayList<>();
 	protected fTemplateBody extendsTemplate;
 
 	public fTraitDef(fNamedToken name, fModifiers modifiers) {
@@ -46,4 +46,13 @@ public class fTraitDef extends AstOperandNod {
 		return modifiers;
 	}
 
+	@Override
+	public String toString() {
+		return "fTraitDef{" +
+				"name=" + name +
+				", modifiers=" + modifiers +
+				", typeParams=" + typeParams +
+				", extendsTemplate=" + extendsTemplate +
+				'}';
+	}
 }

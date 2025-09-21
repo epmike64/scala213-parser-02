@@ -35,4 +35,16 @@ public class fClassDef extends fTraitDef {
 	public fClassParamClauses getClassParamClauses() {
 		return classParamClauses;
 	}
+
+	@Override
+	public String toString() {
+		return "fClassDef{" +
+				"isCaseClass=" + isCaseClass +
+				", classParamClauses=" + classParamClauses +
+				", constructorAccessModifier=" + constructorAccessModifier +
+				", name=" + name +
+				", modifiers=" + modifiers +
+				", typeParams=" + typeParams +
+				'}';
+	}
 }

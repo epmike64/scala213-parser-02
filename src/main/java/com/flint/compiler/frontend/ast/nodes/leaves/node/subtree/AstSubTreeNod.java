@@ -14,6 +14,6 @@ public class AstSubTreeNod extends AstOperandNod {
 
 	@Override
 	public void accept(AstNodVisitor visitor) {
-
+		visitor.visit(this);
 	}
 }

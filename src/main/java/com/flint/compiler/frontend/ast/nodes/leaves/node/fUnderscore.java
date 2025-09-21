@@ -14,4 +14,8 @@ public class fUnderscore extends AstOperandNod {
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
 	}
+
+	public fToken getName() {
+		return name;
+	}
 }

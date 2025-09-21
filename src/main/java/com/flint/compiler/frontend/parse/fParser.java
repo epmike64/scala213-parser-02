@@ -221,7 +221,7 @@ public class fParser {
 			case AST_ROOT_OPERATOR: case AST_OPERATOR: {
 				h.accept(fTokenKind.T_LPAREN);
 				List<fParamType> ps = paramTypes(isSimpleType);
-				a.setRight(new fParamTypeList(ps));
+				a.setRight(new fParamTypes(ps));
 				h.accept(fTokenKind.T_RPAREN);
 				break;
 			}

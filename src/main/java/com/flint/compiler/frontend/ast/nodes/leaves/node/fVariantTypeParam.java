@@ -25,4 +25,12 @@ public class fVariantTypeParam extends fTypeParam {
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
 	}
+
+	@Override
+	public String toString() {
+		return "fVariantTypeParam{" +
+				"variance=" + variance +
+				", name=" + name +
+				'}';
+	}
 }

@@ -7,9 +7,9 @@ import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
 import java.util.List;
 
 public class fTypeParam extends AstOperandNod {
-	private fNamedToken name;
-	private List<fVariantTypeParam> variantTypeParams;
-	private fType type, lowerBound, upperBound;
+	protected fNamedToken name;
+	protected List<fVariantTypeParam> variantTypeParams;
+	protected fType type, lowerBound, upperBound;
 	public fTypeParam(fNamedToken name) {
 		this.name = name;
 	}
@@ -30,5 +30,16 @@ public class fTypeParam extends AstOperandNod {
 	@Override
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
+	}
+
+	@Override
+	public String toString() {
+		return "fTypeParam{" +
+				"name=" + name +
+				", variantTypeParams=" + variantTypeParams +
+				", type=" + type +
+				", lowerBound=" + lowerBound +
+				", upperBound=" + upperBound +
+				'}';
 	}
 }

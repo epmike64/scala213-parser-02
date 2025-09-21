@@ -13,4 +13,15 @@ public class fThrow extends AstOperandNod {
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
 	}
+
+	public AstOperandNod getExpr() {
+		return expr;
+	}
+
+	@Override
+	public String toString() {
+		return "fThrow{" +
+				"expr=" + expr +
+				'}';
+	}
 }

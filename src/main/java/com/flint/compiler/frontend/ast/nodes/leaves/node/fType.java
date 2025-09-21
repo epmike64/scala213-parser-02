@@ -15,4 +15,11 @@ public class fType extends AstOperandNod {
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
 	}
+
+	@Override
+	public String toString() {
+		return "fType{" +
+				"astProdSubTreeN=" + astProdSubTreeN +
+				'}';
+	}
 }

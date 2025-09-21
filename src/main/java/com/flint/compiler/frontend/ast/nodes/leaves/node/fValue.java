@@ -9,10 +9,10 @@ import java.util.List;
 
 public class fValue extends AstOperandNod {
 
-	private final fModifiers modifiers;
-	private final List<AstProdSubTreeN> names = new ArrayList<>();
-	private fType type;
-	private AstProdSubTreeN assignExpr;
+	protected final fModifiers modifiers;
+	protected final List<AstProdSubTreeN> names = new ArrayList<>();
+	protected fType type;
+	protected AstProdSubTreeN assignExpr;
 	public fValue(fModifiers modifiers) {
 		this.modifiers = modifiers;
 	}
@@ -45,5 +45,15 @@ public class fValue extends AstOperandNod {
 
 	public AstProdSubTreeN getAssignExpr() {
 		return assignExpr;
+	}
+
+	@Override
+	public String toString() {
+		return "fValue{" +
+				"modifiers=" + modifiers +
+				", names=" + names +
+				", type=" + type +
+				", assignExpr=" + assignExpr +
+				'}';
 	}
 }

@@ -31,4 +31,11 @@ public class fLocalModifier extends fModifier {
 	public int hashCode() {
 		return kind.hashCode();
 	}
+
+	@Override
+	public String toString() {
+		return "fLocalModifier{" +
+				"kind=" + kind +
+				'}';
+	}
 }

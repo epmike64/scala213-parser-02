@@ -18,4 +18,18 @@ public class fWhile extends AstOperandNod {
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
 	}
+
+	public AstProdSubTreeN getCondition() {
+		return condition;
+	}
+	public AstProdSubTreeN getBody() {
+		return body;
+	}
+	@Override
+	public String toString() {
+		return "fWhile{" +
+				"condition=" + condition +
+				", body=" + body +
+				'}';
+	}
 }

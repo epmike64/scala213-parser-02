@@ -34,7 +34,7 @@ public abstract class AstNodVisitor {
 	public abstract void visit(fTry node);
 	public abstract void visit(fGenerator node);
 	public abstract void visit(fClassParamClauses node);
-	public abstract void visit(fParamTypeList node);
+	public abstract void visit(fParamTypes node);
 	public abstract void visit(fThrow node);
 	public abstract void visit(fNamedFun node);
 	public abstract void visit(fThisFun node);
