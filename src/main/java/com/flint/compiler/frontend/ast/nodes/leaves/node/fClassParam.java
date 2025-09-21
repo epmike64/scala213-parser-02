@@ -6,13 +6,13 @@ import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstProdSubTreeN
 import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
 
 public class fClassParam extends AstOperandNod {
-	private fValVar valVar = fValVar.NONE;
+	private fMutabilityType mutability = fMutabilityType.NONE;
 	private fNamedToken identifier;
 	private fParamType paramType;
 	private AstProdSubTreeN defaultValue;
 	private fModifiers modifiers;
-	public  void  setValVar(fValVar valVar) {
-		this.valVar = valVar;
+	public  void setMutability(fMutabilityType mutability) {
+		this.mutability = mutability;
 	}
 	public void setIdentifier(fNamedToken identifier) {
 		this.identifier = identifier;

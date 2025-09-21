@@ -1020,17 +1020,17 @@ public class fParser {
 
 		switch (h.tKnd()) {
 			case T_VAL: {
-				p.setValVar(fValVar.VAL);
+				p.setMutability(fMutabilityType.VAL);
 				h.next();
 				break;
 			}
 			case T_VAR: {
-				p.setValVar(fValVar.VAR);
+				p.setMutability(fMutabilityType.VAR);
 				h.next();
 				break;
 			}
 			default:
-				p.setValVar(fValVar.NONE);
+				p.setMutability(fMutabilityType.NONE);
 				break;
 		}
 		p.setIdentifier((fNamedToken) h.accept(T_ID));
@@ -1434,7 +1434,7 @@ public class fParser {
 
 	fValue varDef(fModifiers mods) {
 		// patDef() + "ids: Type = _"
-		return patDef(false, mods);
+		return patDef(fMutabilityType.VAR, mods);
 	}
 
 
@@ -1489,10 +1489,20 @@ public class fParser {
 		return new AstProdSubTreeN(GrmPrd.PATTERN_1, a);
 	}
 
-	fValue patDef(boolean isVal, fModifiers mods) {
+	fValue patDef(fMutabilityType mutabilityType, fModifiers mods) {
 		fValue value;
-		if(isVal) value = new fValueDef(mods);
-		else  value = new fValueDecl(mods);
+		switch (mutabilityType){
+			case VAL: {
+				value = new fValueDef(mods);
+				break;
+			}
+			case VAR: {
+				value = new fValueDecl(mods);
+				break;
+			}
+			default:
+				throw new RuntimeException("Expected 'val' or 'var' but found: " + h.getToken());
+		}
 
 		while (true) {
 			value.addName(pattern2());
@@ -1801,7 +1811,7 @@ public class fParser {
 			}
 			case T_VAL: {
 				h.next();
-				return patDef(true, mods);
+				return patDef(fMutabilityType.VAL, mods);
 			}
 			case T_VAR: {
 				h.next();

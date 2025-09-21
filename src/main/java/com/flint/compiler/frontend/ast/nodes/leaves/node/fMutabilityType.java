@@ -1,5 +1,5 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
-public enum fValVar {
+public enum fMutabilityType {
 	VAL, VAR, NONE;
 }
