@@ -47,7 +47,7 @@ public class LangAstVisitor extends AstNodVisitor  {
 	@Override
 	public void visit(fClassDef cls) {
 		System.out.println("Visiting Class: " + cls);
-		if(cls.getModifiers() != null) {
+		if(cls.getModifiers().isPresent()) {
 			cls.getModifiers().get().accept(this);
 		}
 		if(cls.getTypeParams().isPresent()) {
@@ -75,8 +75,8 @@ public class LangAstVisitor extends AstNodVisitor  {
 	@Override
 	public void visit(fAccessModifier am) {
 		System.out.println("Visiting Access Modifier: " + am);
-		if(am.getQualifier() != null) {
-			am.getQualifier().accept(this);
+		if(am.getQualifier().isPresent()) {
+			am.getQualifier().get().accept(this);
 		}
 	}
 
@@ -212,8 +212,8 @@ public class LangAstVisitor extends AstNodVisitor  {
 	public void visit(fClassConstr cc) {
 		System.out.println("Visiting Class Constructor" + cc);
 		cc.getParamType().accept(this);
-		if(cc.getArgs() != null) {
-			cc.getArgs().accept(this);
+		if(cc.getArgs().isPresent()) {
+			cc.getArgs().get().accept(this);
 		}
 	}
 
@@ -323,11 +323,11 @@ public class LangAstVisitor extends AstNodVisitor  {
 	public void visit(fNamedFun f) {
 		System.out.println("Visiting Named Fun: " + f);
 		f.getFunSig().accept(this);
-		if(f.getReturnType() != null) {
-			f.getReturnType().accept(this);
+		if(f.getReturnType().isPresent()) {
+			f.getReturnType().get().accept(this);
 		}
-		if(f.getBody() != null) {
-			f.getBody().accept(this);
+		if(f.getBody().isPresent()) {
+			f.getBody().get().accept(this);
 		}
 	}
 

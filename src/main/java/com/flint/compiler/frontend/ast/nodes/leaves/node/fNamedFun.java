@@ -2,27 +2,29 @@ package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
-import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstProdSubTreeN;
-import com.flint.compiler.frontend.parse.lex.token.OpChar;
 
 import java.util.Optional;
 
 public class fNamedFun extends fFun {
 	private final fFunSig funSig;
-	private fType returnType;
-	private AstOperandNod body;
+	private Optional<fType> returnType = Optional.empty();
+	private Optional<AstOperandNod> bd = Optional.empty();
 
 	public fNamedFun(Optional<fModifiers> mods, fFunSig funSig) {
 		super(mods);
 		this.funSig = funSig;
 	}
 
-	public void setReturnType(fType returnType) {
-		this.returnType = returnType;
+	public void setReturnType(fType rt) {
+		if(this.returnType.isPresent()) {throw new IllegalStateException("Return type already set");}
+		if(rt == null) throw new IllegalArgumentException("Return type cannot be null");
+		this.returnType = Optional.of(rt);
 	}
 
-	public void setBody(AstOperandNod body) {
-		this.body = body;
+	public void setBody(AstOperandNod bd) {
+		if(this.bd.isPresent()) throw new IllegalStateException("Body already set");
+		if(bd == null) throw new IllegalArgumentException("Body cannot be null");
+		this.bd = Optional.of(bd);
 	}
 
 	@Override
@@ -34,11 +36,11 @@ public class fNamedFun extends fFun {
 		return funSig;
 	}
 
-	public fType getReturnType() {
+	public Optional<fType> getReturnType() {
 		return returnType;
 	}
-	public AstOperandNod getBody() {
-		return body;
+	public Optional<AstOperandNod> getBody() {
+		return bd;
 	}
 
 	@Override
@@ -47,7 +49,7 @@ public class fNamedFun extends fFun {
 				"mods=" + getMods() +
 				", funSig=" + funSig +
 				", returnType=" + returnType +
-				", body=" + body +
+				", body=" + bd +
 				'}';
 	}
 }
