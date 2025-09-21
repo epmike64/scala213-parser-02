@@ -326,7 +326,7 @@ public class LangAstVisitor extends AstNodVisitor  {
 
 	@Override
 	public void visit(AstSubTreeNod node) {
-
+		System.out.println("Visiting SubTree Node");
 	}
 
 	@Override

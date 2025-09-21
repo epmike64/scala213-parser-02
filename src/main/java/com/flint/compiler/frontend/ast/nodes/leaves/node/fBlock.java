@@ -8,7 +8,7 @@ import java.util.List;
 
 public class fBlock extends AstOperandNod {
 	private final List<AstNod> statements = new java.util.ArrayList<>();
-	public void add(AstNod statement) {
+	public void addStmt(AstNod statement) {
 		assert statement != null;
 		this.statements.add(statement);
 	}

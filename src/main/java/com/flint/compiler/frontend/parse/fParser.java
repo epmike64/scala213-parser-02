@@ -497,7 +497,7 @@ public class fParser {
 				h.accept(fTokenKind.T_LPAREN);
 				fWhile ff = new fWhile(expr(null));
 				h.accept(T_RPAREN);
-				h.skipNL();
+
 				ff.setWhileBody(expr(null));
 				return ff;
 			}
@@ -639,7 +639,7 @@ public class fParser {
 			fGenerator g = new fGenerator(p1, isCase);
 			gens.add(g);
 			h.accept(fTokenKind.T_IN);
-			g.setInitExpr(expr(null));
+			g.setInExpr(expr(null));
 			innerLoop:
 			while (true) {
 				h.skipSemi();
@@ -928,7 +928,7 @@ public class fParser {
 				case T_IF: case T_WHILE: case T_FOR: case T_TRY: case T_THROW: case T_RETURN: case T_NEW:
 				case T_LCURL: case T_LPAREN: case T_ID: case T_THIS: case T_SUPER: case T_INT_LIT: case T_FLOAT_LIT:
 				case T_STRING_LIT: case T_CHAR_LIT: case T_NULL: case T_TRUE: case T_FALSE: {
-					block.add(blockOrTemplateStat());
+					block.addStmt(blockOrTemplateStmt());
 					h.skipSemi();
 					continue;
 				}
@@ -953,7 +953,7 @@ public class fParser {
 				case T_IF: case T_WHILE: case T_FOR: case T_TRY: case T_THROW: case T_RETURN: case T_NEW:
 				case T_LCURL: case T_LPAREN: case T_ID: case T_THIS: case T_SUPER: case T_INT_LIT: case T_FLOAT_LIT:
 				case T_STRING_LIT: case T_CHAR_LIT: case T_NULL: case T_TRUE: case T_FALSE: {
-					tb.addStmt(blockOrTemplateStat());
+					tb.addStmt(blockOrTemplateStmt());
 					h.skipSemi();
 					continue;
 				}
@@ -1285,7 +1285,7 @@ public class fParser {
 		while (true) {
 			h.skipSemi();
 			if (!h.isTkRParen()) {
-				cb.addBlockStat(blockOrTemplateStat());
+				cb.addBlockStat(blockOrTemplateStmt());
 			} else {
 				break;
 			}
@@ -1761,47 +1761,6 @@ public class fParser {
 		return selectors;
 	}
 
-//	fModifiers modifiers() {
-//		fModifiers mods = new fModifiers();
-//		loop:
-//		while (true) {
-//			switch (h.tKnd()) {
-//				case T_OVERRIDE:{
-//					mods.addModifier(h.next());
-//					break loop;
-//				}
-//				case T_ABSTRACT: case T_FINAL: case T_SEALED: case T_IMPLICIT: case T_LAZY:
-//				{
-//					mods.addModifier(h.next());
-//					continue;
-//				}
-//				case T_PROTECTED: case T_PRIVATE:{
-//					h.next();
-//					if(h.isTkLBracket()){
-//						int sz = h.pushNLEnabled(false);
-//						h.accept(T_LBRACKET);
-//						switch (h.tKnd()) {
-//							case T_ID: case T_THIS: {
-//								mods.addSpecialModifier(h.next());
-//								break;
-//							}
-//							default:
-//								throw new RuntimeException("Expected id or 'this' in access modifier but found: " + h.getToken());
-//						}
-//						h.popNLEnabled(sz, false);
-//						h.accept(T_RBRACKET);
-//					} else {
-//						mods.addModifier(h.next());
-//					}
-//					break loop;
-//				}
-//				default:
-//					break loop;
-//			}
-//		}
-//		return mods;
-//	}
-
 	AstOperandNod tmplDef(fModifiers mods){
 		boolean isCase = false;
 
@@ -1828,7 +1787,7 @@ public class fParser {
 		}
 	}
 
-	AstOperandNod blockOrTemplateStat() {
+	AstOperandNod blockOrTemplateStmt() {
 
 		if(h.isTkImport()){
 			return importClause();

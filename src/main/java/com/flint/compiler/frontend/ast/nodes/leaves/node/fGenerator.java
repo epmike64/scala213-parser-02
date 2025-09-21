@@ -13,8 +13,8 @@ public class fGenerator extends AstOperandNod {
 		this.casePattern1 = pattern1;
 		this.isCase = isCase;
 	}
-	public void setInitExpr(AstProdSubTreeN initExpr) {
-		this.inExpr = initExpr;
+	public void setInExpr(AstProdSubTreeN inExpr) {
+		this.inExpr = inExpr;
 	}
 	public void setGuard(AstProdSubTreeN guard) {
 		this.guard = guard;
