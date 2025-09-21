@@ -30,4 +30,20 @@ public class fValue extends AstOperandNod {
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
 	}
+
+	public List<AstProdSubTreeN> getNames() {
+		return names;
+	}
+
+	public fModifiers getModifiers() {
+		return modifiers;
+	}
+
+	public fType getType() {
+		return type;
+	}
+
+	public AstProdSubTreeN getAssignExpr() {
+		return assignExpr;
+	}
 }

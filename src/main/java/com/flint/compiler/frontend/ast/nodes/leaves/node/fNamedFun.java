@@ -7,7 +7,7 @@ import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstProdSubTreeN
 public class fNamedFun extends fFun {
 	private final fFunSig funSig;
 	private fType returnType;
-	private AstProdSubTreeN body;
+	private AstOperandNod body;
 
 	public fNamedFun(fModifiers mods, fFunSig funSig) {
 		super(mods);
@@ -18,12 +18,23 @@ public class fNamedFun extends fFun {
 		this.returnType = returnType;
 	}
 
-	public void setBody(AstProdSubTreeN body) {
+	public void setBody(AstOperandNod body) {
 		this.body = body;
 	}
 
 	@Override
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
+	}
+
+	public fFunSig getFunSig() {
+		return funSig;
+	}
+
+	public fType getReturnType() {
+		return returnType;
+	}
+	public AstOperandNod getBody() {
+		return body;
 	}
 }

@@ -12,9 +12,7 @@ import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
 import com.flint.compiler.frontend.parse.utils.Ast;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static com.flint.compiler.frontend.parse.lex.token.fTokenKind.*;
 
@@ -46,9 +44,9 @@ public class fParser {
 
 	fTypeArgs typeArgs() {
 		h.accept(T_LBRACKET);
-		AstProdSubTreeN types = types();
+		fTypeArgs args = types();
 		h.accept(T_RBRACKET);
-		return new fTypeArgs(types);
+		return args;
 	}
 
 	fParamType paramType(boolean isSimpleType) {
@@ -163,17 +161,17 @@ public class fParser {
 		}
 	}
 
-	AstProdSubTreeN types() {
-		Ast a = new Ast();
+	fTypeArgs types() {
+		List<fType> types = new ArrayList<>();
 		while (true) {
-			a.setRight(type());
+			types.add(type());
 			if (h.isTkComma()) {
-				h.insertOperator(a, fLangOperatorKind.O_COMMA, h.next());
+				h.next();
 				continue;
 			}
 			break;
 		}
-		return new AstProdSubTreeN(GrmPrd.TYPES, a);
+		return new fTypeArgs(types);
 	}
 
 	List<fParamType> paramTypes(boolean isSimpleType) {
@@ -241,7 +239,7 @@ public class fParser {
 		boolean isPlusMinus;
 		loop:
 		while (true) {
-			isPlusMinus = true;
+			isPlusMinus = false;
 			switch (h.tKnd()) {
 				case T_NEW: {
 					a.setRight(exprNEW());
@@ -914,8 +912,8 @@ public class fParser {
 		return new fClassTemplate(cp, isTrait);
 	}
 
-	AstProdSubTreeN block() {
-		Ast a = new Ast();
+	fBlock block() {
+		fBlock block = new fBlock();
 		loop:
 		while (true) {
 			switch (h.tKnd()) {
@@ -930,16 +928,15 @@ public class fParser {
 				case T_IF: case T_WHILE: case T_FOR: case T_TRY: case T_THROW: case T_RETURN: case T_NEW:
 				case T_LCURL: case T_LPAREN: case T_ID: case T_THIS: case T_SUPER: case T_INT_LIT: case T_FLOAT_LIT:
 				case T_STRING_LIT: case T_CHAR_LIT: case T_NULL: case T_TRUE: case T_FALSE: {
-					a.setRight(blockOrTemplateStat());
+					block.add(blockOrTemplateStat());
 					h.skipSemi();
-					h.insertStmtSepOper(a);
 					continue;
 				}
 				default:
 					break loop;
 			}
 		}
-		return new AstProdSubTreeN(GrmPrd.BLOCK, a);
+		return block;
 	}
 
 	fTemplateBody templateBody() {
@@ -1075,24 +1072,6 @@ public class fParser {
 		return trait;
 	}
 
-	Set<fLocalModifier> localModifiers(){
-		Set<fLocalModifier> lms = new HashSet<>();
-		loop:
-		while(true){
-			switch (h.tKnd()){
-				case T_ABSTRACT: case T_FINAL: case T_SEALED: case T_IMPLICIT: case T_LAZY:{
-					fLocalModifier lm = localModifier();
-					assert !lms.contains(lm) : "Multiple local modifiers of the same kind";
-					lms.add(lm);
-					continue loop;
-				}
-				default:
-					break loop;
-			}
-		}
-		return lms;
-	}
-
 	fLocalModifier localModifier(){
 		switch (h.tKnd()){
 			case T_ABSTRACT: {
@@ -1157,23 +1136,6 @@ public class fParser {
 			h.accept(T_RBRACKET);
 		}
 		assert am != null; return am;
-	}
-
-	fModifier modifier(){
-		switch (h.tKnd()) {
-			case T_ABSTRACT: case T_FINAL: case T_SEALED: case T_IMPLICIT: case T_LAZY: {
-				return localModifier();
-			}
-			case T_PRIVATE: case T_PROTECTED: {
-				return accessModifier();
-			}
-			case T_OVERRIDE: {
-				h.next();
-				return new fOverrideModifier();
-			}
-			default:
-				throw new RuntimeException("Expected modifier but found: " + h.getToken());
-		}
 	}
 
 	fModifiers modifiers(){
@@ -1592,9 +1554,11 @@ public class fParser {
 					break loop;
 				}
 				case T_LPAREN: {
+					if(a.astLastNKnd() == AstNodKind.AST_OPERAND){
+						h.insertOperator(a, fLangOperatorKind.O_PARENS, h.getToken());
+					}
 					int sz = h.pushNLEnabled(false);
 					h.accept(fTokenKind.T_LPAREN);
-					h.insertOperator(a, fLangOperatorKind.O_PARENS, h.getToken());
 					a.setRight(patterns());
 					h.popNLEnabled(sz, false);
 					h.accept(fTokenKind.T_RPAREN);

@@ -4,10 +4,14 @@ import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstProdSubTreeN;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class fTypeArgs extends AstOperandNod {
-	private final AstProdSubTreeN typeArgs;
-	public fTypeArgs(AstProdSubTreeN typeArgs) {
-		this.typeArgs = typeArgs;
+	private final List<fType> typeArgs = new ArrayList<>();
+	public fTypeArgs(List types) {
+		assert  types != null && !types.isEmpty();
+		this.typeArgs.addAll(types);
 	}
 
 	@Override

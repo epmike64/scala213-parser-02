@@ -24,4 +24,16 @@ public class fFunSig extends AstOperandNod {
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
 	}
+
+	public fNamedToken getName() {
+		return name;
+	}
+
+	public fParamClauses getParamClauses() {
+		return paramClauses;
+	}
+
+	public List<fTypeParam> getTypeParams() {
+		return typeParams;
+	}
 }

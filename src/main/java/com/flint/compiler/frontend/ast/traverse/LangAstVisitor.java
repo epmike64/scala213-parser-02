@@ -4,6 +4,8 @@ import com.flint.compiler.frontend.ast.nodes.AstNod;
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperatorNod;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.*;
+import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstProdSubTreeN;
+import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstSubTreeNod;
 import com.flint.compiler.frontend.parse.fCompilationUnit;
 
 public class LangAstVisitor extends AstNodVisitor  {
@@ -170,12 +172,30 @@ public class LangAstVisitor extends AstNodVisitor  {
 
 	@Override
 	public void visit(fValueDef node) {
-
+		node.getModifiers().accept(this);
+		for(AstProdSubTreeN name: node.getNames()) {
+			name.accept(this);
+		}
+		if(node.getType() != null) {
+			node.getType().accept(this);
+		}
+		if(node.getAssignExpr() != null) {
+			node.getAssignExpr().accept(this);
+		}
 	}
 
 	@Override
-	public void visit(fFunSig node) {
+	public void visit(fFunSig s) {
+		s.getName();
+		if(s.getTypeParams() != null){
+			for(fTypeParam tp: s.getTypeParams()) {
+				tp.accept(this);
+			}
+		}
 
+		if(s.getParamClauses() != null) {
+			s.getParamClauses().accept(this);
+		}
 	}
 
 	@Override
@@ -237,11 +257,6 @@ public class LangAstVisitor extends AstNodVisitor  {
 	}
 
 	@Override
-	public void visit(fFun node) {
-
-	}
-
-	@Override
 	public void visit(fParamClauses node) {
 
 	}
@@ -253,7 +268,12 @@ public class LangAstVisitor extends AstNodVisitor  {
 
 	@Override
 	public void visit(AstOperatorNod node) {
-
+		if(node.getAstLeftN() != null) {
+			node.getAstLeftN().accept(this);
+		}
+		if(node.getAstRightN() != null) {
+			node.getAstRightN().accept(this);
+		}
 	}
 
 	@Override
@@ -263,7 +283,7 @@ public class LangAstVisitor extends AstNodVisitor  {
 
 	@Override
 	public void visit(fStableId node) {
-
+		System.out.println("Visiting StableId: " + node);
 	}
 
 	@Override
@@ -286,5 +306,36 @@ public class LangAstVisitor extends AstNodVisitor  {
 
 	}
 
+	@Override
+	public void visit(fNamedFun f) {
+		f.getFunSig().accept(this);
+		if(f.getReturnType() != null) {
+			f.getReturnType().accept(this);
+		}
+		if(f.getBody() != null) {
+			f.getBody().accept(this);
+		}
+	}
 
+	@Override
+	public void visit(fBlock node) {
+		for(AstNod s: node.getStatements()) {
+			s.accept(this);
+		}
+	}
+
+	@Override
+	public void visit(AstSubTreeNod node) {
+
+	}
+
+	@Override
+	public void visit(AstProdSubTreeN node) {
+		if(node.rootOpNod.getAstLeftN() != null) {
+			node.rootOpNod.getAstLeftN().accept(this);
+		}
+		if(node.rootOpNod.getAstRightN() != null) {
+			node.rootOpNod.getAstRightN().accept(this);
+		}
+	}
 }

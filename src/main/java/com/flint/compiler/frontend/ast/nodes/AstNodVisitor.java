@@ -2,6 +2,8 @@ package com.flint.compiler.frontend.ast.nodes;
 
 import com.flint.compiler.frontend.ast.nodes.leaves.node.fPackage;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.*;
+import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstProdSubTreeN;
+import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstSubTreeNod;
 import com.flint.compiler.frontend.parse.fCompilationUnit;
 
 public abstract class AstNodVisitor {
@@ -34,12 +36,12 @@ public abstract class AstNodVisitor {
 	public abstract void visit(fClassParamClauses node);
 	public abstract void visit(fParamTypeList node);
 	public abstract void visit(fThrow node);
+	public abstract void visit(fNamedFun node);
 	public abstract void visit(fThisFun node);
 	public abstract void visit(fTypeDef node);
 	public abstract void visit(fTypeParam node);
 	public abstract void visit(fUnderscore node);
 	public abstract void visit(fValue node);
-	public abstract void visit(fFun node);
 	public abstract void visit(fParamClauses node);
 	public abstract void visit(fConstrBlock node);
 	public abstract void visit(AstOperatorNod node);
@@ -54,6 +56,9 @@ public abstract class AstNodVisitor {
 	public abstract void visit(fAccessQualifier node);
 	public abstract void visit(fLocalModifier node);
 	public abstract void visit(fOverrideModifier node);
+	public abstract void visit(fBlock node);
+	public abstract void visit(AstProdSubTreeN node);
+	public abstract void visit(AstSubTreeNod node);
 
 
 

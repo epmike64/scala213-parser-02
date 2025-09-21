@@ -10,16 +10,12 @@ public class fCaseClauses extends AstOperandNod {
 
 	public static class fCaseClause {
 		private final AstProdSubTreeN pattern;
-		private AstProdSubTreeN guard, block;
+		private AstOperandNod guard, block;
 		public fCaseClause(AstProdSubTreeN pattern) {
 			this.pattern = pattern;
 		}
-		public void setGuard(AstProdSubTreeN guard) {
-			this.guard = guard;
-		}
-		public void setBlock(AstProdSubTreeN block) {
-			this.block = block;
-		}
+		public void setGuard(AstOperandNod guard) { this.guard = guard;}
+		public void setBlock(AstOperandNod block) {this.block = block;}
 	}
 	private final List<fCaseClause> caseClauses;
 	public fCaseClauses(List<fCaseClause> caseClauses) {
@@ -27,7 +23,5 @@ public class fCaseClauses extends AstOperandNod {
 	}
 
 	@Override
-	public void accept(AstNodVisitor v) {
-		v.visit(this);
-	}
+	public void accept(AstNodVisitor v) { v.visit(this);}
 }
