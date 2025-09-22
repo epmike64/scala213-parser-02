@@ -47,7 +47,7 @@ public class LangAstVisitor extends AstNodVisitor  {
 
 	@Override
 	public void visit(fClassDef cls) {
-		System.out.println("Visiting Class: " + cls);
+		System.out.println(cls.getName());
 		if(cls.getModifiers().isPresent()) {
 			cls.getModifiers().get().accept(this);
 		}
@@ -68,8 +68,17 @@ public class LangAstVisitor extends AstNodVisitor  {
 	}
 
 	@Override
-	public void visit(fVariantTypeParam node) {
-		System.out.println("Visiting Variant Type Param: " + node);
+	public void visit(fVariantTypeParam p) {
+		System.out.println(p.getName());
+		if(p.getType() != null) {
+			p.getType().accept(this);
+		}
+		if(p.getUpperBound() != null) {
+			p.getUpperBound().accept(this);
+		}
+		if(p.getLowerBound() != null) {
+			p.getLowerBound().accept(this);
+		}
 	}
 
 	@Override
@@ -86,13 +95,13 @@ public class LangAstVisitor extends AstNodVisitor  {
 	}
 
 	@Override
-	public void visit(fLocalModifier node) {
-		System.out.println("Visiting Local Modifier: " + node);
+	public void visit(fLocalModifier m) {
+		System.out.println("Visiting Local Modifier: " + m.getModifierType());
 	}
 
 	@Override
 	public void visit(fOverrideModifier node) {
-		System.out.println("Visiting Override Modifier: " + node);
+		System.out.println("Visiting Override Modifier: ");
 	}
 
 	@Override

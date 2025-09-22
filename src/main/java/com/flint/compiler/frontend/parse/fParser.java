@@ -1059,23 +1059,23 @@ public class fParser {
 		switch (h.tKnd()){
 			case T_ABSTRACT: {
 				h.next();
-				return new fLocalModifier(fLocalModifier.LocalModKind.ABSTRACT);
+				return new fLocalModifier(modTy.ABSTRACT);
 			}
 			case T_FINAL: {
 				h.next();
-				return new fLocalModifier(fLocalModifier.LocalModKind.FINAL);
+				return new fLocalModifier(modTy.FINAL);
 			}
 			case T_SEALED: {
 				h.next();
-				return new fLocalModifier(fLocalModifier.LocalModKind.SEALED);
+				return new fLocalModifier(modTy.SEALED);
 			}
 			case T_IMPLICIT: {
 				h.next();
-				return new fLocalModifier(fLocalModifier.LocalModKind.IMPLICIT);
+				return new fLocalModifier(modTy.IMPLICIT);
 			}
 			case T_LAZY: {
 				h.next();
-				return new fLocalModifier(fLocalModifier.LocalModKind.LAZY);
+				return new fLocalModifier(modTy.LAZY);
 			}
 			default:
 				throw new RuntimeException("Expected local modifier but found: " + h.getToken());
@@ -1087,12 +1087,12 @@ public class fParser {
 		switch(h.tKnd()) {
 			case T_PROTECTED: {
 				h.next();
-				am = new fAccessModifier(fAccessModifier.AccessModKind.PROTECTED);
+				am = new fAccessModifier(modTy.PROTECTED);
 				break;
 			}
 			case T_PRIVATE: {
 				h.next();
-				am = new fAccessModifier(fAccessModifier.AccessModKind.PRIVATE);
+				am = new fAccessModifier(modTy.PRIVATE);
 				break;
 			}
 			default:
