@@ -17,6 +17,10 @@ public class fCaseClauses extends AstOperandNod {
 	@Override
 	public void accept(AstNodVisitor v) { v.visit(this);}
 
+	public List<fCaseClause> getCaseClauses() {
+		return caseClauses;
+	}
+
 	@Override
 	public String toString() {
 		return "fCaseClauses{" +

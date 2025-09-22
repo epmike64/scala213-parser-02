@@ -15,4 +15,13 @@ public class fIds extends AstOperandNod {
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
 	}
+	public List<fNamedToken> getIds() {
+		return ids;
+	}
+	@Override
+	public String toString() {
+		return "fIds{" +
+				"ids=" + ids +
+				'}';
+	}
 }

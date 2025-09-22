@@ -33,4 +33,16 @@ public class fTypeDef extends AstOperandNod {
 				", assignedType=" + assignedType +
 				'}';
 	}
+
+	public String getName() {
+		return name.getName();
+	}
+
+	public List<fVariantTypeParam> getTypeParams() {
+		return typeParams;
+	}
+	public fType getAssignedType() {
+		return assignedType;
+	}
+
 }

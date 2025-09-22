@@ -19,6 +19,10 @@ public class fTypeArgs extends AstOperandNod {
 		v.visit(this);
 	}
 
+	public List<fType> getTypeArgs() {
+		return typeArgs;
+	}
+
 	@Override
 	public String toString() {
 		return "fTypeArgs{" +

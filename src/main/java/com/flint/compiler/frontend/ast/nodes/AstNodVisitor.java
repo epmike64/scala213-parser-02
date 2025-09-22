@@ -58,4 +58,5 @@ public abstract class AstNodVisitor {
 	public abstract void visit(fBlock node);
 	public abstract void visit(AstProdSubTreeN node);
 	public abstract void visit(fTemplate node);
+	public abstract void visit(fCaseClause node);
 }

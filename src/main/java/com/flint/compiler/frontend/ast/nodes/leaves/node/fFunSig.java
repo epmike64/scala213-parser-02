@@ -15,14 +15,14 @@ public class fFunSig extends AstOperandNod {
 	public fFunSig(fNamedToken name) {
 		this.name = name;
 	}
-	public void setParamClauses(fParamClauses paramClauses) {
+	public void setParamClauses(fParamClauses pc) {
 		if(this.paramClauses.isPresent()) {
 			throw new IllegalStateException("Parameter clauses already set");
 		}
-		if (paramClauses == null) {
+		if (pc == null) {
 			throw new IllegalArgumentException("Parameter clauses cannot be null");
 		}
-		this.paramClauses = Optional.of(paramClauses);
+		this.paramClauses = Optional.of(pc);
 	}
 	public void setTypeParams(List<fTypeParam> typeParams) {
 		if(this.typeParams.isPresent()) {

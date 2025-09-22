@@ -29,7 +29,7 @@ public class fThisFun extends fFun {
 		return paramClauses;
 	}
 
-	public fConstrBlock getConstructorBlock() {
+	public fConstrBlock getConstrBlock() {
 		return constructorBlock;
 	}
 
