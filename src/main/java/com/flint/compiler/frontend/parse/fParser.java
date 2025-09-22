@@ -4,6 +4,7 @@ import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 import com.flint.compiler.frontend.ast.nodes.kinds.AstNodKind;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.*;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.*;
+import com.flint.compiler.frontend.except.CompilationException;
 import com.flint.compiler.frontend.lang.grammar.GrmPrd;
 import com.flint.compiler.frontend.parse.lex.fLexer;
 import com.flint.compiler.frontend.parse.lex.token.fLangOperatorKind;
@@ -641,25 +642,27 @@ public class fParser {
 			g.setInExpr(expr(null));
 			innerLoop:
 			while (true) {
-				h.skipSemi();
+				boolean gotSemi = h.skipSemi();
 				switch (h.tKnd()) {
 					case T_CASE: {
+						if(!gotSemi) throw new CompilationException("Semi expected");
 						continue outerLoop;
 					}
 					case T_IF: {
 						h.next();
-						g.setGuard(postfixExpr());
+						g.addGuard(postfixExpr());
 						continue innerLoop;
 					}
 					case T_UNDERSCORE: case T_ID: case T_THIS: case T_SUPER: case T_LPAREN:
 					case T_INT_LIT: case T_FLOAT_LIT: case T_STRING_LIT: case T_CHAR_LIT: case T_TRUE: case T_FALSE:
 					case T_NULL: {
+						if(!gotSemi) continue outerLoop;
 						p1 = pattern1();
 						switch (h.tKnd()) {
 							case T_ASSIGN: {
-								g.setEndingPattern1(p1);
+								g.addEndingPattern1(p1);
 								h.accept(T_ASSIGN);
-								g.setEndingExpr(expr(null));
+								g.addEndingExpr(expr(null));
 								continue innerLoop;
 							}
 							case T_IN: {

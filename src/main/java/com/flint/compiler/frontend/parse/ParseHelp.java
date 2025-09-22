@@ -311,19 +311,20 @@ public class ParseHelp {
 		while (isTkNL()) next();
 	}
 
-	void skipSemi() {
+	boolean skipSemi() {
 		switch (token.kind) {
 			case T_SEMICOLON: {
 				next();
-				break;
+				return true;
 			}
 			case T_NL: {
 				while (isTkNL()) next();
-				break;
+				return true;
 			}
 			default:
 				break;
 		}
+		return false;
 	}
 
 	void expectOneOf(int la, fTokenKind... types) {

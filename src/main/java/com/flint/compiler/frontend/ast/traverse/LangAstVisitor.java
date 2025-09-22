@@ -154,8 +154,12 @@ public class LangAstVisitor extends AstNodVisitor  {
 	}
 
 	@Override
-	public void visit(fFor node) {
-		System.out.println("Visiting For Node" + node);
+	public void visit(fFor ff) {
+		System.out.println("Visiting For Node" + ff);
+		for(fGenerator g: ff.getGenerators()) {
+			g.accept(this);
+		}
+		ff.getExpr().accept(this);
 	}
 
 	@Override
@@ -250,8 +254,10 @@ public class LangAstVisitor extends AstNodVisitor  {
 	}
 
 	@Override
-	public void visit(fGenerator node) {
-		System.out.println("Visiting Generator Node " + node);
+	public void visit(fGenerator g) {
+		System.out.println("Visiting Generator Node " + g);
+		g.getCasePattern1().accept(this);
+
 	}
 
 	@Override
