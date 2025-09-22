@@ -12,7 +12,7 @@ public class fGenerator extends AstOperandNod {
 	private final boolean isCase;
 	private Optional<List<AstProdSubTreeN>> guards = Optional.empty();
 	private AstProdSubTreeN inExpr;
-	private Optional<List<AstProdSubTreeN>> endingPattern1s, endingExprs;
+	private Optional<List<AstProdSubTreeN>> endingPattern1s = Optional.empty(), endingExprs = Optional.empty();
 
 	public fGenerator(AstProdSubTreeN pattern1, boolean isCase) {
 		this.casePattern1 = pattern1;

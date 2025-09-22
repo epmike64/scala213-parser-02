@@ -9,7 +9,7 @@ import java.util.List;
 public class fFor extends AstOperandNod {
 	private final List<fGenerator> generators;
 	private boolean isYield = false;
-	private AstProdSubTreeN expr;
+	private AstProdSubTreeN yieldExpr;
 	public fFor(List<fGenerator> generators) {
 		assert generators != null && !generators.isEmpty() : "generators cannot be null or empty";
 		this.generators = generators;
@@ -17,9 +17,9 @@ public class fFor extends AstOperandNod {
 	public void setYield(boolean yield) {
 		isYield = yield;
 	}
-	public void setExpr(AstProdSubTreeN expr) {
-		assert expr != null : "expr cannot be null";
-		this.expr = expr;
+	public void setYieldExpr(AstProdSubTreeN yieldExpr) {
+		assert yieldExpr != null : "expr cannot be null";
+		this.yieldExpr = yieldExpr;
 	}
 
 	@Override
@@ -33,8 +33,8 @@ public class fFor extends AstOperandNod {
 	public boolean isYield() {
 		return isYield;
 	}
-	public AstProdSubTreeN getExpr() {
-		return expr;
+	public AstProdSubTreeN getYieldExpr() {
+		return yieldExpr;
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class fFor extends AstOperandNod {
 		return "fFor{" +
 				"generators=" + generators +
 				", isYield=" + isYield +
-				", expr=" + expr +
+				", yieldExpr=" + yieldExpr +
 				'}';
 	}
 }

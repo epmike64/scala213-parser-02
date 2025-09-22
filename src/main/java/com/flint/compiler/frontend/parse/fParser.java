@@ -590,7 +590,7 @@ public class fParser {
 					case T_LPAREN: {
 						int sz = h.pushNLEnabled(false);
 						h.accept(T_LPAREN);
-						f4 = new fFor(enumerators());
+						f4 = new fFor(generators());
 						h.popNLEnabled(sz, false);
 						h.accept(fTokenKind.T_RPAREN);
 						break;
@@ -598,7 +598,7 @@ public class fParser {
 					case T_LCURL: {
 						int sz = h.pushNLEnabled(true);
 						h.accept(T_LCURL);
-						f4 = new fFor(enumerators());
+						f4 = new fFor(generators());
 						h.popNLEnabled(sz, true);
 						h.accept(T_RCURL);
 						break;
@@ -606,12 +606,12 @@ public class fParser {
 					default:
 						throw new RuntimeException("Expected '(' or '{' after 'for' but found: " + h.getToken());
 				}
-
+				h.skipAllNLs();
 				if (h.isTkYield()) {
 					h.next();
 					f4.setYield(true);
 				}
-				f4.setExpr(expr(null));
+				f4.setYieldExpr(expr(null));
 				return f4;
 			}
 			default:
@@ -619,13 +619,9 @@ public class fParser {
 		}
 	}
 
-	List<fGenerator> enumerators() {
-		return generators();
-	}
-
 	List<fGenerator> generators() {
 		List<fGenerator> gens = new ArrayList<>();
-		AstProdSubTreeN p1 = null;
+
 		outerLoop:
 		while (true) {
 			boolean isCase = false;
@@ -633,10 +629,7 @@ public class fParser {
 				h.next();
 				isCase = true;
 			}
-			if (p1 == null) {
-				p1 = pattern1();
-			}
-			fGenerator g = new fGenerator(p1, isCase);
+			fGenerator g = new fGenerator(pattern1(), isCase);
 			gens.add(g);
 			h.accept(fTokenKind.T_IN);
 			g.setInExpr(expr(null));
@@ -656,21 +649,11 @@ public class fParser {
 					case T_UNDERSCORE: case T_ID: case T_THIS: case T_SUPER: case T_LPAREN:
 					case T_INT_LIT: case T_FLOAT_LIT: case T_STRING_LIT: case T_CHAR_LIT: case T_TRUE: case T_FALSE:
 					case T_NULL: {
-						if(!gotSemi) continue outerLoop;
-						p1 = pattern1();
-						switch (h.tKnd()) {
-							case T_ASSIGN: {
-								g.addEndingPattern1(p1);
-								h.accept(T_ASSIGN);
-								g.addEndingExpr(expr(null));
-								continue innerLoop;
-							}
-							case T_IN: {
-								continue outerLoop;
-							}
-							default:
-								throw new RuntimeException("Expected '=' or 'in' but found: " + h.getToken());
-						}
+						if(gotSemi) continue outerLoop;
+						g.addEndingPattern1(pattern1());
+						h.accept(T_ASSIGN);
+						g.addEndingExpr(expr(null));
+						continue innerLoop;
 					}
 					default:
 						break outerLoop;
@@ -1551,7 +1534,7 @@ public class fParser {
 		while (true) {
 			switch (h.tKnd()) {
 				case T_UNDERSCORE:{
-					h.next();
+					a.setRight(new fUnderscore(h.next()));
 					continue ;
 				}
 				case T_INT_LIT: case T_FLOAT_LIT: case T_STRING_LIT: case T_CHAR_LIT: case T_TRUE: case T_FALSE: case T_NULL: {

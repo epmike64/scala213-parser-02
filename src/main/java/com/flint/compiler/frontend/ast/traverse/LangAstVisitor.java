@@ -159,7 +159,7 @@ public class LangAstVisitor extends AstNodVisitor  {
 		for(fGenerator g: ff.getGenerators()) {
 			g.accept(this);
 		}
-		ff.getExpr().accept(this);
+		ff.getYieldExpr().accept(this);
 	}
 
 	@Override
@@ -253,11 +253,24 @@ public class LangAstVisitor extends AstNodVisitor  {
 		System.out.println("Visiting Try Node " + node);
 	}
 
+	int gcount = 0;
 	@Override
 	public void visit(fGenerator g) {
-		System.out.println("Visiting Generator Node " + g);
+		System.out.println("GCount: "+ (++gcount)+ "Visiting Generator Node " + g);
 		g.getCasePattern1().accept(this);
-
+		g.getInExpr().accept(this);
+		if(g.getGuards().isPresent()) {
+			for(AstProdSubTreeN guard: g.getGuards().get()) {
+				guard.accept(this);
+			}
+		}
+		if(g.getEndingPattern1s().isPresent()){
+			assert g.getEndingPattern1s().get().size() == g.getEndingExprs().get().size();
+			for(int i = 0; i < g.getEndingPattern1s().get().size(); i++) {
+				g.getEndingPattern1s().get().get(i).accept(this);
+				g.getEndingExprs().get().get(i).accept(this);
+			}
+		}
 	}
 
 	@Override
@@ -405,7 +418,9 @@ public class LangAstVisitor extends AstNodVisitor  {
 		System.out.println("Visiting Prod SubTree Node: " + node);
 		assert node.getRootOpNod() != null;
 		assert node.getRootOpNod().getAstLeftN() == null;
-		node.getRootOpNod().getAstRightN().accept(this);
+		if(node.getRootOpNod().getAstLeftN() != null) {
+			node.getRootOpNod().getAstLeftN().accept(this);
+		}
 	}
 
 	@Override
