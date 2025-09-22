@@ -10,7 +10,7 @@ public class fObject extends AstOperandNod  {
 
 	private final boolean isCaseClass;
 	private final fNamedToken name;
-	private Optional<fTemplateBody> extendsTemplate = Optional.empty();
+	private Optional<AstOperandNod> extendsTemplate = Optional.empty();
 	private final Optional<fModifiers> modifiers;
 
 	public fObject(fNamedToken name, boolean isCaseClass, Optional<fModifiers> modifiers) {
@@ -19,7 +19,7 @@ public class fObject extends AstOperandNod  {
 		this.modifiers = modifiers;
 	}
 
-	public void setExtendsTemplate(fTemplateBody et) {
+	public void setExtendsTemplate(AstOperandNod et) {
 		if( this.extendsTemplate.isPresent()) throw new RuntimeException("Extends template already set");
 		if(et == null) throw new RuntimeException("Extends template cannot be null");
 		this.extendsTemplate = Optional.of(et);
@@ -34,7 +34,7 @@ public class fObject extends AstOperandNod  {
 		return name;
 	}
 
-	public Optional<fTemplateBody> getExtendsTemplate() {
+	public Optional<AstOperandNod> getExtendsTemplate() {
 		return extendsTemplate;
 	}
 

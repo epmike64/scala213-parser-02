@@ -2,24 +2,19 @@ package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 
-public class fClassTemplate extends fTemplateBody {
+import java.util.Optional;
+
+public class fClassTemplate extends fTemplate {
 	private final fClassParents parents;
-	private final boolean isTrait;
-	public fClassTemplate(fTemplateBody templateBody, fClassParents parents, boolean isTrait) {
+
+	public fClassTemplate(boolean amExtender, fClassParents parents, Optional<fTemplateBody> body) {
+		super(amExtender, body);
+		assert parents != null : "parents cannot be null";
 		this.parents = parents;
-		this.isTrait = isTrait;
-	}
-	public fClassTemplate(fClassParents parents, boolean isTrait) {
-		this.parents = parents;
-		this.isTrait = isTrait;
 	}
 
 	public fClassParents getParents() {
 		return parents;
-	}
-
-	public boolean isTrait() {
-		return isTrait;
 	}
 
 	@Override
@@ -31,7 +26,8 @@ public class fClassTemplate extends fTemplateBody {
 	public String toString() {
 		return "fClassTemplate{" +
 				"parents=" + parents +
-				", isTrait=" + isTrait +
+				", amExtender=" + isAmExtender() +
+				", templateBody=" + getTemplateBody() +
 				'}';
 	}
 }

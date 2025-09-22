@@ -887,27 +887,26 @@ public class fParser {
 		}
 	}
 
-	fTemplateBody exprNEW() {
+	fTemplate exprNEW() {
 		h.accept(fTokenKind.T_NEW);
 		switch (h.tKnd()) {
 			case T_LCURL: {
-				return templateBody();
+				return new fTemplate(false, Optional.of(templateBody()));
 			}
 			case T_ID: case T_THIS: case T_SUPER: case T_LPAREN: {
-				return classTemplate(false);
+				return classTemplate(false, false);
 			}
 			default:
 				throw new RuntimeException("NEW in unexpected place: " + h.getToken());
 		}
 	}
 
-
-	fClassTemplate classTemplate(boolean isTrait) {
+	fClassTemplate classTemplate(boolean amExtender, boolean isTrait) {
 		fClassParents cp = classParents(isTrait);
 		if (h.isTkLCurl()) {
-			new fClassTemplate(templateBody(), cp, isTrait);
+			new fClassTemplate(amExtender, cp, Optional.of(templateBody()));
 		}
-		return new fClassTemplate(cp, isTrait);
+		return new fClassTemplate(amExtender, cp, Optional.empty());
 	}
 
 	fBlock block() {
@@ -1044,7 +1043,7 @@ public class fParser {
 	}
 
 	fClassParents classParents(boolean isTrait) {
-		fClassParents parents = new fClassParents(classConstructor(isTrait));
+		fClassParents parents = new fClassParents(classConstr(isTrait));
 		while (h.isTkWith()) {
 			h.next();
 			parents.addWithType(simpleType());
@@ -1052,7 +1051,7 @@ public class fParser {
 		return parents;
 	}
 
-	fClassConstr classConstructor(boolean isTrait) {
+	fClassConstr classConstr(boolean isTrait) {
 		fClassConstr cc = new fClassConstr(simpleType());
 		if (!isTrait && h.isTkLParen()) {
 			cc.setArgExprs(exprs());
@@ -1184,29 +1183,28 @@ public class fParser {
 		return cls;
 	}
 
-	fTemplateBody classExtends(boolean isTrait) {
-
+	fTemplate classExtends(boolean isTrait) {
 		switch (h.tKnd()) {
 			case T_NL: case T_LCURL: {
-				return templateBody();
+				return new fTemplate(false, Optional.of(templateBody()));
 			}
 			case T_EXTENDS: {
 				h.next();
 				switch (h.tKnd()) {
 					case T_ID: case T_THIS: case T_SUPER: case T_LPAREN: {
-						return classTemplate(isTrait);
+						return classTemplate(true, isTrait);
 					}
 					case T_NL: case T_LCURL: {
-						return templateBody();
+						return new fTemplate(true, Optional.of(templateBody()));
 					}
 					default:
 						throw new RuntimeException("Expected class template or '{' after 'extends' but found: " + h.getToken());
 				}
 			}
 			default:
-				//pass
+				break;
 		}
-		return null;
+		throw new RuntimeException("Expected 'extends', '{' or newline but found: " + h.getToken());
 	}
 
 	fObject objectDef(boolean isCase, Optional<fModifiers> mods) {

@@ -398,4 +398,12 @@ public class LangAstVisitor extends AstNodVisitor  {
 		assert node.getRootOpNod().getAstLeftN() == null;
 		node.getRootOpNod().getAstRightN().accept(this);
 	}
+
+	@Override
+	public void visit(fTemplate node) {
+		System.out.println("Visiting Template Opt Node: " + node);
+		if(node.getTemplateBody().isPresent()) {
+			node.getTemplateBody().get().accept(this);
+		}
+	}
 }

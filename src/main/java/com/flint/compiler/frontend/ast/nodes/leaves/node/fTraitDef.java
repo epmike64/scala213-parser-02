@@ -11,7 +11,7 @@ public class fTraitDef extends AstOperandNod {
 	private final fNamedToken name;
 	private final Optional<fModifiers> modifiers;
 	private Optional<List<fVariantTypeParam>> typeParams = Optional.empty();
-	private Optional<fTemplateBody> extendsTemplate = Optional.empty();
+	private Optional<AstOperandNod> extendsTemplate = Optional.empty();
 
 	public fTraitDef(fNamedToken name, Optional<fModifiers> modifiers) {
 		this.name = name;
@@ -24,7 +24,7 @@ public class fTraitDef extends AstOperandNod {
 		this.typeParams = Optional.of(tps);
 	}
 
-	public void setExtendsTemplate(fTemplateBody et) {
+	public void setExtendsTemplate(AstOperandNod et) {
 		if (this.extendsTemplate.isPresent()) throw new RuntimeException("Extends template already set");
 		if(et == null) throw new RuntimeException("Extends template cannot be null");
 		this.extendsTemplate = Optional.of(et);
@@ -41,7 +41,8 @@ public class fTraitDef extends AstOperandNod {
 	public Optional<List<fVariantTypeParam>> getTypeParams() {
 		return typeParams;
 	}
-	public Optional<fTemplateBody> getExtendsTemplate() {
+
+	public Optional<AstOperandNod> getExtendsTemplate() {
 		return extendsTemplate;
 	}
 

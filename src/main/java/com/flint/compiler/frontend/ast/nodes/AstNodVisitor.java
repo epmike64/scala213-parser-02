@@ -57,4 +57,5 @@ public abstract class AstNodVisitor {
 	public abstract void visit(fOverrideModifier node);
 	public abstract void visit(fBlock node);
 	public abstract void visit(AstProdSubTreeN node);
+	public abstract void visit(fTemplate node);
 }
