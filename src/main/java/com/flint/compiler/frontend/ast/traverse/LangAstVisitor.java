@@ -167,6 +167,9 @@ public class LangAstVisitor extends AstNodVisitor  {
 	public void visit(fClassTemplate ct) {
 		System.out.println("Visiting Class Template" + ct);
 		ct.getParents().accept(this);
+		if(ct.getTemplateBody().isPresent()) {
+			ct.getTemplateBody().get().accept(this);
+		}
 	}
 
 	@Override

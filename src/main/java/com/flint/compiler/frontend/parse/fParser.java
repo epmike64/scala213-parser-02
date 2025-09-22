@@ -904,7 +904,7 @@ public class fParser {
 	fClassTemplate classTemplate(boolean amExtender, boolean isTrait) {
 		fClassParents cp = classParents(isTrait);
 		if (h.isTkLCurl()) {
-			new fClassTemplate(amExtender, cp, Optional.of(templateBody()));
+			return new fClassTemplate(amExtender, cp, Optional.of(templateBody()));
 		}
 		return new fClassTemplate(amExtender, cp, Optional.empty());
 	}
