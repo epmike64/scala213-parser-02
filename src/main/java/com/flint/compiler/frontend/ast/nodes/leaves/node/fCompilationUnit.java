@@ -1,10 +1,8 @@
-package com.flint.compiler.frontend.parse;
+package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
 import com.flint.compiler.frontend.ast.nodes.AstNod;
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
-import com.flint.compiler.frontend.ast.nodes.leaves.node.fImport;
-import com.flint.compiler.frontend.ast.nodes.leaves.node.fPackage;
 
 import java.util.ArrayList;
 import java.util.List;

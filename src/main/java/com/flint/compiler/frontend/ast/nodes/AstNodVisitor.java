@@ -3,7 +3,7 @@ package com.flint.compiler.frontend.ast.nodes;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.fPackage;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.*;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstProdSubTreeN;
-import com.flint.compiler.frontend.parse.fCompilationUnit;
+import com.flint.compiler.frontend.ast.nodes.leaves.node.fCompilationUnit;
 
 public abstract class AstNodVisitor {
 	public abstract void visit(fCompilationUnit node);

@@ -5,7 +5,7 @@ import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperatorNod;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.*;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstProdSubTreeN;
-import com.flint.compiler.frontend.parse.fCompilationUnit;
+import com.flint.compiler.frontend.ast.nodes.leaves.node.fCompilationUnit;
 import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
 
 import java.util.List;

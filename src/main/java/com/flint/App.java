@@ -2,7 +2,7 @@ package com.flint;
 
 
 import com.flint.compiler.frontend.ast.traverse.LangAstVisitor;
-import com.flint.compiler.frontend.parse.fCompilationUnit;
+import com.flint.compiler.frontend.ast.nodes.leaves.node.fCompilationUnit;
 import com.flint.compiler.frontend.parse.fParser;
 import com.flint.compiler.frontend.parse.lex.fReader;
 import com.flint.compiler.frontend.parse.lex.fScanner;
