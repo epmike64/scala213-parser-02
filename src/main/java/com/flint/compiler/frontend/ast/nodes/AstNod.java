@@ -1,7 +1,6 @@
 package com.flint.compiler.frontend.ast.nodes;
 
 import com.flint.compiler.frontend.ast.nodes.kinds.AstNodKind;
-import com.flint.compiler.frontend.parse.lex.token.type.fToken;
 
 public abstract class AstNod {
 	protected AstNod astLeftN, astRightN;
