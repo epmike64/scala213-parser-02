@@ -38,4 +38,13 @@ public class fIf extends AstOperandNod {
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
 	}
+
+	@Override
+	public String toString() {
+		return "fIf{" +
+				"condExpr=" + condExpr +
+				", ifBody=" + ifBody +
+				", elseBody=" + elseBody +
+				'}';
+	}
 }
