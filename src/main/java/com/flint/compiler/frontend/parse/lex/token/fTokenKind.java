@@ -99,11 +99,11 @@ public enum fTokenKind {
 		this(null, tag);
 	}
 
-	fTokenKind(String name, fTokenTag tag) {
-		this.tkName = name;
-		this.tag = tag;
+	fTokenKind(String tKndName, fTokenTag tag) {
+		this.tKndName = tKndName;
+		this.tokTag = tag;
 	}
 
-	public final String tkName;
-	public final fTokenTag tag;
+	public final String tKndName;
+	public final fTokenTag tokTag;
 }

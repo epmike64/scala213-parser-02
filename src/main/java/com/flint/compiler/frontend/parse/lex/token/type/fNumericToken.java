@@ -14,7 +14,7 @@ public class fNumericToken extends fStringToken {
 
 	@Override
 	protected void assertIt() {
-		assert kind.tag == fTokenTag.NUMERIC;
+		assert kind.tokTag == fTokenTag.NUMERIC;
 	}
 
 	@Override

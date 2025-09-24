@@ -7,7 +7,7 @@ public class fTokenMap {
 
 	static {
 		for (fTokenKind token : fTokenKind.values()) {
-			if(token.tkName != null) map.put(token.tkName, token);
+			if(token.tKndName != null) map.put(token.tKndName, token);
 		}
 	}
 

@@ -11,7 +11,7 @@ public class fNameValToken extends fToken {
 
 	@Override
 	protected void assertIt() {
-		assert  kind.tag == fTokenTag.NAME_VAL;
+		assert  kind.tokTag == fTokenTag.NAME_VAL;
 	}
 
 	public boolean isRightAssociative() {

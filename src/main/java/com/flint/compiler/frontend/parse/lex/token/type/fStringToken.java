@@ -12,7 +12,7 @@ public class fStringToken extends fToken {
 
 	@Override
 	protected void assertIt() {
-		assert kind.tag == fTokenTag.STRING;
+		assert kind.tokTag == fTokenTag.STRING;
 	}
 
 	@Override

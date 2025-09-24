@@ -227,7 +227,7 @@ public class fTokenizer {
 			}
 		}
 		endPos = reader.bp;
-		switch (tKnd.tag) {
+		switch (tKnd.tokTag) {
 			case OPERATOR: case KWRD: case INTERN: return new fToken(tKnd, pos, endPos, fToken._undef);
 			case NAME_VAL: return new fNameValToken(tKnd, pos, endPos, tokStrVal);
 			case STRING: return new fStringToken(tKnd, pos, endPos, tokStrVal);

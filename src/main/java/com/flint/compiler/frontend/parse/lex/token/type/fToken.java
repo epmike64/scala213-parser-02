@@ -22,7 +22,7 @@ public class fToken {
 	}
 
 	protected void assertIt() {
-		assert  kind.tag == fTokenTag.KWRD || kind.tag == fTokenTag.OPERATOR || kind.tag == fTokenTag.INTERN;
+		assert  kind.tokTag == fTokenTag.KWRD || kind.tokTag == fTokenTag.OPERATOR || kind.tokTag == fTokenTag.INTERN;
 	}
 
 	public String getTokValue() {
