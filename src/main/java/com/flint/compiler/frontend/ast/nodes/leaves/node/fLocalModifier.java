@@ -1,10 +1,12 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
 
+import com.flint.compiler.frontend.parse.lex.token.fModifierTypes;
+
 public class fLocalModifier extends fModifier {
 
 
-	public fLocalModifier(modTy modType) {
+	public fLocalModifier(fModifierTypes modType) {
 		super(modType);
 	}
 

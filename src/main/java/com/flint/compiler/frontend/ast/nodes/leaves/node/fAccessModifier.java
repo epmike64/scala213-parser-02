@@ -1,12 +1,14 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
+import com.flint.compiler.frontend.parse.lex.token.fModifierTypes;
+
 import java.util.Optional;
 
 public class fAccessModifier extends fModifier{
 
 	private Optional<fAccessQualifier> qualifier = Optional.empty();
 
-	public fAccessModifier(modTy kind) {
+	public fAccessModifier(fModifierTypes kind) {
 		super(kind);
 	}
 	public void setQualifier(fAccessQualifier q) {

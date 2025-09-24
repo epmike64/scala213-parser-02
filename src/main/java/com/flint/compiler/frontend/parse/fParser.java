@@ -8,6 +8,7 @@ import com.flint.compiler.frontend.except.CompilationException;
 import com.flint.compiler.frontend.lang.grammar.GrmPrd;
 import com.flint.compiler.frontend.parse.lex.fLexer;
 import com.flint.compiler.frontend.parse.lex.token.fLangOperatorKind;
+import com.flint.compiler.frontend.parse.lex.token.fModifierTypes;
 import com.flint.compiler.frontend.parse.lex.token.fTokenKind;
 import com.flint.compiler.frontend.parse.lex.token.type.fNameValToken;
 import com.flint.compiler.frontend.parse.utils.Ast;
@@ -1059,23 +1060,23 @@ public class fParser {
 		switch (h.tKnd()){
 			case T_ABSTRACT: {
 				h.next();
-				return new fLocalModifier(modTy.ABSTRACT);
+				return new fLocalModifier(fModifierTypes.ABSTRACT);
 			}
 			case T_FINAL: {
 				h.next();
-				return new fLocalModifier(modTy.FINAL);
+				return new fLocalModifier(fModifierTypes.FINAL);
 			}
 			case T_SEALED: {
 				h.next();
-				return new fLocalModifier(modTy.SEALED);
+				return new fLocalModifier(fModifierTypes.SEALED);
 			}
 			case T_IMPLICIT: {
 				h.next();
-				return new fLocalModifier(modTy.IMPLICIT);
+				return new fLocalModifier(fModifierTypes.IMPLICIT);
 			}
 			case T_LAZY: {
 				h.next();
-				return new fLocalModifier(modTy.LAZY);
+				return new fLocalModifier(fModifierTypes.LAZY);
 			}
 			default:
 				throw new RuntimeException("Expected local modifier but found: " + h.getToken());
@@ -1087,12 +1088,12 @@ public class fParser {
 		switch(h.tKnd()) {
 			case T_PROTECTED: {
 				h.next();
-				am = new fAccessModifier(modTy.PROTECTED);
+				am = new fAccessModifier(fModifierTypes.PROTECTED);
 				break;
 			}
 			case T_PRIVATE: {
 				h.next();
-				am = new fAccessModifier(modTy.PRIVATE);
+				am = new fAccessModifier(fModifierTypes.PRIVATE);
 				break;
 			}
 			default:

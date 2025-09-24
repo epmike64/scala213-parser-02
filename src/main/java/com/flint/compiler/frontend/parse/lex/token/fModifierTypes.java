@@ -1,6 +1,6 @@
-package com.flint.compiler.frontend.ast.nodes.leaves.node;
+package com.flint.compiler.frontend.parse.lex.token;
 
-public enum modTy {
+public enum fModifierTypes {
 	PRIVATE,
 	PROTECTED,
 	OVERRIDE,

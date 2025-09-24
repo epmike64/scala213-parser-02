@@ -1,13 +1,14 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
+import com.flint.compiler.frontend.parse.lex.token.fModifierTypes;
 
 public abstract class fModifier extends AstOperandNod {
-	final modTy modType;
-	protected fModifier(modTy type) {
+	final fModifierTypes modType;
+	protected fModifier(fModifierTypes type) {
 		this.modType = type;
 	}
-	public modTy getModifierType() {
+	public fModifierTypes getModifierType() {
 		return modType;
 	}
 
