@@ -2,14 +2,14 @@ package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
-import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
+import com.flint.compiler.frontend.parse.lex.token.type.fNameValToken;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class fPackage extends AstOperandNod {
-	private final List<fNamedToken> fIds;
-	public fPackage(List<fNamedToken> ids) {
+	private final List<fNameValToken> fIds;
+	public fPackage(List<fNameValToken> ids) {
 		assert ids != null && ids.size() > 0;
 		this.fIds = new ArrayList<>(ids);
 	}
@@ -19,7 +19,7 @@ public class fPackage extends AstOperandNod {
 		v.visit(this);
 	}
 
-	public List<fNamedToken> getIds() {
+	public List<fNameValToken> getIds() {
 		return fIds;
 	}
 

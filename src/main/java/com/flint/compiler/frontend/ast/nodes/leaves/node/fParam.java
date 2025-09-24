@@ -3,14 +3,14 @@ package com.flint.compiler.frontend.ast.nodes.leaves.node;
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstProdSubTreeN;
-import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
+import com.flint.compiler.frontend.parse.lex.token.type.fNameValToken;
 
 public class fParam extends AstOperandNod {
-	private final fNamedToken name;
+	private final fNameValToken name;
 	private fParamType paramType;
 	private AstProdSubTreeN defaultValue;
 
-	public fParam(fNamedToken name) {
+	public fParam(fNameValToken name) {
 		this.name = name;
 	}
 	public void setParamType(fParamType typeParam) {
@@ -25,7 +25,7 @@ public class fParam extends AstOperandNod {
 		v.visit(this);
 	}
 
-	public fNamedToken getName() {
+	public fNameValToken getName() {
 		return name;
 	}
 	public fParamType getParamType() {

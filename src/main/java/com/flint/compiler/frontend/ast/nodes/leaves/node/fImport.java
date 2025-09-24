@@ -2,7 +2,7 @@ package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
-import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
+import com.flint.compiler.frontend.parse.lex.token.type.fNameValToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,15 +10,15 @@ import java.util.List;
 public class fImport extends AstOperandNod {
 
 	public static class fImportSelector {
-		private final fNamedToken from, to;
-		public fImportSelector(final fNamedToken from, final fNamedToken to) {
+		private final fNameValToken from, to;
+		public fImportSelector(final fNameValToken from, final fNameValToken to) {
 			this.from = from;
 			this.to = to;
 		}
-		public fNamedToken getFrom() {
+		public fNameValToken getFrom() {
 			return from;
 		}
-		public fNamedToken getTo() {
+		public fNameValToken getTo() {
 			return to;
 		}
 		@Override

@@ -4,7 +4,7 @@ package com.flint.compiler.frontend.parse.lex;
 
 import com.flint.compiler.frontend.parse.lex.token.fTokenKind;
 import com.flint.compiler.frontend.parse.lex.token.fTokenMap;
-import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
+import com.flint.compiler.frontend.parse.lex.token.type.fNameValToken;
 import com.flint.compiler.frontend.parse.lex.token.type.fNumericToken;
 import com.flint.compiler.frontend.parse.lex.token.type.fStringToken;
 import com.flint.compiler.frontend.parse.lex.token.type.fToken;
@@ -228,8 +228,8 @@ public class fTokenizer {
 		}
 		endPos = reader.bp;
 		switch (tk.tag) {
-			case OPERATOR: case KWRD: case INTERN: return new fToken(tk, pos, endPos);
-			case NAMED: return new fNamedToken(tk, pos, endPos, tname);
+			case OPERATOR: case KWRD: case INTERN: return new fToken(tk, pos, endPos, fToken._undef);
+			case NAME_VAL: return new fNameValToken(tk, pos, endPos, tname);
 			case STRING: return new fStringToken(tk, pos, endPos, tname);
 			case NUMERIC: return new fNumericToken(tk, pos, endPos, tname, radix);
 			default: throw new AssertionError();

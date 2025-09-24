@@ -4,12 +4,10 @@ import com.flint.compiler.frontend.parse.lex.token.fTokenKind;
 import com.flint.compiler.frontend.parse.lex.token.fTokenTag;
 
 public class fStringToken extends fToken {
-	/** The string value of this token */
-	public final String stringVal;
+
 
 	public fStringToken(fTokenKind kind, int pos, int endPos, String stringVal) {
-		super(kind, pos, endPos);
-		this.stringVal = stringVal;
+		super(kind, pos, endPos, stringVal);
 	}
 
 	@Override
@@ -20,7 +18,7 @@ public class fStringToken extends fToken {
 	@Override
 	public String toString() {
 		return "StringToken{" +
-				"stringVal='" + stringVal + '\'' +
+				"stringVal='" + tokValue + '\'' +
 				", kind=" + kind +
 				", pos=" + pos +
 				", endPos=" + endPos +

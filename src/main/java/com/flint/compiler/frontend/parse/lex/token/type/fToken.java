@@ -5,16 +5,19 @@ import com.flint.compiler.frontend.parse.lex.token.fTokenTag;
 
 public class fToken {
 
+	public static final String _undef = "_undef";
 	public final int pos, endPos;
 	public final fTokenKind kind;
+	protected final String tokValue;
 
-	public static final fToken SOF = new fToken(fTokenKind.T_SOF, -1, -1);
-	public static final fToken ROOT_OPERATOR_TOKEN = new fToken(fTokenKind.T_ROOT_OPERATOR, -1, -1);
+	public static final fToken SOF = new fToken(fTokenKind.T_SOF, -1, -1, "SOF");
+	public static final fToken ROOT_OPERATOR_TOKEN = new fToken(fTokenKind.T_ROOT_OPERATOR, -1, -1, "ROOT_OPERATOR");
 
-	public fToken(fTokenKind kind, int pos, int endPos) {
+	public fToken(fTokenKind kind, int pos, int endPos, String tokValue) {
 		this.kind = kind;
 		this.pos = pos;
 		this.endPos = endPos;
+		this.tokValue = tokValue;
 		assertIt();
 	}
 
@@ -22,16 +25,12 @@ public class fToken {
 		assert  kind.tag == fTokenTag.KWRD || kind.tag == fTokenTag.OPERATOR || kind.tag == fTokenTag.INTERN;
 	}
 
-	public String getName() {
-		return kind.tkName;
+	public String getTokValue() {
+		return tokValue;
 	}
 
 	public fTokenKind getTKind() {
 		return kind;
-	}
-
-	public String stringVal() {
-		throw new UnsupportedOperationException();
 	}
 
 	public int radix() {

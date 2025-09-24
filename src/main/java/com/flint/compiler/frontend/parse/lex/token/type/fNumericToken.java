@@ -26,7 +26,7 @@ public class fNumericToken extends fStringToken {
 	public String toString() {
 		return "NumericToken{" +
 				"radix=" + radix +
-				", stringVal='" + stringVal + '\'' +
+				", stringVal='" + tokValue + '\'' +
 				", kind=" + kind +
 				", pos=" + pos +
 				", endPos=" + endPos +

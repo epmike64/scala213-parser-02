@@ -1,7 +1,7 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
-import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
+import com.flint.compiler.frontend.parse.lex.token.type.fNameValToken;
 
 
 public class fVariantTypeParam extends fTypeParam {
@@ -13,7 +13,7 @@ public class fVariantTypeParam extends fTypeParam {
 
 	private fVariance variance = fVariance.NONE;
 
-	public fVariantTypeParam(fNamedToken name) {
+	public fVariantTypeParam(fNameValToken name) {
 		super(name);
 	}
 

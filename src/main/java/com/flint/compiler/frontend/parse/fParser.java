@@ -9,7 +9,7 @@ import com.flint.compiler.frontend.lang.grammar.GrmPrd;
 import com.flint.compiler.frontend.parse.lex.fLexer;
 import com.flint.compiler.frontend.parse.lex.token.fLangOperatorKind;
 import com.flint.compiler.frontend.parse.lex.token.fTokenKind;
-import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
+import com.flint.compiler.frontend.parse.lex.token.type.fNameValToken;
 import com.flint.compiler.frontend.parse.utils.Ast;
 
 import java.util.ArrayList;
@@ -27,11 +27,11 @@ public class fParser {
 		h = new ParseHelp(lexer);
 	}
 
-	List<fNamedToken> qualIds() {
-		List<fNamedToken> ids = new ArrayList<>();
+	List<fNameValToken> qualIds() {
+		List<fNameValToken> ids = new ArrayList<>();
 		while (true) {
 			assert h.tKnd() == T_ID;
-			ids.add((fNamedToken) h.next());
+			ids.add((fNameValToken) h.next());
 			if (h.isTkDot()) {
 				h.next(); continue;
 			}
@@ -318,7 +318,7 @@ public class fParser {
 		switch (a.astLastNKnd()) {
 			case AST_OPERAND: {
 				h.insertOperator(a, fLangOperatorKind.O_DOT, h.next());
-				a.setRight(new fId((fNamedToken) h.accept(T_ID)));
+				a.setRight(new fId((fNameValToken) h.accept(T_ID)));
 				break;
 			}
 			default:
@@ -715,7 +715,7 @@ public class fParser {
 					break loop;
 				}
 				case T_ID: {
-					sid.addTId((fNamedToken) h.next());
+					sid.addTId((fNameValToken) h.next());
 					if (h.isTkDot()) continue;
 					break loop;
 				}
@@ -729,7 +729,7 @@ public class fParser {
 					if (h.isTkLBracket()) {
 						int n = h.pushNLEnabled(false);
 						h.accept(T_LBRACKET);
-						sid.addClassQualifier((fNamedToken) h.accept(T_ID));
+						sid.addClassQualifier((fNameValToken) h.accept(T_ID));
 						h.popNLEnabled(n, false);
 						h.accept(T_RBRACKET);
 					}
@@ -1016,7 +1016,7 @@ public class fParser {
 				p.setMutability(fMutabilityType.NONE);
 				break;
 		}
-		p.setIdentifier((fNamedToken) h.accept(T_ID));
+		p.setIdentifier((fNameValToken) h.accept(T_ID));
 		if (h.isTkColon()) {
 			h.accept(T_COLON);
 			p.setParamType(paramType(false));
@@ -1047,7 +1047,7 @@ public class fParser {
 
 	fTraitDef traitDef(Optional<fModifiers> mods) {
 		h.accept(fTokenKind.T_TRAIT);
-		fTraitDef trait = new fTraitDef((fNamedToken) h.next(), mods);
+		fTraitDef trait = new fTraitDef((fNameValToken) h.next(), mods);
 		if (h.isTkLBracket()) {
 			trait.setTypeParams(variantTypeParams());
 		}
@@ -1104,7 +1104,7 @@ public class fParser {
 			h.accept(T_LBRACKET);
 			switch (h.tKnd()){
 				case T_ID: {
-					am.setQualifier(new fAccessQualifier(fAccessQualifier.Kind.ID, (fNamedToken) h.accept(T_ID)));
+					am.setQualifier(new fAccessQualifier(fAccessQualifier.Kind.ID, (fNameValToken) h.accept(T_ID)));
 					break;
 				}
 				case T_THIS: {
@@ -1152,7 +1152,7 @@ public class fParser {
 
 	fClassDef classDef(boolean isCase, Optional<fModifiers> mods) {
 		h.accept(fTokenKind.T_CLASS);
-		fClassDef cls = new fClassDef((fNamedToken) h.next(), isCase, mods);
+		fClassDef cls = new fClassDef((fNameValToken) h.next(), isCase, mods);
 		if (h.isTkLBracket()) {
 			cls.setTypeParams(variantTypeParams());
 		}
@@ -1195,7 +1195,7 @@ public class fParser {
 
 	fObject objectDef(boolean isCase, Optional<fModifiers> mods) {
 		h.accept(fTokenKind.T_OBJECT);
-		fObject obj = new fObject((fNamedToken) h.next(), isCase, mods);
+		fObject obj = new fObject((fNameValToken) h.next(), isCase, mods);
 		obj.setExtendsTemplate(classExtends(false));
 		return obj;
 	}
@@ -1278,7 +1278,7 @@ public class fParser {
 	}
 
 	fFunSig funSig() {
-		fFunSig fs = new fFunSig((fNamedToken) h.next());
+		fFunSig fs = new fFunSig((fNameValToken) h.next());
 		if (h.isTkLBracket()) {
 			fs.setTypeParams(funTypeParams());
 		}
@@ -1288,7 +1288,7 @@ public class fParser {
 
 	fTypeDef typeDef() {
 		h.accept(fTokenKind.T_TYPE);
-		fTypeDef t = new fTypeDef((fNamedToken) h.next());
+		fTypeDef t = new fTypeDef((fNameValToken) h.next());
 		if (h.isTkLBracket()) {
 			t.setTypeParams(variantTypeParams());
 		}
@@ -1330,7 +1330,7 @@ public class fParser {
 	}
 
 	fParam param() {
-		fParam p = new fParam((fNamedToken) h.next());
+		fParam p = new fParam((fNameValToken) h.next());
 		if (h.isTkColon()) {
 			h.next();
 			p.setParamType(paramType(false));
@@ -1376,7 +1376,7 @@ public class fParser {
 	}
 
 	fTypeParam typeParam() {
-		fTypeParam p = new fTypeParam((fNamedToken) h.next());
+		fTypeParam p = new fTypeParam((fNameValToken) h.next());
 		if (h.isTkLBracket()) {
 			p.setVariantTypeParams(variantTypeParams());
 		}
@@ -1394,7 +1394,7 @@ public class fParser {
 	}
 
 	fVariantTypeParam variantTypeParam() {
-		fVariantTypeParam p = new fVariantTypeParam((fNamedToken) h.next());
+		fVariantTypeParam p = new fVariantTypeParam((fNameValToken) h.next());
 		if (h.isTkPlus()) {
 			h.next();
 			p.setVariance(fVariantTypeParam.fVariance.VARIANT);
@@ -1738,11 +1738,11 @@ public class fParser {
 		h.accept(T_LCURL);
 		List<fImport.fImportSelector> selectors = new ArrayList<>();
 		while (true) {
-			fNamedToken from = (fNamedToken) h.accept(T_ID);
-			fNamedToken to = null;
+			fNameValToken from = (fNameValToken) h.accept(T_ID);
+			fNameValToken to = null;
 			if (h.isTkFatArrow()) {
 				h.next();
-				to = (fNamedToken) h.accept(T_ID);
+				to = (fNameValToken) h.accept(T_ID);
 			}
 			selectors.add(new fImport.fImportSelector(from, to));
 			if (h.isTkComma()) {

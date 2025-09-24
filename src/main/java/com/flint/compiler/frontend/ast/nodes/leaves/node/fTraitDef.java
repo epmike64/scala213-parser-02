@@ -2,18 +2,18 @@ package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
-import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
+import com.flint.compiler.frontend.parse.lex.token.type.fNameValToken;
 
 import java.util.List;
 import java.util.Optional;
 
 public class fTraitDef extends AstOperandNod {
-	private final fNamedToken name;
+	private final fNameValToken name;
 	private final Optional<fModifiers> modifiers;
 	private Optional<List<fVariantTypeParam>> typeParams = Optional.empty();
 	private Optional<AstOperandNod> extendsTemplate = Optional.empty();
 
-	public fTraitDef(fNamedToken name, Optional<fModifiers> modifiers) {
+	public fTraitDef(fNameValToken name, Optional<fModifiers> modifiers) {
 		this.name = name;
 		this.modifiers = modifiers;
 	}
@@ -35,7 +35,7 @@ public class fTraitDef extends AstOperandNod {
 		v.visit(this);
 	}
 
-	public fNamedToken getName() {
+	public fNameValToken getName() {
 		return name;
 	}
 	public Optional<List<fVariantTypeParam>> getTypeParams() {

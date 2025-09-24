@@ -2,18 +2,18 @@ package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
-import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
+import com.flint.compiler.frontend.parse.lex.token.type.fNameValToken;
 
 import java.util.Optional;
 
 public class fObject extends AstOperandNod  {
 
 	private final boolean isCaseClass;
-	private final fNamedToken name;
+	private final fNameValToken name;
 	private Optional<AstOperandNod> extendsTemplate = Optional.empty();
 	private final Optional<fModifiers> modifiers;
 
-	public fObject(fNamedToken name, boolean isCaseClass, Optional<fModifiers> modifiers) {
+	public fObject(fNameValToken name, boolean isCaseClass, Optional<fModifiers> modifiers) {
 		this.name = name;
 		this.isCaseClass = isCaseClass;
 		this.modifiers = modifiers;
@@ -30,7 +30,7 @@ public class fObject extends AstOperandNod  {
 		v.visit(this);
 	}
 
-	public fNamedToken getName() {
+	public fNameValToken getName() {
 		return name;
 	}
 

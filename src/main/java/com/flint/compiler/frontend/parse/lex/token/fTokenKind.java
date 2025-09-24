@@ -8,8 +8,8 @@ public enum fTokenKind {
 	T_NL(fTokenTag.INTERN),
 	T_ROOT_OPERATOR(fTokenTag.INTERN),
 
-	T_CLASS_QUALIFIER(fTokenTag.NAMED),
-	T_ID(fTokenTag.NAMED),
+	T_CLASS_QUALIFIER(fTokenTag.NAME_VAL),
+	T_ID(fTokenTag.NAME_VAL),
 	T_INT_LIT(fTokenTag.NUMERIC),
 
 	T_FLOAT_LIT(fTokenTag.NUMERIC),

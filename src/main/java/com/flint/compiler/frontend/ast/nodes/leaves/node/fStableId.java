@@ -3,7 +3,7 @@ package com.flint.compiler.frontend.ast.nodes.leaves.node;
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 import com.flint.compiler.frontend.parse.lex.token.fTokenKind;
-import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
+import com.flint.compiler.frontend.parse.lex.token.type.fNameValToken;
 import com.flint.compiler.frontend.parse.lex.token.type.fToken;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class fStableId extends AstOperandNod {
       assert isKwType == false;
       tpairs.add(token);
    }
-	public void addTId(fNamedToken tId) {
+	public void addTId(fNameValToken tId) {
       addTPair(new fTPair(tId, fTokenKind.T_ID));
 	}
 
@@ -57,7 +57,7 @@ public class fStableId extends AstOperandNod {
 		addTPair(new fTPair(t, fTokenKind.T_THIS));
 	}
 
-	public void addClassQualifier(fNamedToken tId) {
+	public void addClassQualifier(fNameValToken tId) {
 		addTPair(new fTPair(tId, fTokenKind.T_CLASS_QUALIFIER));
 	}
 

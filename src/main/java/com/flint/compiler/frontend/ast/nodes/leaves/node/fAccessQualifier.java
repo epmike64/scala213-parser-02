@@ -1,13 +1,13 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
-import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
+import com.flint.compiler.frontend.parse.lex.token.type.fNameValToken;
 
 public class fAccessQualifier extends AstOperandNod {
 	public enum Kind { ID, THIS}
 	public final Kind kind;
-	public final fNamedToken id; // only if kind == ID
-	public fAccessQualifier(Kind kind, fNamedToken id) {
+	public final fNameValToken id; // only if kind == ID
+	public fAccessQualifier(Kind kind, fNameValToken id) {
 		this.kind = kind;
 		if (kind == Kind.ID) {
 			assert id != null;
@@ -22,7 +22,7 @@ public class fAccessQualifier extends AstOperandNod {
 		return kind;
 	}
 
-	public fNamedToken getId() {
+	public fNameValToken getId() {
 		return id;
 	}
 
@@ -34,7 +34,7 @@ public class fAccessQualifier extends AstOperandNod {
 	@Override
 	public String toString() {
 		if (kind == Kind.ID) {
-			return "fAccessQualifier(ID: " + id.getName() + ")";
+			return "fAccessQualifier(ID: " + id.getTokValue() + ")";
 		} else {
 			return "fAccessQualifier(THIS)";
 		}

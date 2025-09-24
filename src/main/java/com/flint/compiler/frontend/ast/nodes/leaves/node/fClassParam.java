@@ -3,18 +3,18 @@ package com.flint.compiler.frontend.ast.nodes.leaves.node;
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstProdSubTreeN;
-import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
+import com.flint.compiler.frontend.parse.lex.token.type.fNameValToken;
 
 import java.util.Optional;
 
 public class fClassParam extends AstOperandNod {
 	private fMutabilityType mutability = fMutabilityType.NONE;
-	private fNamedToken identifier;
+	private fNameValToken identifier;
 	private Optional<fParamType> paramType = Optional.empty();
 	private Optional<AstProdSubTreeN> defaultValue = Optional.empty();
 	private Optional<fModifiers> modifiers = Optional.empty();
 	public  void setMutability(fMutabilityType mutability) {this.mutability = mutability;}
-	public void setIdentifier(fNamedToken identifier) {this.identifier = identifier;}
+	public void setIdentifier(fNameValToken identifier) {this.identifier = identifier;}
 	public void setParamType(fParamType paramType) {
 		if(this.paramType.isPresent()) throw new RuntimeException("Param type already set");
 		if(paramType == null) throw new RuntimeException("Param type cannot be null");
@@ -33,7 +33,7 @@ public class fClassParam extends AstOperandNod {
 	public fMutabilityType getMutability() {
 		return mutability;
 	}
-	public fNamedToken getIdentifier() {
+	public fNameValToken getIdentifier() {
 		return identifier;
 	}
 	public Optional<fParamType> getParamType() {

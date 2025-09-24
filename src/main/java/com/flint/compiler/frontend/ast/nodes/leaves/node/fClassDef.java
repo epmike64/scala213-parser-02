@@ -1,7 +1,7 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
-import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
+import com.flint.compiler.frontend.parse.lex.token.type.fNameValToken;
 
 import java.util.Optional;
 
@@ -10,7 +10,7 @@ public class fClassDef extends fTraitDef {
 	private Optional<fClassParamClauses> classParamClauses = Optional.empty();
 	private Optional<fAccessModifier> constrAccessModifier = Optional.empty();
 
-	public fClassDef(fNamedToken name, boolean isCaseClass, Optional<fModifiers> modifiers) {
+	public fClassDef(fNameValToken name, boolean isCaseClass, Optional<fModifiers> modifiers) {
 		super(name, modifiers);
 		this.isCaseClass = isCaseClass;
 	}

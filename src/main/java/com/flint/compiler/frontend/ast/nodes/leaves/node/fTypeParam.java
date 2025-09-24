@@ -2,15 +2,15 @@ package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
-import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
+import com.flint.compiler.frontend.parse.lex.token.type.fNameValToken;
 
 import java.util.List;
 
 public class fTypeParam extends AstOperandNod {
-	private fNamedToken name;
+	private fNameValToken name;
 	private List<fVariantTypeParam> variantTypeParams;
 	private fType type, lowerBound, upperBound;
-	public fTypeParam(fNamedToken name) {
+	public fTypeParam(fNameValToken name) {
 		this.name = name;
 	}
 
@@ -32,7 +32,7 @@ public class fTypeParam extends AstOperandNod {
 		v.visit(this);
 	}
 
-	public fNamedToken getName() {
+	public fNameValToken getName() {
 		return name;
 	}
 

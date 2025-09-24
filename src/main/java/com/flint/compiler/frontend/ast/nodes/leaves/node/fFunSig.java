@@ -2,17 +2,17 @@ package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
-import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
+import com.flint.compiler.frontend.parse.lex.token.type.fNameValToken;
 
 import java.util.List;
 import java.util.Optional;
 
 public class fFunSig extends AstOperandNod {
-	private final fNamedToken name;
+	private final fNameValToken name;
 	private Optional<fParamClauses> paramClauses = Optional.empty();
 	private Optional<List<fTypeParam>> typeParams = Optional.empty();
 
-	public fFunSig(fNamedToken name) {
+	public fFunSig(fNameValToken name) {
 		this.name = name;
 	}
 	public void setParamClauses(fParamClauses pc) {
@@ -39,7 +39,7 @@ public class fFunSig extends AstOperandNod {
 		v.visit(this);
 	}
 
-	public fNamedToken getName() {
+	public fNameValToken getName() {
 		return name;
 	}
 

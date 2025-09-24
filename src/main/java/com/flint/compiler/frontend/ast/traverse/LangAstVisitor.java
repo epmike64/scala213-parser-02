@@ -6,7 +6,7 @@ import com.flint.compiler.frontend.ast.nodes.AstOperatorNod;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.*;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstProdSubTreeN;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.fCompilationUnit;
-import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
+import com.flint.compiler.frontend.parse.lex.token.type.fNameValToken;
 
 import java.util.List;
 
@@ -423,7 +423,7 @@ public class LangAstVisitor extends AstNodVisitor  {
 
 	@Override
 	public void visit(fIds node) {
-		for(fNamedToken id: node.getIds()) {
+		for(fNameValToken id: node.getIds()) {
 			System.out.print(id );
 		}
 		System.out.println();

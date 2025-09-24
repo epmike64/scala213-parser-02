@@ -7,7 +7,7 @@ import com.flint.compiler.frontend.parse.lex.fLexer;
 import com.flint.compiler.frontend.parse.lex.token.fLangOperatorKind;
 import com.flint.compiler.frontend.parse.lex.token.fLangOperatorMap;
 import com.flint.compiler.frontend.parse.lex.token.fTokenKind;
-import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
+import com.flint.compiler.frontend.parse.lex.token.type.fNameValToken;
 import com.flint.compiler.frontend.parse.lex.token.type.fToken;
 import com.flint.compiler.frontend.parse.utils.Ast;
 
@@ -167,9 +167,9 @@ public class ParseHelp {
 		return token;
 	}
 
-	fNamedToken getAsNamedToken() {
-		if (token instanceof fNamedToken) {
-			return  (fNamedToken) token;
+	fNameValToken getAsNamedToken() {
+		if (token instanceof fNameValToken) {
+			return  (fNameValToken) token;
 		} else {
 			throw new AssertionError("Expected NamedToken but found " + token.kind);
 		}
