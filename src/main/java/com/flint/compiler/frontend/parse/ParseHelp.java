@@ -338,10 +338,6 @@ public class ParseHelp {
 		throw new RuntimeException("Unexpected token: " + token.kind);
 	}
 
-	void insertStmtSepOper(Ast a) {
-		insertOperator(a, fLangOperatorKind.O_STMT_SEP, fToken.STMT_SEP);
-	}
-
 	void insertOperator(Ast a, fLangOperatorKind k, fToken operatorToken) {
 		AstNod last = a.astLastN();
 		assert !last.isOperator() : "Last node should not be operator";

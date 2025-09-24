@@ -1,7 +1,6 @@
 package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
-import com.flint.compiler.frontend.parse.lex.token.OpChar;
 
 import java.util.Optional;
 

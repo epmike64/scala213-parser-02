@@ -1,6 +1,6 @@
 package com.flint.compiler.frontend.parse.lex.token;
 
-public enum OpChar {
+public enum fOpChr {
 	INVALID((char) 0x0),
 	COLON(':'),
 	ASSIGN('='),
@@ -21,9 +21,9 @@ public enum OpChar {
 	CARET('^'),
 	TILDE('~');
 
-	OpChar(char opchar) {
-		this.opchar = opchar;
+	fOpChr(char c) {
+		this.opChr = c;
 	}
 
-	public final char opchar;
+	public final char opChr;
 }

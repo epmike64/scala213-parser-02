@@ -4,12 +4,12 @@ import com.flint.compiler.frontend.ast.nodes.AstNod;
 import com.flint.compiler.frontend.ast.nodes.AstOperatorNod;
 import com.flint.compiler.frontend.ast.nodes.kinds.AstNodKind;
 import com.flint.compiler.frontend.parse.lex.token.fLangOperatorKind;
-import com.flint.compiler.frontend.parse.lex.token.type.fNamedToken;
+import com.flint.compiler.frontend.parse.lex.token.type.fToken;
 
 public class AstRootOpNod extends AstOperatorNod {
 
 	public AstRootOpNod() {
-		super(fLangOperatorKind.O_ROOT, fNamedToken.ROOT_OPERATOR_TOKEN);
+		super(fLangOperatorKind.O_ROOT, fToken.ROOT_OPERATOR_TOKEN);
 	}
 
 	@Override

@@ -6,11 +6,15 @@ import com.flint.compiler.frontend.parse.lex.token.fTokenTag;
 public class fNamedToken extends fToken {
 	/** The name of this token */
 	public final String name;
-	public static final fNamedToken ROOT_OPERATOR_TOKEN = new fNamedToken(fTokenKind.T_ROOT_OPERATOR, -1, -1, "");
 
 	public fNamedToken(fTokenKind kind, int pos, int endPos, String name) {
 		super(kind, pos, endPos);
 		this.name = name;
+	}
+
+	@Override
+	protected void assertIt() {
+		assert  kind.tag == fTokenTag.NAMED;
 	}
 
 	public boolean isRightAssociative() {

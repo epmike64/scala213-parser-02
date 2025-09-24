@@ -10,8 +10,9 @@ public class fNumericToken extends fStringToken {
 	public fNumericToken(fTokenKind kind, int pos, int endPos, String stringVal, int radix) {
 		super(kind, pos, endPos, stringVal);
 		this.radix = radix;
-
 	}
+
+	@Override
 	protected void assertIt() {
 		assert kind.tag == fTokenTag.NUMERIC;
 	}

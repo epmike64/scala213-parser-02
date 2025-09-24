@@ -1,5 +1,5 @@
 package com.flint.compiler.frontend.parse.lex.token;
 
 public enum fTokenTag {
-	DEFAULT, NAMED, STRING, NUMERIC
+	NAMED, STRING, NUMERIC, KWRD, OPERATOR, INTERN
 }
