@@ -52,7 +52,7 @@ public class LangAstVisitor extends AstNodVisitor  {
 		if(cls.getModifiers().isPresent()) {
 			cls.getModifiers().get().accept(this);
 		}
-		if(cls.getConstrAccessModifier().isPresent());{
+		if(cls.getConstrAccessModifier().isPresent()){
 			cls.getConstrAccessModifier().get().accept(this);
 		}
 		if(cls.getTypeParams().isPresent()) {
