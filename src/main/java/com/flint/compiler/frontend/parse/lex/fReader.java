@@ -56,7 +56,7 @@ public class fReader {
 	}
 
 
-	String name() {
+	String tokStrValue() {
 		return new String(sbuf, 0, sp);
 	}
 

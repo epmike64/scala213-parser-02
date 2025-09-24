@@ -12,19 +12,19 @@ import static com.flint.compiler.frontend.parse.lex.util.LayoutCharacters.*;
 
 public class fTokenizer {
 
-	final fReader reader;
-	protected int radix;
+	private final fReader reader;
+	private int radix;
 
 	/**
 	 * The token's name, set by nextToken().
 	 */
-	protected String tname;
-	fTokenKind tk;
+	private String tokStrVal;
+	private fTokenKind tKnd;
 
 	/**
 	 * The position where a lexical error occurred;
 	 */
-	protected int errPos = -1;
+	private int errPos = -1;
 
 	public fTokenizer(fReader reader) {
 		this.reader = reader;
@@ -32,7 +32,7 @@ public class fTokenizer {
 
 	fToken readToken() {
 		reader.sp = 0;
-		tname = null;
+		tokStrVal = null;
 		radix = 0;
 
 		int pos = 0;
@@ -41,12 +41,12 @@ public class fTokenizer {
 		wlp:
 		while (true) {
 
-			assert reader.sp == 0 && tname == null && radix == 0;
+			assert reader.sp == 0 && tokStrVal == null && radix == 0;
 			pos = reader.bp;
 
 			switch (reader.ch) {
 				case EOI: {
-					tk = fTokenKind.T_EOF;
+					tKnd = fTokenKind.T_EOF;
 					break wlp;
 				}
 				case SP: case TAB: case FF: {
@@ -61,7 +61,7 @@ public class fTokenizer {
 				}
 				case LF: {
 					reader.scanChar();
-					tk = fTokenKind.T_NL;
+					tKnd = fTokenKind.T_NL;
 					break wlp;
 				}
 				case 's': {
@@ -118,48 +118,48 @@ public class fTokenizer {
 						reader.putChar('.');
 						scanFractionAndSuffix(pos);
 					} else {
-						tk = fTokenKind.T_DOT;
+						tKnd = fTokenKind.T_DOT;
 					}
 					break wlp;
 				}
 				case ',': {
 					reader.scanChar();
-					tk = fTokenKind.T_COMMA;
+					tKnd = fTokenKind.T_COMMA;
 					break wlp;
 				}
 				case ';': {
 					reader.scanChar();
-					tk = fTokenKind.T_SEMICOLON;
+					tKnd = fTokenKind.T_SEMICOLON;
 					break wlp;
 				}
 				case '(': {
 					reader.scanChar();
-					tk = fTokenKind.T_LPAREN;
+					tKnd = fTokenKind.T_LPAREN;
 					break wlp;
 				}
 				case ')': {
 					reader.scanChar();
-					tk = fTokenKind.T_RPAREN;
+					tKnd = fTokenKind.T_RPAREN;
 					break wlp;
 				}
 				case '[': {
 					reader.scanChar();
-					tk = fTokenKind.T_LBRACKET;
+					tKnd = fTokenKind.T_LBRACKET;
 					break wlp;
 				}
 				case ']': {
 					reader.scanChar();
-					tk = fTokenKind.T_RBRACKET;
+					tKnd = fTokenKind.T_RBRACKET;
 					break wlp;
 				}
 				case '{': {
 					reader.scanChar();
-					tk = fTokenKind.T_LCURL;
+					tKnd = fTokenKind.T_LCURL;
 					break wlp;
 				}
 				case '}': {
 					reader.scanChar();
-					tk = fTokenKind.T_RCURL;
+					tKnd = fTokenKind.T_RCURL;
 					break wlp;
 				}
 
@@ -204,7 +204,7 @@ public class fTokenizer {
 						scanLitChar();
 						if (reader.ch == '\'') {
 							reader.scanChar();
-							tk = fTokenKind.T_CHAR_LIT;
+							tKnd = fTokenKind.T_CHAR_LIT;
 						} else {
 							lexError(pos, "unclosed.char.lit");
 						}
@@ -227,11 +227,11 @@ public class fTokenizer {
 			}
 		}
 		endPos = reader.bp;
-		switch (tk.tag) {
-			case OPERATOR: case KWRD: case INTERN: return new fToken(tk, pos, endPos, fToken._undef);
-			case NAME_VAL: return new fNameValToken(tk, pos, endPos, tname);
-			case STRING: return new fStringToken(tk, pos, endPos, tname);
-			case NUMERIC: return new fNumericToken(tk, pos, endPos, tname, radix);
+		switch (tKnd.tag) {
+			case OPERATOR: case KWRD: case INTERN: return new fToken(tKnd, pos, endPos, fToken._undef);
+			case NAME_VAL: return new fNameValToken(tKnd, pos, endPos, tokStrVal);
+			case STRING: return new fStringToken(tKnd, pos, endPos, tokStrVal);
+			case NUMERIC: return new fNumericToken(tKnd, pos, endPos, tokStrVal, radix);
 			default: throw new AssertionError();
 		}
 	}
@@ -242,9 +242,9 @@ public class fTokenizer {
 		while (reader.ch != '\"' && reader.ch != CR && reader.ch != LF && reader.bp < reader.buflen)
 			scanLitChar();
 		if (reader.ch == '\"') {
-			tk = fTokenKind.T_STRING_LIT;
+			tKnd = fTokenKind.T_STRING_LIT;
 			reader.scanChar();
-			tname = reader.name();
+			tokStrVal = reader.tokStrValue();
 		} else {
 			lexError(-1, "unclosed.str.lit");
 		}
@@ -353,8 +353,8 @@ public class fTokenizer {
 			}
 		}
 
-		tname = reader.name();
-		tk = fTokenMap.lookupKind(tname);
+		tokStrVal = reader.tokStrValue();
+		tKnd = fTokenMap.lookupKind(tokStrVal);
 	}
 
 	private void scanDigits(int pos, int digitRadix) {
@@ -385,13 +385,13 @@ public class fTokenizer {
 		}
 		if (reader.ch == 'f' || reader.ch == 'F') {
 			reader.putChar(true);
-			tk = fTokenKind.T_FLOAT_LIT;
+			tKnd = fTokenKind.T_FLOAT_LIT;
 			radix = 16;
 		} else {
 			if (reader.ch == 'd' || reader.ch == 'D') {
 				reader.putChar(true);
 			}
-			tk = fTokenKind.T_FLOAT_LIT;
+			tKnd = fTokenKind.T_FLOAT_LIT;
 			radix = 16;
 		}
 	}
@@ -429,12 +429,12 @@ public class fTokenizer {
 		scanFraction(pos);
 		if (reader.ch == 'f' || reader.ch == 'F') {
 			reader.putChar(true);
-			tk = fTokenKind.T_FLOAT_LIT;
+			tKnd = fTokenKind.T_FLOAT_LIT;
 		} else {
 			if (reader.ch == 'd' || reader.ch == 'D') {
 				reader.putChar(true);
 			}
-			tk = fTokenKind.T_FLOAT_LIT;
+			tKnd = fTokenKind.T_FLOAT_LIT;
 		}
 	}
 
@@ -480,8 +480,8 @@ public class fTokenizer {
 				reader.putChar(true);
 				scanFractionAndSuffix(pos);
 			} else {
-				tname = reader.name();
-				tk = fTokenKind.T_INT_LIT;
+				tokStrVal = reader.tokStrValue();
+				tKnd = fTokenKind.T_INT_LIT;
 			}
 		} else if (digitRadix == 10 &&
 				(reader.ch == 'e' || reader.ch == 'E' ||
@@ -499,12 +499,12 @@ public class fTokenizer {
 
 				}
 			}
-			tname = reader.name();
+			tokStrVal = reader.tokStrValue();
 			if (reader.ch == 'l' || reader.ch == 'L') {
 				reader.scanChar();
-				tk = fTokenKind.T_INT_LIT;
+				tKnd = fTokenKind.T_INT_LIT;
 			} else {
-				tk = fTokenKind.T_INT_LIT;
+				tKnd = fTokenKind.T_INT_LIT;
 			}
 		}
 	}
@@ -513,7 +513,7 @@ public class fTokenizer {
 	 * Report an error at the given position using the provided arguments.
 	 */
 	protected void lexError(int pos, String key, Object... args) throws RuntimeException {
-		tk = fTokenKind.T_ERROR;
+		tKnd = fTokenKind.T_ERROR;
 		errPos = pos;
 		throw new RuntimeException("pos: " + pos + ",m key=" + key);
 	}
