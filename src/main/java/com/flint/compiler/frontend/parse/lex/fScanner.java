@@ -19,23 +19,8 @@ public class fScanner implements fLexer {
 		scanToken();
 	}
 
-	//@Override
-	public void savePos() {
-		savedTokensIndex = currIndex;
-	}
 
-
-	public void resetPos() {
-		currIndex = savedTokensIndex;
-	}
-
-	//@Override
-	public void backtrack(int n) {
-		assert n >= 0 && currIndex - n >= -1;
-		currIndex -= n;
-	}
-
-	//@Override
+	@Override
 	public boolean isEOF() {
 		return eofIndex > -1 && currIndex >= eofIndex;
 	}
