@@ -12,14 +12,19 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-/**
- * Hello world!
- */
 public class App {
 	public static void main(String[] args) {
-      App app = new App();
+      if(args.length < 1) {
+			System.out.println("Usage: java -jar flint.jar <source-file>");
+			return;
+		}
+		String sourceFile = args[0];
+		System.out.println("Source file: " + sourceFile);
+		System.out.println("------------------------------------------------");
+
       try {
-         app.testParser(args[0]);
+	      App app = new App();
+	      app.testParser(sourceFile);
          System.out.println("Done");
       } catch (Exception e) {
          e.printStackTrace();
@@ -34,7 +39,11 @@ public class App {
 
    public void testParser(String filename) {
       String filePath = "src/main/resources/" + filename;
-      fTokenizer tknz = getTokenizer(filePath);
+		if (!Files.exists(Paths.get(filePath))) {
+			System.err.println("File not found: " + filePath);
+			return;
+		}
+		fTokenizer tknz = getTokenizer(filePath);
       fScanner scanner = new fScanner(tknz);
       fParser parser = new fParser(scanner);
       fCompilationUnit n = parser.compilationUnit();
