@@ -11,7 +11,6 @@ public class fScanner implements fLexer {
 	private fToken[] tokens = new fToken[256];
 	private int currIndex = -1;
 	private int eofIndex = -1;
-	private int savedTokensIndex = -1;
 	private int tokensSize;
 
 	public fScanner(fTokenizer tokenizer) {
