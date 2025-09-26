@@ -10,7 +10,7 @@ public class fToken {
 	public final fTokenKind kind;
 	protected final String tokValue;
 
-	public static final fToken F_OFFSET = new fToken(fTokenKind.T_F_OFFSET, -1, -1, "FILE_OFFSET");
+	public static final fToken FILE_OFFSET = new fToken(fTokenKind.T_FILE_OFFSET, -1, -1, "FILE_OFFSET");
 	public static final fToken ROOT_OPERATOR = new fToken(fTokenKind.T_ROOT_OPERATOR, -1, -1, "ROOT_OPERATOR");
 
 	public fToken(fTokenKind kind, int pos, int endPos, String tokValue) {

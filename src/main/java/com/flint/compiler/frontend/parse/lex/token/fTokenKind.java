@@ -2,7 +2,7 @@ package com.flint.compiler.frontend.parse.lex.token;
 
 
 public enum fTokenKind {
-	T_F_OFFSET(fTokenTag.INTERN),
+	T_FILE_OFFSET(fTokenTag.INTERN),
 	T_EOF(fTokenTag.INTERN),
 	T_ERROR(fTokenTag.INTERN),
 	T_NL(fTokenTag.INTERN),
