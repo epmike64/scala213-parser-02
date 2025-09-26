@@ -3,15 +3,13 @@ package com.flint.compiler.frontend.ast.nodes.leaves.node;
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 
-import java.util.Optional;
 
 public class fTemplate extends AstOperandNod {
 	private final boolean amExtender;
-	private final Optional<fTemplateBody> templateBody;
+	private final fTemplateBody templateBody;
 
-	public fTemplate(boolean amExtender, Optional<fTemplateBody> body) {
+	public fTemplate(boolean amExtender, fTemplateBody body) {
 		this.amExtender = amExtender;
-		assert body != null : "body cannot be null";
 		this.templateBody = body;
 	}
 
@@ -19,7 +17,7 @@ public class fTemplate extends AstOperandNod {
 		return amExtender;
 	}
 
-	public Optional<fTemplateBody> getTemplateBody() {
+	public fTemplateBody getTemplateBody() {
 		return templateBody;
 	}
 

@@ -2,12 +2,12 @@ package com.flint.compiler.frontend.ast.nodes.leaves.node;
 
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 
-import java.util.Optional;
+
 
 public class fClassTemplate extends fTemplate {
 	private final fClassParents parents;
 
-	public fClassTemplate(boolean amExtender, fClassParents parents, Optional<fTemplateBody> body) {
+	public fClassTemplate(boolean amExtender, fClassParents parents, fTemplateBody body) {
 		super(amExtender, body);
 		assert parents != null : "parents cannot be null";
 		this.parents = parents;

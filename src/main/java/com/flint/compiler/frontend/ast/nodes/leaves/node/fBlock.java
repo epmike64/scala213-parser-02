@@ -4,18 +4,17 @@ import com.flint.compiler.frontend.ast.nodes.AstNod;
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 
 public class fBlock extends AstOperandNod {
-	private Optional<List<AstNod>> statements = Optional.empty();
+	private final List<AstNod> statements = new ArrayList<>();
 	public void addStmt(AstNod st) {
-		if(st == null) {throw new IllegalArgumentException("Statement cannot be null");}
-		if(!statements.isPresent()) {statements = Optional.of(new java.util.ArrayList<>());}
-		statements.get().add(st);
+		statements.add(st);
 	}
 
-	public Optional<List<AstNod>> getStmts() {
+	public List<AstNod> getStmts() {
 		return statements;
 	}
 

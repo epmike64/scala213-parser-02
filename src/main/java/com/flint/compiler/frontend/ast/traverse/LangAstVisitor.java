@@ -198,8 +198,8 @@ public class LangAstVisitor extends AstNodVisitor  {
 	public void visit(fClassTemplate ct) {
 		System.out.println("Visiting Class Template" + ct);
 		ct.getParents().accept(this);
-		if(ct.getTemplateBody().isPresent()) {
-			ct.getTemplateBody().get().accept(this);
+		if(ct.getTemplateBody() != null) {
+			ct.getTemplateBody().accept(this);
 		}
 	}
 
@@ -215,11 +215,11 @@ public class LangAstVisitor extends AstNodVisitor  {
 	public void visit(fClassParents cp) {
 		System.out.println("Visiting Class Parents " + cp);
 		cp.getConstr().accept(this);
-		if(cp.getWithTypes().isPresent()) {
-			for(fParamType pt: cp.getWithTypes().get()) {
-				pt.accept(this);
-			}
+
+		for(fParamType pt: cp.getWithTypes()) {
+			pt.accept(this);
 		}
+
 	}
 
 	@Override
@@ -254,14 +254,14 @@ public class LangAstVisitor extends AstNodVisitor  {
 	public void visit(fFunSig s) {
 		System.out.println("Visiting Fun Sig: " + s);
 
-		if (s.getTypeParams().isPresent()) {
-			for (fTypeParam tp : s.getTypeParams().get()) {
+		if (s.getTypeParams() != null) {
+			for (fTypeParam tp : s.getTypeParams()) {
 				tp.accept(this);
 			}
 		}
 
-		if(s.getParamClauses().isPresent()) {
-			s.getParamClauses().get().accept(this);
+		if(s.getParamClauses() != null) {
+			s.getParamClauses().accept(this);
 		}
 	}
 
@@ -453,11 +453,11 @@ public class LangAstVisitor extends AstNodVisitor  {
 	@Override
 	public void visit(fBlock node) {
 
-		if(node.getStmts().isPresent()) {
-			for(AstNod s: node.getStmts().get()) {
-				s.accept(this);
-			}
+
+		for(AstNod s: node.getStmts()) {
+			s.accept(this);
 		}
+
 	}
 
 	@Override
@@ -473,8 +473,8 @@ public class LangAstVisitor extends AstNodVisitor  {
 	@Override
 	public void visit(fTemplate node) {
 
-		if(node.getTemplateBody().isPresent()) {
-			node.getTemplateBody().get().accept(this);
+		if(node.getTemplateBody() != null) {
+			node.getTemplateBody().accept(this);
 		}
 	}
 

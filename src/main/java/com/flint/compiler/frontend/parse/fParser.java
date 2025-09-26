@@ -878,7 +878,7 @@ public class fParser {
 		h.accept(fTokenKind.T_NEW);
 		switch (h.tKnd()) {
 			case T_LCURL: {
-				return new fTemplate(false, Optional.of(templateBody()));
+				return new fTemplate(false, templateBody());
 			}
 			case T_ID: case T_THIS: case T_SUPER: case T_LPAREN: {
 				return classTemplate(false, false);
@@ -891,9 +891,9 @@ public class fParser {
 	fClassTemplate classTemplate(boolean amExtender, boolean isTrait) {
 		fClassParents cp = classParents(isTrait);
 		if (h.isTkLCurl()) {
-			return new fClassTemplate(amExtender, cp, Optional.of(templateBody()));
+			return new fClassTemplate(amExtender, cp, templateBody());
 		}
-		return new fClassTemplate(amExtender, cp, Optional.empty());
+		return new fClassTemplate(amExtender, cp, null);
 	}
 
 	fBlock block() {
@@ -1173,7 +1173,7 @@ public class fParser {
 	fTemplate classExtends(boolean isTrait) {
 		switch (h.tKnd()) {
 			case T_NL: case T_LCURL: {
-				return new fTemplate(false, Optional.of(templateBody()));
+				return new fTemplate(false, templateBody());
 			}
 			case T_EXTENDS: {
 				h.next();
@@ -1182,7 +1182,7 @@ public class fParser {
 						return classTemplate(true, isTrait);
 					}
 					case T_NL: case T_LCURL: {
-						return new fTemplate(true, Optional.of(templateBody()));
+						return new fTemplate(true, templateBody());
 					}
 					default:
 						throw new RuntimeException("Expected class template or '{' after 'extends' but found: " + h.getToken());
