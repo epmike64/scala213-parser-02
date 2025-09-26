@@ -20,13 +20,18 @@ public class fScanner implements fLexer {
 
 
 	@Override
-	public boolean isEOF() {
+	public boolean currentAtEof() {
 		return eofIndex > -1 && currIndex >= eofIndex;
 	}
 
 	@Override
+	public boolean filledToEof() {
+		return eofIndex > -1;
+	}
+
+	@Override
 	public fToken nextToken()  {
-		if(isEOF()){
+		if(currentAtEof()){
 			return tokens[eofIndex];
 		}
 		if(++ currIndex < tokensSize){
@@ -37,7 +42,7 @@ public class fScanner implements fLexer {
 	}
 
 	private void scanToken() {
-		if(eofIndex > -1) return;
+		if(filledToEof()) return;
 		tokens = ArrayUtils.ensureCapacity(tokens,  tokensSize);
 		tokens[tokensSize++] =  tokenizer.readToken();
 		int lastIx = tokensSize - 1;
@@ -50,7 +55,7 @@ public class fScanner implements fLexer {
 		assert n >= 0;
 		int ensureSize = currIndex + 1 + n;
 		while (tokensSize < ensureSize) {
-			if(isEOF()) return;
+			if(filledToEof()) return;
 			scanToken();
 		}
 	}

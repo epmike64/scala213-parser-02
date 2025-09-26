@@ -5,5 +5,6 @@ import com.flint.compiler.frontend.parse.lex.token.type.fToken;
 public interface fLexer {
 	fToken nextToken() ;
 	fToken lookAhead(int n) ;
-	boolean isEOF();
+	boolean currentAtEof();
+	boolean filledToEof();
 }
