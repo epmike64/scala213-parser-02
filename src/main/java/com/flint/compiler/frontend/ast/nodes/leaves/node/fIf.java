@@ -9,7 +9,7 @@ import java.util.Optional;
 public class fIf extends AstOperandNod {
 	private final AstOperandNod condExpr;
 	private AstProdSubTreeN ifBody;
-	private Optional<AstProdSubTreeN> elseBody = Optional.empty();
+	private AstProdSubTreeN elseBody;
 	public fIf(AstOperandNod condition) {
 		this.condExpr = condition;
 	}
@@ -28,10 +28,10 @@ public class fIf extends AstOperandNod {
 		this.ifBody = ifBody;
 	}
 	public  void setElseBody(AstProdSubTreeN elseBody) {
-		this.elseBody = Optional.of(elseBody);
+		this.elseBody = elseBody;
 	}
 
-	public Optional<AstProdSubTreeN> getElseBody() {
+	public AstProdSubTreeN getElseBody() {
 		return elseBody;
 	}
 	@Override

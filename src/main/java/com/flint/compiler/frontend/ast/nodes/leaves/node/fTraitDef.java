@@ -5,13 +5,13 @@ import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 import com.flint.compiler.frontend.parse.lex.token.type.fNameValToken;
 
 import java.util.List;
-import java.util.Optional;
+
 
 public class fTraitDef extends AstOperandNod {
 	private final fNameValToken name;
 	private final fModifiers modifiers;
-	private Optional<List<fVariantTypeParam>> typeParams = Optional.empty();
-	private Optional<AstOperandNod> extendsTemplate = Optional.empty();
+	private List<fVariantTypeParam> typeParams ;
+	private AstOperandNod extendsTemplate ;
 
 	public fTraitDef(fNameValToken name, fModifiers modifiers) {
 		this.name = name;
@@ -19,15 +19,11 @@ public class fTraitDef extends AstOperandNod {
 	}
 
 	public void setTypeParams(List<fVariantTypeParam> tps) {
-		if (this.typeParams.isPresent()) throw new RuntimeException("Type parameters already set");
-		if(tps == null || tps.size() == 0) throw new RuntimeException("Type parameters cannot be null or empty");
-		this.typeParams = Optional.of(tps);
+		this.typeParams = tps;
 	}
 
 	public void setExtendsTemplate(AstOperandNod et) {
-		if (this.extendsTemplate.isPresent()) throw new RuntimeException("Extends template already set");
-		if(et == null) throw new RuntimeException("Extends template cannot be null");
-		this.extendsTemplate = Optional.of(et);
+		this.extendsTemplate = et;
 	}
 
 	@Override
@@ -38,11 +34,11 @@ public class fTraitDef extends AstOperandNod {
 	public fNameValToken getName() {
 		return name;
 	}
-	public Optional<List<fVariantTypeParam>> getTypeParams() {
+	public List<fVariantTypeParam> getTypeParams() {
 		return typeParams;
 	}
 
-	public Optional<AstOperandNod> getExtendsTemplate() {
+	public AstOperandNod getExtendsTemplate() {
 		return extendsTemplate;
 	}
 

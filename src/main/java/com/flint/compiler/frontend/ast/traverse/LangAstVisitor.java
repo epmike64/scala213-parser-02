@@ -52,19 +52,19 @@ public class LangAstVisitor extends AstNodVisitor  {
 		if(cls.getModifiers() != null) {
 			cls.getModifiers().accept(this);
 		}
-		if(cls.getConstrAccessModifier().isPresent()){
-			cls.getConstrAccessModifier().get().accept(this);
+		if(cls.getConstrAccessModifier() != null) {
+			cls.getConstrAccessModifier().accept(this);
 		}
-		if(cls.getTypeParams().isPresent()) {
-			for (fTypeParam tp : cls.getTypeParams().get()) {
+		if(cls.getTypeParams() != null) {
+			for (fTypeParam tp : cls.getTypeParams()) {
 				tp.accept(this);
 			}
 		}
-		if(cls.getClassParamClauses().isPresent()) {
-			cls.getClassParamClauses().get().accept(this);
+		if(cls.getClassParamClauses() != null) {
+			cls.getClassParamClauses().accept(this);
 		}
-		if(cls.getExtendsTemplate().isPresent()) {
-			cls.getExtendsTemplate().get().accept(this);
+		if(cls.getExtendsTemplate() != null) {
+			cls.getExtendsTemplate().accept(this);
 		}
 	}
 
@@ -85,8 +85,8 @@ public class LangAstVisitor extends AstNodVisitor  {
 	@Override
 	public void visit(fAccessModifier am) {
 		System.out.println("Visiting Access Modifier: " + am);
-		if(am.getQualifier().isPresent()) {
-			am.getQualifier().get().accept(this);
+		if(am.getQualifier() != null) {
+			am.getQualifier().accept(this);
 		}
 	}
 
@@ -110,8 +110,8 @@ public class LangAstVisitor extends AstNodVisitor  {
 		if(o.getModifiers() != null) {
 			o.getModifiers().accept(this);
 		}
-		if(o.getExtendsTemplate().isPresent()) {
-			o.getExtendsTemplate().get().accept(this);
+		if(o.getExtendsTemplate() != null) {
+			o.getExtendsTemplate().accept(this);
 		}
 	}
 
@@ -149,13 +149,13 @@ public class LangAstVisitor extends AstNodVisitor  {
 		if(t.getModifiers() != null) {
 			t.getModifiers().accept(this);
 		}
-		if(t.getTypeParams().isPresent()) {
-			for (fTypeParam tp : t.getTypeParams().get()) {
+		if(t.getTypeParams() != null) {
+			for (fTypeParam tp : t.getTypeParams()) {
 				tp.accept(this);
 			}
 		}
-		if(t.getExtendsTemplate().isPresent()) {
-			t.getExtendsTemplate().get().accept(this);
+		if(t.getExtendsTemplate() != null) {
+			t.getExtendsTemplate().accept(this);
 		}
 
 	}
@@ -165,8 +165,8 @@ public class LangAstVisitor extends AstNodVisitor  {
 		System.out.println("Visiting If Node" + f);
 		f.getCondExpr().accept(this);
 		f.getIfBody().accept(this);
-		if(f.getElseBody().isPresent()) {
-			f.getElseBody().get().accept(this);
+		if(f.getElseBody() != null) {
+			f.getElseBody().accept(this);
 		}
 	}
 
@@ -270,8 +270,8 @@ public class LangAstVisitor extends AstNodVisitor  {
 		System.out.println("Visiting Class Constructor  " + cc);
 		cc.getParamType().accept(this);
 
-		if(cc.getArgs().isPresent()) {
-			cc.getArgs().get().accept(this);
+		if(cc.getArgs() != null) {
+			cc.getArgs().accept(this);
 		}
 	}
 
@@ -286,17 +286,15 @@ public class LangAstVisitor extends AstNodVisitor  {
 		System.out.println("GCount: "+ (++gcount)+ "Visiting Generator Node " + g);
 		g.getCasePattern1().accept(this);
 		g.getInExpr().accept(this);
-		if(g.getGuards().isPresent()) {
-			for(AstProdSubTreeN guard: g.getGuards().get()) {
-				guard.accept(this);
-			}
+
+		for(AstProdSubTreeN guard: g.getGuards()) {
+			guard.accept(this);
 		}
-		if(g.getEndingPattern1s().isPresent()){
-			assert g.getEndingPattern1s().get().size() == g.getEndingExprs().get().size();
-			for(int i = 0; i < g.getEndingPattern1s().get().size(); i++) {
-				g.getEndingPattern1s().get().get(i).accept(this);
-				g.getEndingExprs().get().get(i).accept(this);
-			}
+
+		assert g.getEndingPattern1s().size() == g.getEndingExprs().size();
+		for(int i = 0; i < g.getEndingPattern1s().size(); i++) {
+			g.getEndingPattern1s().get(i).accept(this);
+			g.getEndingExprs().get(i).accept(this);
 		}
 	}
 
@@ -402,11 +400,11 @@ public class LangAstVisitor extends AstNodVisitor  {
 		}
 //		cp.getIdentifier();
 //		cp.getMutability();
-		if(cp.getParamType().isPresent()) {
-			cp.getParamType().get().accept(this);
+		if(cp.getParamType() != null) {
+			cp.getParamType().accept(this);
 		}
-		if(cp.getDefaultValue().isPresent()) {
-			cp.getDefaultValue().get().accept(this);
+		if(cp.getDefaultValue() != null) {
+			cp.getDefaultValue().accept(this);
 		}
 
 	}

@@ -4,26 +4,24 @@ import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstProdSubTreeN;
 
-import java.util.Optional;
+
 
 public class fClassConstr extends AstOperandNod {
 	private final fParamType fParamType;
-	private Optional<AstProdSubTreeN> args = Optional.empty();
+	private AstProdSubTreeN args;
 
 	public fClassConstr(fParamType fParamType) {
 		this.fParamType = fParamType;
 	}
 
 	public void setArgExprs(AstProdSubTreeN as) {
-		if(this.args.isPresent()) {throw new IllegalStateException("Args already set");}
-		if(as == null) {throw new IllegalArgumentException("Args cannot be null");}
-		this.args = Optional.of(as);
+		this.args = as;
 	}
 
 	public fParamType getParamType() {
 		return fParamType;
 	}
-	public Optional<AstProdSubTreeN> getArgs() {
+	public AstProdSubTreeN getArgs() {
 		return args;
 	}
 

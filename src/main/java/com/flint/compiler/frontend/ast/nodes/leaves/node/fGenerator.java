@@ -4,15 +4,17 @@ import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstProdSubTreeN;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class fGenerator extends AstOperandNod {
 	private final AstProdSubTreeN casePattern1;
 	private final boolean isCase;
-	private Optional<List<AstProdSubTreeN>> guards = Optional.empty();
+	private final List<AstProdSubTreeN> guards = new ArrayList<>();
 	private AstProdSubTreeN inExpr;
-	private Optional<List<AstProdSubTreeN>> endingPattern1s = Optional.empty(), endingExprs = Optional.empty();
+	private final List<AstProdSubTreeN> endingPattern1s = new ArrayList<>();
+	private final List<AstProdSubTreeN> endingExprs = new ArrayList<>();
 
 	public fGenerator(AstProdSubTreeN pattern1, boolean isCase) {
 		this.casePattern1 = pattern1;
@@ -22,26 +24,14 @@ public class fGenerator extends AstOperandNod {
 		this.inExpr = inExpr;
 	}
 	public void addGuard(AstProdSubTreeN guard) {
-		assert  guard != null : "guard cannot be null";
-		if(!guards.isPresent()) {
-			guards = Optional.of(new java.util.ArrayList<>());
-		}
-		this.guards.get().add(guard);
+		this.guards.add(guard);
 	}
 
 	public void addEndingPattern1(AstProdSubTreeN ep1) {
-		assert  ep1 != null : "endingPattern1 cannot be null";
-		if(!endingPattern1s.isPresent()) {
-			endingPattern1s = Optional.of(new java.util.ArrayList<>());
-		}
-		this.endingPattern1s.get().add(ep1);
+		this.endingPattern1s.add(ep1);
 	}
 	public void addEndingExpr(AstProdSubTreeN ee) {
-		assert ee != null : "endingExpr cannot be null";
-		if(!endingExprs.isPresent()) {
-			endingExprs = Optional.of(new java.util.ArrayList<>());
-		}
-		this.endingExprs.get().add(ee);
+		this.endingExprs.add(ee);
 	}
 
 	@Override
@@ -57,11 +47,11 @@ public class fGenerator extends AstOperandNod {
 		return isCase;
 	}
 
-	public Optional<List<AstProdSubTreeN>> getGuards() {
+	public List<AstProdSubTreeN> getGuards() {
 		return guards;
 	}
 
-	public Optional<List<AstProdSubTreeN>> getEndingPattern1s() {
+	public List<AstProdSubTreeN> getEndingPattern1s() {
 		return endingPattern1s;
 	}
 
@@ -69,7 +59,7 @@ public class fGenerator extends AstOperandNod {
 		return inExpr;
 	}
 
-	public Optional<List<AstProdSubTreeN>> getEndingExprs() {
+	public List<AstProdSubTreeN> getEndingExprs() {
 		return endingExprs;
 	}
 	@Override
