@@ -9,7 +9,7 @@ import com.flint.compiler.frontend.parse.lex.token.type.fToken;
 public class AstRootOpNod extends AstOperatorNod {
 
 	public AstRootOpNod() {
-		super(fLangOperatorKind.O_ROOT, fToken.ROOT_OPERATOR_TOKEN);
+		super(fLangOperatorKind.O_ROOT, fToken.ROOT_OPERATOR);
 	}
 
 	@Override

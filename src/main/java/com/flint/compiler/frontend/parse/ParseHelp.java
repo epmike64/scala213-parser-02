@@ -18,7 +18,7 @@ import static com.flint.compiler.frontend.parse.lex.token.fTokenKind.*;
 public class ParseHelp {
 
 	private fToken prevToken;
-	private fToken token = fToken.SOF;
+	private fToken token = fToken.F_OFFSET;
 	private fLexer lexer;
 	private final Stack<Boolean> isNLEnabledStack = new Stack<>();
 	private int nlCount;

@@ -10,8 +10,8 @@ public class fToken {
 	public final fTokenKind kind;
 	protected final String tokValue;
 
-	public static final fToken SOF = new fToken(fTokenKind.T_SOF, -1, -1, "SOF");
-	public static final fToken ROOT_OPERATOR_TOKEN = new fToken(fTokenKind.T_ROOT_OPERATOR, -1, -1, "ROOT_OPERATOR");
+	public static final fToken F_OFFSET = new fToken(fTokenKind.T_F_OFFSET, -1, -1, "SOF");
+	public static final fToken ROOT_OPERATOR = new fToken(fTokenKind.T_ROOT_OPERATOR, -1, -1, "ROOT_OPERATOR");
 
 	public fToken(fTokenKind kind, int pos, int endPos, String tokValue) {
 		this.kind = kind;
