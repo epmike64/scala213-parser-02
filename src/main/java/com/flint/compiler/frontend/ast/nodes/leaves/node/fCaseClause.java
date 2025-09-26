@@ -4,19 +4,18 @@ import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstProdSubTreeN;
 
-import java.util.Optional;
+
 
 public class fCaseClause extends AstOperandNod {
 	private final AstProdSubTreeN pattern;
-	private Optional<AstOperandNod> guard;
+	private AstOperandNod guard;
 	private AstOperandNod block;
 	public fCaseClause(AstProdSubTreeN pattern) {
 		this.pattern = pattern;
 	}
 	public void setGuard(AstOperandNod g) {
 		assert g != null : "guard cannot be null";
-		if(guard.isPresent()) throw new IllegalStateException("guard already set");
-		this.guard = Optional.of(g);
+		this.guard = g;
 	}
 
 	public void setBlock(AstOperandNod b) {
@@ -26,7 +25,7 @@ public class fCaseClause extends AstOperandNod {
 	public AstProdSubTreeN getPattern() {
 		return pattern;
 	}
-	public Optional<AstOperandNod> getGuard() {
+	public AstOperandNod getGuard() {
 		return guard;
 	}
 	public AstOperandNod getBlock() {

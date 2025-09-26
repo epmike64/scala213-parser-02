@@ -301,15 +301,15 @@ public class LangAstVisitor extends AstNodVisitor  {
 	@Override
 	public void visit(fClassParamClauses cps) {
 		System.out.println("Visiting Class Param Clauses " + cps);
-		if(cps.getParams().isPresent()) {
-			for(List<fClassParam> cpList : cps.getParams().get()){
-				for(fClassParam cp : cpList) {
-					cp.accept(this);
-				}
+
+		for(List<fClassParam> cpList : cps.getParams()){
+			for(fClassParam cp : cpList) {
+				cp.accept(this);
 			}
 		}
-		if(cps.getImplicitParams().isPresent()) {
-			for(fClassParam cp : cps.getImplicitParams().get()){
+
+		if(cps.getImplicitParams() != null) {
+			for(fClassParam cp : cps.getImplicitParams()){
 				cp.accept(this);
 			}
 		}
@@ -362,16 +362,15 @@ public class LangAstVisitor extends AstNodVisitor  {
 
 	@Override
 	public void visit(fParamClauses c) {
-		if(c.getParams().isPresent()) {
-			for(List<fParam> pList: c.getParams().get()) {
-				for(fParam p: pList) {
-					p.accept(this);
-				}
+
+		for(List<fParam> pList: c.getParams()) {
+			for(fParam p: pList) {
+				p.accept(this);
 			}
 		}
 
-		if(c.getImplicitParams().isPresent()) {
-			for(fParam p: c.getImplicitParams().get()) {
+		if(c.getImplicitParams() != null) {
+			for(fParam p: c.getImplicitParams()) {
 				p.accept(this);
 			}
 		}
@@ -482,8 +481,8 @@ public class LangAstVisitor extends AstNodVisitor  {
 	@Override
 	public void visit(fCaseClause cc) {
 		cc.getPattern().accept(this);
-		if(cc.getGuard().isPresent()) {
-			cc.getGuard().get().accept(this);
+		if(cc.getGuard() != null) {
+			cc.getGuard().accept(this);
 		}
 		cc.getBlock().accept(this);
 	}

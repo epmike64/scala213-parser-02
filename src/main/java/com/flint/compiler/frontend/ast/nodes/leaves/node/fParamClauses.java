@@ -3,24 +3,20 @@ package com.flint.compiler.frontend.ast.nodes.leaves.node;
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class fParamClauses extends AstOperandNod {
-	private Optional<List<List<fParam>>> paramsLists = Optional.empty();
-	private Optional<List<fParam>> implicitParams = Optional.empty();
+	private final List<List<fParam>> paramsLists = new ArrayList<>();
+	private List<fParam> implicitParams;
 
 	public void addParams(List<fParam> params) {
-		if (!paramsLists.isPresent()) {
-			paramsLists = Optional.of(new java.util.ArrayList<>());
-			return;
-		}
-		paramsLists.get().add(params);
+		paramsLists.add(params);
 	}
 
 	public void setImplicitParams(List<fParam> implicitParams) {
-		assert implicitParams != null && !implicitParams.isEmpty();
-		this.implicitParams = Optional.of(implicitParams);
+		this.implicitParams = implicitParams;
 	}
 
 	@Override
@@ -28,11 +24,11 @@ public class fParamClauses extends AstOperandNod {
 		v.visit(this);
 	}
 
-	public Optional<List<List<fParam>>> getParams() {
+	public List<List<fParam>> getParams() {
 		return paramsLists;
 	}
 
-	public Optional<List<fParam>> getImplicitParams() {
+	public List<fParam> getImplicitParams() {
 		return implicitParams;
 	}
 
