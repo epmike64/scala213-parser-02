@@ -27,7 +27,7 @@ public class fScanner implements fLexer {
 	@Override
 	public fToken nextToken()  {
 		if(isEOF()){
-			return tokens[currIndex];
+			return tokens[eofIndex];
 		}
 		if(++ currIndex < tokensSize){
 			return tokens[currIndex];
@@ -37,7 +37,7 @@ public class fScanner implements fLexer {
 	}
 
 	private void scanToken() {
-		assert !isEOF();
+		if(eofIndex > -1) return;
 		tokens = ArrayUtils.ensureCapacity(tokens,  tokensSize);
 		tokens[tokensSize++] =  tokenizer.readToken();
 		int lastIx = tokensSize - 1;
