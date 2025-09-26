@@ -10,13 +10,16 @@ public class fFor extends AstOperandNod {
 	private final List<fGenerator> generators;
 	private boolean isYield = false;
 	private AstProdSubTreeN yieldExpr;
+
 	public fFor(List<fGenerator> generators) {
 		assert generators != null && !generators.isEmpty() : "generators cannot be null or empty";
 		this.generators = generators;
 	}
+
 	public void setYield(boolean yield) {
 		isYield = yield;
 	}
+
 	public void setYieldExpr(AstProdSubTreeN yieldExpr) {
 		assert yieldExpr != null : "expr cannot be null";
 		this.yieldExpr = yieldExpr;
@@ -30,9 +33,11 @@ public class fFor extends AstOperandNod {
 	public List<fGenerator> getGenerators() {
 		return generators;
 	}
+
 	public boolean isYield() {
 		return isYield;
 	}
+
 	public AstProdSubTreeN getYieldExpr() {
 		return yieldExpr;
 	}

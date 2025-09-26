@@ -9,9 +9,9 @@ import java.util.List;
 
 public class fPackage extends AstOperandNod {
 	private final List<fNameValToken> fIds;
+
 	public fPackage(List<fNameValToken> ids) {
-		assert ids != null && ids.size() > 0;
-		this.fIds = new ArrayList<>(ids);
+		this.fIds = ids;
 	}
 
 	@Override

@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class fClassParamClauses extends AstOperandNod  {
+public class fClassParamClauses extends AstOperandNod {
 	private List<fClassParam> implicitParams;
-	private List<List<fClassParam>> params = new ArrayList<>();
+	private final List<List<fClassParam>> params = new ArrayList<>();
 
 	public void setImplicitParams(List<fClassParam> implicitParams) {
 		this.implicitParams = implicitParams;

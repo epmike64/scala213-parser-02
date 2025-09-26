@@ -3,7 +3,6 @@ package com.flint.compiler.frontend.ast.nodes.leaves.node;
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 
 
-
 public class fClassTemplate extends fTemplate {
 	private final fClassParents parents;
 

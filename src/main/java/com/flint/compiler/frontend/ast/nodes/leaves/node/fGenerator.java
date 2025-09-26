@@ -19,9 +19,11 @@ public class fGenerator extends AstOperandNod {
 		this.casePattern1 = pattern1;
 		this.isCase = isCase;
 	}
+
 	public void setInExpr(AstProdSubTreeN inExpr) {
 		this.inExpr = inExpr;
 	}
+
 	public void addGuard(AstProdSubTreeN guard) {
 		this.guards.add(guard);
 	}
@@ -29,6 +31,7 @@ public class fGenerator extends AstOperandNod {
 	public void addEndingPattern1(AstProdSubTreeN ep1) {
 		this.endingPattern1s.add(ep1);
 	}
+
 	public void addEndingExpr(AstProdSubTreeN ee) {
 		this.endingExprs.add(ee);
 	}
@@ -61,6 +64,7 @@ public class fGenerator extends AstOperandNod {
 	public List<AstProdSubTreeN> getEndingExprs() {
 		return endingExprs;
 	}
+
 	@Override
 	public String toString() {
 		return "fGenerator{" +

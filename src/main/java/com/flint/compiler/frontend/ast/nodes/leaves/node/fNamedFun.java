@@ -33,6 +33,7 @@ public class fNamedFun extends fFun {
 	public fType getReturnType() {
 		return returnType;
 	}
+
 	public AstOperandNod getBody() {
 		return bd;
 	}

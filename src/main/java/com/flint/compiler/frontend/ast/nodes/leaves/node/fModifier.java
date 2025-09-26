@@ -5,9 +5,11 @@ import com.flint.compiler.frontend.parse.lex.token.fModifierTypes;
 
 public abstract class fModifier extends AstOperandNod {
 	final fModifierTypes modType;
+
 	protected fModifier(fModifierTypes type) {
 		this.modType = type;
 	}
+
 	public fModifierTypes getModifierType() {
 		return modType;
 	}

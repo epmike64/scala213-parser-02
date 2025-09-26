@@ -10,6 +10,7 @@ import java.util.List;
 
 public class fBlock extends AstOperandNod {
 	private final List<AstNod> statements = new ArrayList<>();
+
 	public void addStmt(AstNod st) {
 		statements.add(st);
 	}

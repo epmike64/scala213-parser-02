@@ -8,16 +8,20 @@ import java.util.List;
 
 public class fIds extends AstOperandNod {
 	private final List<fNameValToken> ids;
+
 	public fIds(List<fNameValToken> ids) {
 		this.ids = ids;
 	}
+
 	@Override
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
 	}
+
 	public List<fNameValToken> getIds() {
 		return ids;
 	}
+
 	@Override
 	public String toString() {
 		return "fIds{" +

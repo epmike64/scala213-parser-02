@@ -11,16 +11,20 @@ public class fImport extends AstOperandNod {
 
 	public static class fImportSelector {
 		private final fNameValToken from, to;
+
 		public fImportSelector(final fNameValToken from, final fNameValToken to) {
 			this.from = from;
 			this.to = to;
 		}
+
 		public fNameValToken getFrom() {
 			return from;
 		}
+
 		public fNameValToken getTo() {
 			return to;
 		}
+
 		@Override
 		public String toString() {
 			return "fImportSelector{" +
@@ -33,21 +37,24 @@ public class fImport extends AstOperandNod {
 	public static class fImportExpr {
 		private final fStableId id;
 		private List<fImportSelector> selectors = null;
+
 		public fImportExpr(final fStableId id) {
 			this.id = id;
 		}
 
 		public void setSelectors(final List<fImportSelector> selectors) {
-			assert  this.selectors == null;
+			assert this.selectors == null;
 			this.selectors = selectors;
 		}
 
 		public fStableId getId() {
 			return id;
 		}
+
 		public List<fImportSelector> getSelectors() {
 			return selectors;
 		}
+
 		@Override
 		public String toString() {
 			return "fImportExpr{" +
@@ -58,8 +65,8 @@ public class fImport extends AstOperandNod {
 	}
 
 
-
 	private final List<fImportExpr> importExprs = new ArrayList<>();
+
 	public void addImportExpr(fImportExpr importExpr) {
 		importExprs.add(importExpr);
 	}

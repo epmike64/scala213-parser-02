@@ -5,14 +5,15 @@ import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstProdSubTreeN;
 
 
-
 public class fCaseClause extends AstOperandNod {
 	private final AstProdSubTreeN pattern;
 	private AstOperandNod guard;
 	private AstOperandNod block;
+
 	public fCaseClause(AstProdSubTreeN pattern) {
 		this.pattern = pattern;
 	}
+
 	public void setGuard(AstOperandNod g) {
 		assert g != null : "guard cannot be null";
 		this.guard = g;
@@ -22,12 +23,15 @@ public class fCaseClause extends AstOperandNod {
 		assert b != null : "block cannot be null";
 		this.block = b;
 	}
+
 	public AstProdSubTreeN getPattern() {
 		return pattern;
 	}
+
 	public AstOperandNod getGuard() {
 		return guard;
 	}
+
 	public AstOperandNod getBlock() {
 		return block;
 	}

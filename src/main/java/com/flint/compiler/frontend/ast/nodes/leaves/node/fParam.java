@@ -13,9 +13,11 @@ public class fParam extends AstOperandNod {
 	public fParam(fNameValToken name) {
 		this.name = name;
 	}
+
 	public void setParamType(fParamType typeParam) {
 		this.paramType = typeParam;
 	}
+
 	public void setDefaultValue(AstProdSubTreeN defaultValue) {
 		this.defaultValue = defaultValue;
 	}
@@ -28,12 +30,15 @@ public class fParam extends AstOperandNod {
 	public fNameValToken getName() {
 		return name;
 	}
+
 	public fParamType getParamType() {
 		return paramType;
 	}
+
 	public AstProdSubTreeN getDefaultValue() {
 		return defaultValue;
 	}
+
 	@Override
 	public String toString() {
 		return "fParam{" +

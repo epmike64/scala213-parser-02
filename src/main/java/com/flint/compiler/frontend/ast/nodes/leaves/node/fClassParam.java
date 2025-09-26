@@ -12,14 +12,23 @@ public class fClassParam extends AstOperandNod {
 	private fParamType paramType;
 	private AstProdSubTreeN defaultValue;
 	private fModifiers modifiers;
-	public  void setMutability(fMutabilityType mutability) {this.mutability = mutability;}
-	public void setIdentifier(fNameValToken identifier) {this.identifier = identifier;}
+
+	public void setMutability(fMutabilityType mutability) {
+		this.mutability = mutability;
+	}
+
+	public void setIdentifier(fNameValToken identifier) {
+		this.identifier = identifier;
+	}
+
 	public void setParamType(fParamType paramType) {
 		this.paramType = paramType;
 	}
+
 	public void setDefaultValue(AstProdSubTreeN df) {
-		this.defaultValue =df;
+		this.defaultValue = df;
 	}
+
 	public void setModifiers(fModifiers mds) {
 		this.modifiers = mds;
 	}
@@ -27,15 +36,19 @@ public class fClassParam extends AstOperandNod {
 	public fMutabilityType getMutability() {
 		return mutability;
 	}
+
 	public fNameValToken getIdentifier() {
 		return identifier;
 	}
+
 	public fParamType getParamType() {
 		return paramType;
 	}
+
 	public AstProdSubTreeN getDefaultValue() {
 		return defaultValue;
 	}
+
 	public fModifiers getModifiers() {
 		return modifiers;
 	}
@@ -44,6 +57,7 @@ public class fClassParam extends AstOperandNod {
 	public void accept(AstNodVisitor v) {
 		v.visit(this);
 	}
+
 	@Override
 	public String toString() {
 		return "fClassParam{" +
