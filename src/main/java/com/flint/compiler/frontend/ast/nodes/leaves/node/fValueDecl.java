@@ -5,7 +5,7 @@ import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import java.util.Optional;
 
 public class fValueDecl extends fValue{
-	public fValueDecl(Optional<fModifiers> modifiers) {
+	public fValueDecl(fModifiers modifiers) {
 		super(modifiers);
 	}
 	@Override

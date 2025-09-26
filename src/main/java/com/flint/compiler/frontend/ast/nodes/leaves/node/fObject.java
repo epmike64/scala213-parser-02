@@ -11,9 +11,9 @@ public class fObject extends AstOperandNod  {
 	private final boolean isCaseClass;
 	private final fNameValToken name;
 	private Optional<AstOperandNod> extendsTemplate = Optional.empty();
-	private final Optional<fModifiers> modifiers;
+	private final fModifiers modifiers;
 
-	public fObject(fNameValToken name, boolean isCaseClass, Optional<fModifiers> modifiers) {
+	public fObject(fNameValToken name, boolean isCaseClass, fModifiers modifiers) {
 		this.name = name;
 		this.isCaseClass = isCaseClass;
 		this.modifiers = modifiers;
@@ -42,7 +42,7 @@ public class fObject extends AstOperandNod  {
 		return isCaseClass;
 	}
 
-	public Optional<fModifiers> getModifiers() {
+	public fModifiers getModifiers() {
 		return modifiers;
 	}
 

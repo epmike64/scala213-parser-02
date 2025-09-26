@@ -9,11 +9,11 @@ import java.util.Optional;
 
 public class fTraitDef extends AstOperandNod {
 	private final fNameValToken name;
-	private final Optional<fModifiers> modifiers;
+	private final fModifiers modifiers;
 	private Optional<List<fVariantTypeParam>> typeParams = Optional.empty();
 	private Optional<AstOperandNod> extendsTemplate = Optional.empty();
 
-	public fTraitDef(fNameValToken name, Optional<fModifiers> modifiers) {
+	public fTraitDef(fNameValToken name, fModifiers modifiers) {
 		this.name = name;
 		this.modifiers = modifiers;
 	}
@@ -46,7 +46,7 @@ public class fTraitDef extends AstOperandNod {
 		return extendsTemplate;
 	}
 
-	public Optional<fModifiers> getModifiers() {
+	public fModifiers getModifiers() {
 		return modifiers;
 	}
 

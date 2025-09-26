@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Optional;
 
 public class fValue extends AstOperandNod {
-	private final Optional<fModifiers> modifiers;
+	private final fModifiers modifiers;
 	private final List<AstProdSubTreeN> names = new ArrayList<>();
 	private Optional<fType> type = Optional.empty();
 	private Optional<AstProdSubTreeN> assignExpr = Optional.empty();
-	public fValue(Optional<fModifiers> modifiers) {
+	public fValue(fModifiers modifiers) {
 		this.modifiers = modifiers;
 	}
 	public void addName(AstProdSubTreeN name) {
@@ -39,7 +39,7 @@ public class fValue extends AstOperandNod {
 		return names;
 	}
 
-	public Optional<fModifiers> getModifiers() {
+	public fModifiers getModifiers() {
 		return modifiers;
 	}
 

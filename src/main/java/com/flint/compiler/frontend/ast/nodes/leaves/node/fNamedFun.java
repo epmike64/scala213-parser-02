@@ -10,7 +10,7 @@ public class fNamedFun extends fFun {
 	private Optional<fType> returnType = Optional.empty();
 	private Optional<AstOperandNod> bd = Optional.empty();
 
-	public fNamedFun(Optional<fModifiers> mods, fFunSig funSig) {
+	public fNamedFun(fModifiers mods, fFunSig funSig) {
 		super(mods);
 		this.funSig = funSig;
 	}

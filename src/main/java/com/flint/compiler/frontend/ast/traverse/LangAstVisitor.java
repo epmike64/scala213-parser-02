@@ -49,8 +49,8 @@ public class LangAstVisitor extends AstNodVisitor  {
 	@Override
 	public void visit(fClassDef cls) {
 		System.out.println(cls.getName());
-		if(cls.getModifiers().isPresent()) {
-			cls.getModifiers().get().accept(this);
+		if(cls.getModifiers() != null) {
+			cls.getModifiers().accept(this);
 		}
 		if(cls.getConstrAccessModifier().isPresent()){
 			cls.getConstrAccessModifier().get().accept(this);
@@ -107,8 +107,8 @@ public class LangAstVisitor extends AstNodVisitor  {
 
 	@Override
 	public void visit(fObject o) {
-		if(o.getModifiers().isPresent()) {
-			o.getModifiers().get().accept(this);
+		if(o.getModifiers() != null) {
+			o.getModifiers().accept(this);
 		}
 		if(o.getExtendsTemplate().isPresent()) {
 			o.getExtendsTemplate().get().accept(this);
@@ -130,14 +130,14 @@ public class LangAstVisitor extends AstNodVisitor  {
 	@Override
 	public void visit(fModifiers m) {
 
-		if(m.getAccessModifier().isPresent()){
-			m.getAccessModifier().get().accept(this);
+		if(m.getAccessModifier() != null){
+			m.getAccessModifier().accept(this);
 		}
-		if(m.getOverrideModifier().isPresent()){
-			m.getOverrideModifier().get().accept(this);
+		if(m.getOverrideModifier() != null){
+			m.getOverrideModifier().accept(this);
 		}
-		if(m.getLocalModifier().isPresent()){
-			m.getLocalModifier().get().accept(this);
+		if(m.getLocalModifier() != null){
+			m.getLocalModifier().accept(this);
 		}
 	}
 
@@ -146,8 +146,8 @@ public class LangAstVisitor extends AstNodVisitor  {
 	@Override
 	public void visit(fTraitDef t) {
 		System.out.println(t.getName());
-		if(t.getModifiers().isPresent()) {
-			t.getModifiers().get().accept(this);
+		if(t.getModifiers() != null) {
+			t.getModifiers().accept(this);
 		}
 		if(t.getTypeParams().isPresent()) {
 			for (fTypeParam tp : t.getTypeParams().get()) {
@@ -236,8 +236,8 @@ public class LangAstVisitor extends AstNodVisitor  {
 	@Override
 	public void visit(fValueDef node) {
 		System.out.println("Visiting Value Def: " + node);
-		if(node.getModifiers().isPresent()){
-			node.getModifiers().get().accept(this);
+		if(node.getModifiers() != null) {
+			node.getModifiers().accept(this);
 		}
 		for(AstProdSubTreeN name: node.getNames()) {
 			name.accept(this);
@@ -397,8 +397,8 @@ public class LangAstVisitor extends AstNodVisitor  {
 
 	@Override
 	public void visit(fClassParam cp) {
-		if(cp.getModifiers().isPresent()) {
-			cp.getModifiers().get().accept(this);
+		if(cp.getModifiers() != null) {
+			cp.getModifiers().accept(this);
 		}
 //		cp.getIdentifier();
 //		cp.getMutability();

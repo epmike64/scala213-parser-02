@@ -12,7 +12,7 @@ public class fClassParam extends AstOperandNod {
 	private fNameValToken identifier;
 	private Optional<fParamType> paramType = Optional.empty();
 	private Optional<AstProdSubTreeN> defaultValue = Optional.empty();
-	private Optional<fModifiers> modifiers = Optional.empty();
+	private fModifiers modifiers;
 	public  void setMutability(fMutabilityType mutability) {this.mutability = mutability;}
 	public void setIdentifier(fNameValToken identifier) {this.identifier = identifier;}
 	public void setParamType(fParamType paramType) {
@@ -25,8 +25,7 @@ public class fClassParam extends AstOperandNod {
 		if(df == null) throw new RuntimeException("Default value cannot be null");
 		this.defaultValue = Optional.of(df);
 	}
-	public void setModifiers(Optional<fModifiers> mds) {
-		if(this.modifiers.isPresent()) throw new RuntimeException("Modifiers already set");
+	public void setModifiers(fModifiers mds) {
 		this.modifiers = mds;
 	}
 
@@ -42,7 +41,7 @@ public class fClassParam extends AstOperandNod {
 	public Optional<AstProdSubTreeN> getDefaultValue() {
 		return defaultValue;
 	}
-	public Optional<fModifiers> getModifiers() {
+	public fModifiers getModifiers() {
 		return modifiers;
 	}
 

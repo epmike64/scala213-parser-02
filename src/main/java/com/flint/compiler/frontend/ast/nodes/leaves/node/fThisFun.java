@@ -9,7 +9,7 @@ public class fThisFun extends fFun {
 	private fParamClauses paramClauses;
 	private fConstrBlock constructorBlock;
 
-	public fThisFun(Optional<fModifiers> mods) {
+	public fThisFun(fModifiers mods) {
 		super(mods);
 	}
 

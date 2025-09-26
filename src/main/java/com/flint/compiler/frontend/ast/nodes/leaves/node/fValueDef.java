@@ -7,7 +7,7 @@ import java.util.Optional;
 public class fValueDef extends fValue  {
 
 
-	public fValueDef(Optional<fModifiers> modifiers) {
+	public fValueDef(fModifiers modifiers) {
 		super(modifiers);
 	}
 

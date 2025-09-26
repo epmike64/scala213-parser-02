@@ -10,7 +10,7 @@ public class fClassDef extends fTraitDef {
 	private Optional<fClassParamClauses> classParamClauses = Optional.empty();
 	private Optional<fAccessModifier> constrAccessModifier = Optional.empty();
 
-	public fClassDef(fNameValToken name, boolean isCaseClass, Optional<fModifiers> modifiers) {
+	public fClassDef(fNameValToken name, boolean isCaseClass, fModifiers modifiers) {
 		super(name, modifiers);
 		this.isCaseClass = isCaseClass;
 	}

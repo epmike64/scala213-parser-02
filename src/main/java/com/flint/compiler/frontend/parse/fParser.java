@@ -950,7 +950,7 @@ public class fParser {
 		return tb;
 	}
 
-	AstOperandNod classObjectDef(boolean isCase, Optional<fModifiers> mods) {
+	AstOperandNod classObjectDef(boolean isCase, fModifiers mods) {
 		switch (h.tKnd()) {
 			case T_CLASS: {
 				return classDef(isCase, mods);
@@ -1046,7 +1046,7 @@ public class fParser {
 		return cc;
 	}
 
-	fTraitDef traitDef(Optional<fModifiers> mods) {
+	fTraitDef traitDef(fModifiers mods) {
 		h.accept(fTokenKind.T_TRAIT);
 		fTraitDef trait = new fTraitDef((fNameValToken) h.next(), mods);
 		if (h.isTkLBracket()) {
@@ -1122,23 +1122,23 @@ public class fParser {
 		assert am != null; return am;
 	}
 
-	Optional<fModifiers> modifiers(){
+	fModifiers modifiers(){
 		fModifiers mods = new fModifiers(); boolean isMod = false;
 		loop:
 		while(true){
 			switch (h.tKnd()) {
 				case T_ABSTRACT: case T_FINAL: case T_SEALED: case T_IMPLICIT: case T_LAZY:{
-					assert !mods.getLocalModifier().isPresent(): "Multiple local modifiers of the same kind";
+					assert mods.getLocalModifier() == null : "Multiple local modifiers in: " + mods;
 					mods.setLocalModifier(localModifier()); isMod = true;
 					continue loop;
 				}
 				case T_PRIVATE: case T_PROTECTED:{
-					assert !mods.getAccessModifier().isPresent(): "Multiple access modifiers";
+					assert mods.getAccessModifier() == null : "Multiple access modifiers in: " + mods;
 					mods.setAccessModifier(accessModifier()); isMod = true;
 					continue loop;
 				}
 				 case T_OVERRIDE: {
-					 assert !mods.getOverrideModifier().isPresent(): "Multiple override modifiers";
+					 assert mods.getOverrideModifier() == null : "Multiple override modifiers in: " + mods;
 					 h.next();
 					 mods.setOverrideModifier(new fOverrideModifier()); isMod = true;
 					 continue loop;
@@ -1147,11 +1147,11 @@ public class fParser {
 					break loop;
 			}
 		}
-		if(!isMod) return Optional.empty();
-		return Optional.of(mods);
+
+		return mods;
 	}
 
-	fClassDef classDef(boolean isCase, Optional<fModifiers> mods) {
+	fClassDef classDef(boolean isCase, fModifiers mods) {
 		h.accept(fTokenKind.T_CLASS);
 		fClassDef cls = new fClassDef((fNameValToken) h.next(), isCase, mods);
 		if (h.isTkLBracket()) {
@@ -1194,14 +1194,14 @@ public class fParser {
 		throw new RuntimeException("Expected 'extends', '{' or newline but found: " + h.getToken());
 	}
 
-	fObject objectDef(boolean isCase, Optional<fModifiers> mods) {
+	fObject objectDef(boolean isCase, fModifiers mods) {
 		h.accept(fTokenKind.T_OBJECT);
 		fObject obj = new fObject((fNameValToken) h.next(), isCase, mods);
 		obj.setExtendsTemplate(classExtends(false));
 		return obj;
 	}
 
-	fFun funDef(Optional<fModifiers> mods) {
+	fFun funDef(fModifiers mods) {
 		h.accept(fTokenKind.T_DEF);
 		switch (h.tKnd()) {
 			case T_ID: {
@@ -1215,7 +1215,7 @@ public class fParser {
 		}
 	}
 
-	fNamedFun namedFun(Optional<fModifiers> mods) {
+	fNamedFun namedFun(fModifiers mods) {
 		fNamedFun fun = new fNamedFun(mods, funSig());
 		if (h.isTkColon()) {
 			h.next();
@@ -1234,7 +1234,7 @@ public class fParser {
 		return fun;
 	}
 
-	fThisFun thisFun(Optional<fModifiers> mods) {
+	fThisFun thisFun(fModifiers mods) {
 		h.accept(T_THIS);
 		fThisFun fun = new fThisFun(mods);
 		fun.setParamClauses(paramClauses());
@@ -1416,7 +1416,7 @@ public class fParser {
 		return p;
 	}
 
-	fValue varDef(Optional<fModifiers> mods) {
+	fValue varDef(fModifiers mods) {
 		// patDef() + "ids: Type = _"
 		return patDef(fMutabilityType.VAR, mods);
 	}
@@ -1473,7 +1473,7 @@ public class fParser {
 		return new AstProdSubTreeN(GrmPrd.PATTERN_1, a);
 	}
 
-	fValue patDef(fMutabilityType mutabilityType, Optional<fModifiers> mods) {
+	fValue patDef(fMutabilityType mutabilityType, fModifiers mods) {
 		fValue value;
 		switch (mutabilityType){
 			case VAL: {
@@ -1756,7 +1756,7 @@ public class fParser {
 		return selectors;
 	}
 
-	AstOperandNod tmplDef(Optional<fModifiers> mods){
+	AstOperandNod tmplDef(fModifiers mods){
 		boolean isCase = false;
 
 		switch (h.tKnd()) {
@@ -1788,7 +1788,7 @@ public class fParser {
 			return importClause();
 		}
 
-		Optional<fModifiers> mods = modifiers();
+		fModifiers mods = modifiers();
 
 		switch (h.tKnd()) {
 			case T_CASE: case T_CLASS: case T_OBJECT: case T_TRAIT: {
@@ -1849,7 +1849,7 @@ public class fParser {
 
 			} else {
 
-				Optional<fModifiers> mods = modifiers();
+				fModifiers mods = modifiers();
 				switch (h.tKnd()){
 					case T_CASE: case T_CLASS: case T_OBJECT: case T_TRAIT: {
 						cu.addStmt(tmplDef(mods));
