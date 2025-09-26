@@ -6,7 +6,6 @@ import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstProdSubTreeN
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class fGenerator extends AstOperandNod {
 	private final AstProdSubTreeN casePattern1;

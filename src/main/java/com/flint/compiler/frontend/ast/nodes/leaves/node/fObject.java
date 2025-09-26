@@ -4,8 +4,6 @@ import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 import com.flint.compiler.frontend.parse.lex.token.type.fNameValToken;
 
-import java.util.Optional;
-
 public class fObject extends AstOperandNod  {
 
 	private final boolean isCaseClass;

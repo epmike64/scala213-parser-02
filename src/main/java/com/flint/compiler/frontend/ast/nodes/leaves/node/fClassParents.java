@@ -5,7 +5,6 @@ import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class fClassParents extends AstOperandNod {
 	private final fClassConstr constr;

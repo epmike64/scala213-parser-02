@@ -6,13 +6,14 @@ import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstProdSubTreeN
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 
 public class fValue extends AstOperandNod {
 	private final fModifiers modifiers;
 	private final List<AstProdSubTreeN> names = new ArrayList<>();
-	private Optional<fType> type = Optional.empty();
-	private Optional<AstProdSubTreeN> assignExpr = Optional.empty();
+	private fType type;
+	private AstProdSubTreeN assignExpr;
+
 	public fValue(fModifiers modifiers) {
 		this.modifiers = modifiers;
 	}
@@ -20,14 +21,10 @@ public class fValue extends AstOperandNod {
 		this.names.add(name);
 	}
 	public void setType(fType type) {
-		if( this.type.isPresent()) throw new RuntimeException("Type already set");
-		if(type == null) throw new RuntimeException("Type cannot be null");
-		this.type = Optional.of(type);
+		this.type =type;
 	}
 	public void setAssignExpr(AstProdSubTreeN assignExpr) {
-		if( this.assignExpr.isPresent()) throw new RuntimeException("Assign expression already set");
-		if(assignExpr == null) throw new RuntimeException("Assign expression cannot be null");
-		this.assignExpr = Optional.of(assignExpr);
+		this.assignExpr = assignExpr;
 	}
 
 	@Override
@@ -43,11 +40,11 @@ public class fValue extends AstOperandNod {
 		return modifiers;
 	}
 
-	public Optional<fType> getType() {
+	public fType getType() {
 		return type;
 	}
 
-	public Optional<AstProdSubTreeN> getAssignExpr() {
+	public AstProdSubTreeN getAssignExpr() {
 		return assignExpr;
 	}
 

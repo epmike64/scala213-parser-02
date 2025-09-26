@@ -15,7 +15,6 @@ import com.flint.compiler.frontend.parse.utils.Ast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static com.flint.compiler.frontend.parse.lex.token.fTokenKind.*;
 

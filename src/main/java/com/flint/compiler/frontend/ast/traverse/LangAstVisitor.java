@@ -242,11 +242,11 @@ public class LangAstVisitor extends AstNodVisitor  {
 		for(AstProdSubTreeN name: node.getNames()) {
 			name.accept(this);
 		}
-		if(node.getType().isPresent()) {
-			node.getType().get().accept(this);
+		if(node.getType() != null) {
+			node.getType().accept(this);
 		}
-		if(node.getAssignExpr().isPresent()) {
-			node.getAssignExpr().get().accept(this);
+		if(node.getAssignExpr() != null) {
+			node.getAssignExpr().accept(this);
 		}
 	}
 
@@ -442,11 +442,11 @@ public class LangAstVisitor extends AstNodVisitor  {
 	@Override
 	public void visit(fNamedFun f) {
 		f.getFunSig().accept(this);
-		if(f.getReturnType().isPresent()) {
-			f.getReturnType().get().accept(this);
+		if(f.getReturnType() != null) {
+			f.getReturnType().accept(this);
 		}
-		if(f.getBody().isPresent()) {
-			f.getBody().get().accept(this);
+		if(f.getBody() != null) {
+			f.getBody().accept(this);
 		}
 	}
 

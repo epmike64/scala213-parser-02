@@ -5,7 +5,6 @@ import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class fParamClauses extends AstOperandNod {
 	private final List<List<fParam>> paramsLists = new ArrayList<>();

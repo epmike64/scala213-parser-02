@@ -3,12 +3,10 @@ package com.flint.compiler.frontend.ast.nodes.leaves.node;
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 
-import java.util.Optional;
-
 public class fNamedFun extends fFun {
 	private final fFunSig funSig;
-	private Optional<fType> returnType = Optional.empty();
-	private Optional<AstOperandNod> bd = Optional.empty();
+	private fType returnType;
+	private AstOperandNod bd;
 
 	public fNamedFun(fModifiers mods, fFunSig funSig) {
 		super(mods);
@@ -16,15 +14,11 @@ public class fNamedFun extends fFun {
 	}
 
 	public void setReturnType(fType rt) {
-		if(this.returnType.isPresent()) {throw new IllegalStateException("Return type already set");}
-		if(rt == null) throw new IllegalArgumentException("Return type cannot be null");
-		this.returnType = Optional.of(rt);
+		this.returnType = rt;
 	}
 
 	public void setBody(AstOperandNod bd) {
-		if(this.bd.isPresent()) throw new IllegalStateException("Body already set");
-		if(bd == null) throw new IllegalArgumentException("Body cannot be null");
-		this.bd = Optional.of(bd);
+		this.bd = bd;
 	}
 
 	@Override
@@ -36,10 +30,10 @@ public class fNamedFun extends fFun {
 		return funSig;
 	}
 
-	public Optional<fType> getReturnType() {
+	public fType getReturnType() {
 		return returnType;
 	}
-	public Optional<AstOperandNod> getBody() {
+	public AstOperandNod getBody() {
 		return bd;
 	}
 
