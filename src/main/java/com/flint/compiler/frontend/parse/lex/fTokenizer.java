@@ -31,7 +31,7 @@ public class fTokenizer {
 	}
 
 	fToken readToken() {
-		reader.sp = 0;
+		reader.setSp(0);
 		tokStrVal = null;
 		radix = 0;
 
@@ -41,10 +41,10 @@ public class fTokenizer {
 		wlp:
 		while (true) {
 
-			assert reader.sp == 0 && tokStrVal == null && radix == 0;
-			pos = reader.bp;
+			assert reader.sp() == 0 && tokStrVal == null && radix == 0;
+			pos = reader.bp();
 
-			switch (reader.ch) {
+			switch (reader.ch()) {
 				case EOI: {
 					tKnd = fTokenKind.T_EOF;
 					break wlp;
@@ -52,7 +52,7 @@ public class fTokenizer {
 				case SP: case TAB: case FF: {
 					do {
 						reader.scanChar();
-					} while (reader.ch == SP || reader.ch == TAB || reader.ch == FF);
+					} while (reader.ch() == SP || reader.ch() == TAB || reader.ch() == FF);
 					continue;
 				}
 				case CR: {
@@ -90,11 +90,11 @@ public class fTokenizer {
 				}
 				case '0': {
 					reader.scanChar();
-					if (reader.ch == 'x' || reader.ch == 'X') {
+					if (reader.ch() == 'x' || reader.ch() == 'X') {
 						reader.scanChar();
 						scanNumber(pos, 16);
 
-					} else if (reader.ch == 'b' || reader.ch == 'B') {
+					} else if (reader.ch() == 'b' || reader.ch() == 'B') {
 						reader.scanChar();
 						scanNumber(pos, 2);
 
@@ -167,22 +167,22 @@ public class fTokenizer {
 					if (reader.peekChar() == '/') {
 						do {
 							reader.scanChar();
-						} while (reader.ch != CR && reader.ch != LF && reader.bp < reader.buflen);
+						} while (reader.ch() != CR && reader.ch() != LF && reader.bp() < reader.bufLen());
 						continue wlp;
 					}
 
 					if (reader.peekChar() == '*') {
 						reader.skipChar();
 						reader.scanChar();
-						while (reader.bp < reader.buflen) {
-							if (reader.ch == '*') {
+						while (reader.bp() < reader.bufLen()) {
+							if (reader.ch() == '*') {
 								reader.scanChar();
-								if (reader.ch == '/') break;
+								if (reader.ch() == '/') break;
 							} else {
 								reader.scanChar();
 							}
 						}
-						if (reader.ch == '/') {
+						if (reader.ch() == '/') {
 							reader.scanChar();
 							continue wlp;
 						}
@@ -195,18 +195,18 @@ public class fTokenizer {
 				}
 				case '\'': {
 					reader.scanChar();
-					if (reader.ch == '\'') {
-						lexError(pos, "empty.char.lit");
+					if (reader.ch() == '\'') {
+						lexError(pos, "empty.ch()ar.lit");
 						reader.scanChar();
 					} else {
-						if (reader.ch == CR || reader.ch == LF)
-							lexError(pos, "illegal.line.end.in.char.lit");
+						if (reader.ch() == CR || reader.ch() == LF)
+							lexError(pos, "illegal.line.end.in.ch()ar.lit");
 						scanLitChar();
-						if (reader.ch == '\'') {
+						if (reader.ch() == '\'') {
 							reader.scanChar();
 							tKnd = fTokenKind.T_CHAR_LIT;
 						} else {
-							lexError(pos, "unclosed.char.lit");
+							lexError(pos, "unclosed.ch()ar.lit");
 						}
 					}
 					break wlp;
@@ -217,16 +217,16 @@ public class fTokenizer {
 				}
 				default: {
 
-					if (isOpChar(reader.ch)) {
+					if (isOpChar(reader.ch())) {
 						scanIdent(pos);
 						break wlp;
 					}
 
-					throw new RuntimeException("illegal.char");
+					throw new RuntimeException("illegal.ch()ar");
 				}
 			}
 		}
-		endPos = reader.bp;
+		endPos = reader.bp();
 		switch (tKnd.tokTag) {
 			case OPERATOR: case KWRD: case INTERN: return new fToken(tKnd, pos, endPos, fToken._undef);
 			case NAME_VAL: return new fNameValToken(tKnd, pos, endPos, tokStrVal);
@@ -237,11 +237,11 @@ public class fTokenizer {
 	}
 
 	private void scanLiteralString() {
-		assert reader.ch == '\"';
+		assert reader.ch() == '\"';
 		reader.scanChar();
-		while (reader.ch != '\"' && reader.ch != CR && reader.ch != LF && reader.bp < reader.buflen)
+		while (reader.ch() != '\"' && reader.ch() != CR && reader.ch() != LF && reader.bp() < reader.bufLen())
 			scanLitChar();
-		if (reader.ch == '\"') {
+		if (reader.ch() == '\"') {
 			tKnd = fTokenKind.T_STRING_LIT;
 			reader.scanChar();
 			tokStrVal = reader.tokStrValue();
@@ -251,22 +251,22 @@ public class fTokenizer {
 	}
 
 	private void scanLitChar() {
-		if (reader.ch == '\\') {
+		if (reader.ch() == '\\') {
 			if (reader.peekChar() == '\\' && !reader.isUnicode()) {
 				reader.skipChar();
 				reader.putChar('\\', true);
 			} else {
 				reader.scanChar();
-				switch (reader.ch) {
+				switch (reader.ch()) {
 					case '0': case '1': case '2': case '3':
 					case '4': case '5': case '6': case '7':
-						char leadch = reader.ch;
+						char leadch = reader.ch();
 						int oct = reader.digit(8);
 						reader.scanChar();
-						if ('0' <= reader.ch && reader.ch <= '7') {
+						if ('0' <= reader.ch() && reader.ch() <= '7') {
 							oct = oct * 8 + reader.digit( 8);
 							reader.scanChar();
-							if (leadch <= '3' && '0' <= reader.ch && reader.ch <= '7') {
+							if (leadch <= '3' && '0' <= reader.ch() && reader.ch() <= '7') {
 								oct = oct * 8 + reader.digit( 8);
 								reader.scanChar();
 							}
@@ -290,10 +290,10 @@ public class fTokenizer {
 					case '\\':
 						reader.putChar('\\', true); break;
 					default:
-						lexError(reader.bp, "illegal.esc.char");
+						lexError(reader.bp(), "illegal.esc.char");
 				}
 			}
-		} else if (reader.bp != reader.buflen) {
+		} else if (reader.bp() != reader.bufLen()) {
 			reader.putChar(true);
 		}
 	}
@@ -311,16 +311,16 @@ public class fTokenizer {
 	private void scanIdent(int pos) {
 
 		boolean seenOpChar = false;
-		if (isOpChar(reader.ch)) {
+		if (isOpChar(reader.ch())) {
 			seenOpChar = true;
 		}
 
 		loop:
 		while (true) {
-			char prev = reader.ch;
+			char prev = reader.ch();
 			reader.putChar(true);
 
-			switch (reader.ch) {
+			switch (reader.ch()) {
 				case 'A': case 'B': case 'C': case 'D': case 'E':
 				case 'F': case 'G': case 'H': case 'I': case 'J':
 				case 'K': case 'L': case 'M': case 'N': case 'O':
@@ -341,7 +341,7 @@ public class fTokenizer {
 					continue;
 
 				default:
-					if (isOpChar(reader.ch)) {
+					if (isOpChar(reader.ch())) {
 						if (prev == '_') {
 							seenOpChar = true;
 							continue;
@@ -367,10 +367,10 @@ public class fTokenizer {
 	 * Read fractional part of hexadecimal floating point number.
 	 */
 	private void scanHexExponentAndSuffix(int pos) {
-		if (reader.ch == 'p' || reader.ch == 'P') {
+		if (reader.ch() == 'p' || reader.ch() == 'P') {
 			reader.putChar(true);
 
-			if (reader.ch == '+' || reader.ch == '-') {
+			if (reader.ch() == '+' || reader.ch() == '-') {
 				reader.putChar(true);
 			}
 
@@ -383,12 +383,12 @@ public class fTokenizer {
 		} else {
 			lexError(pos, "malformed.fp.lit");
 		}
-		if (reader.ch == 'f' || reader.ch == 'F') {
+		if (reader.ch() == 'f' || reader.ch() == 'F') {
 			reader.putChar(true);
 			tKnd = fTokenKind.T_FLOAT_LIT;
 			radix = 16;
 		} else {
-			if (reader.ch == 'd' || reader.ch == 'D') {
+			if (reader.ch() == 'd' || reader.ch() == 'D') {
 				reader.putChar(true);
 			}
 			tKnd = fTokenKind.T_FLOAT_LIT;
@@ -404,11 +404,11 @@ public class fTokenizer {
 		if (reader.digit(10) >= 0) {
 			scanDigits(pos, 10);
 		}
-		int sp1 = reader.sp;
-		if (reader.ch == 'e' || reader.ch == 'E') {
+		int sp1 = reader.sp();
+		if (reader.ch() == 'e' || reader.ch() == 'E') {
 			reader.putChar(true);
 
-			if (reader.ch == '+' || reader.ch == '-') {
+			if (reader.ch() == '+' || reader.ch() == '-') {
 				reader.putChar(true);
 			}
 
@@ -417,7 +417,7 @@ public class fTokenizer {
 				return;
 			}
 			lexError(pos, "malformed.fp.lit");
-			reader.sp = sp1;
+			reader.setSp(sp1);
 		}
 	}
 
@@ -427,11 +427,11 @@ public class fTokenizer {
 	private void scanFractionAndSuffix(int pos) {
 		radix = 10;
 		scanFraction(pos);
-		if (reader.ch == 'f' || reader.ch == 'F') {
+		if (reader.ch() == 'f' || reader.ch() == 'F') {
 			reader.putChar(true);
 			tKnd = fTokenKind.T_FLOAT_LIT;
 		} else {
-			if (reader.ch == 'd' || reader.ch == 'D') {
+			if (reader.ch() == 'd' || reader.ch() == 'D') {
 				reader.putChar(true);
 			}
 			tKnd = fTokenKind.T_FLOAT_LIT;
@@ -443,7 +443,7 @@ public class fTokenizer {
 	 */
 	private void scanHexFractionAndSuffix(int pos, boolean seendigit) {
 		radix = 16;
-		assert (reader.ch == '.');
+		assert (reader.ch() == '.');
 		reader.putChar(true);
 
 		if (reader.digit(16) >= 0) {
@@ -472,9 +472,9 @@ public class fTokenizer {
 		if (seendigit) {
 			scanDigits(pos, digitRadix);
 		}
-		if (seendigit && radix == 16 && (reader.ch == 'p' || reader.ch == 'P')) {
+		if (seendigit && radix == 16 && (reader.ch() == 'p' || reader.ch() == 'P')) {
 			scanHexExponentAndSuffix(pos);
-		} else if (digitRadix == 10 && reader.ch == '.') {
+		} else if (digitRadix == 10 && reader.ch() == '.') {
 			char p = reader.peekChar();
 			if ('0' <= p && p <= '9') {
 				reader.putChar(true);
@@ -484,9 +484,9 @@ public class fTokenizer {
 				tKnd = fTokenKind.T_INT_LIT;
 			}
 		} else if (digitRadix == 10 &&
-				(reader.ch == 'e' || reader.ch == 'E' ||
-						reader.ch == 'f' || reader.ch == 'F' ||
-						reader.ch == 'd' || reader.ch == 'D')) {
+				(reader.ch() == 'e' || reader.ch() == 'E' ||
+						reader.ch() == 'f' || reader.ch() == 'F' ||
+						reader.ch() == 'd' || reader.ch() == 'D')) {
 			scanFractionAndSuffix(pos);
 		} else {
 			if (!seenValidDigit) {
@@ -500,7 +500,7 @@ public class fTokenizer {
 				}
 			}
 			tokStrVal = reader.tokStrValue();
-			if (reader.ch == 'l' || reader.ch == 'L') {
+			if (reader.ch() == 'l' || reader.ch() == 'L') {
 				reader.scanChar();
 				tKnd = fTokenKind.T_INT_LIT;
 			} else {
