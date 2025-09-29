@@ -22,10 +22,10 @@ import static com.flint.compiler.frontend.parse.lex.token.fTokenKind.*;
 
 public class fParser {
 
-	private final ParseHelp h;
+	private final fParseHelp h;
 
 	public fParser(fLexer lexer) {
-		h = new ParseHelp(lexer);
+		h = new fParseHelp(lexer);
 	}
 
 	List<fNameValToken> qualIds() {

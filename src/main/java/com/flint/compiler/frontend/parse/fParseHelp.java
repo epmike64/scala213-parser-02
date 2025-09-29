@@ -15,7 +15,7 @@ import java.util.Stack;
 
 import static com.flint.compiler.frontend.parse.lex.token.fTokenKind.*;
 
-public class ParseHelp {
+public class fParseHelp {
 
 	private fToken prevToken;
 	private fToken token = fToken.FILE_OFFSET;
@@ -24,7 +24,7 @@ public class ParseHelp {
 	private int nlCount;
 	private int tc = 0;
 
-	ParseHelp(fLexer lexer) {
+	fParseHelp(fLexer lexer) {
 		this.lexer = lexer;
 		isNLEnabledStack.push(true); // Default is NL enabled
 		next();
