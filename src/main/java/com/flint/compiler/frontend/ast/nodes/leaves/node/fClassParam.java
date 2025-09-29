@@ -3,6 +3,7 @@ package com.flint.compiler.frontend.ast.nodes.leaves.node;
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstProdSubTreeN;
+import com.flint.compiler.frontend.parse.lex.token.fMutabilityType;
 import com.flint.compiler.frontend.parse.lex.token.type.fNameValToken;
 
 
