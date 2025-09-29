@@ -9,7 +9,7 @@ import com.flint.compiler.frontend.lang.grammar.GrmPrd;
 import com.flint.compiler.frontend.parse.lex.fLexer;
 import com.flint.compiler.frontend.parse.lex.token.fLangOperatorKind;
 import com.flint.compiler.frontend.parse.lex.token.fModifierTypes;
-import com.flint.compiler.frontend.parse.lex.token.fMutabilityType;
+import com.flint.compiler.frontend.parse.lex.token.fVariableMutabilityType;
 import com.flint.compiler.frontend.parse.lex.token.fTokenKind;
 import com.flint.compiler.frontend.parse.lex.token.type.fNameValToken;
 import com.flint.compiler.frontend.parse.utils.Ast;
@@ -1004,17 +1004,17 @@ public class fParser {
 
 		switch (h.tKnd()) {
 			case T_VAL: {
-				p.setMutability(fMutabilityType.VAL);
+				p.setMutability(fVariableMutabilityType.VAL);
 				h.next();
 				break;
 			}
 			case T_VAR: {
-				p.setMutability(fMutabilityType.VAR);
+				p.setMutability(fVariableMutabilityType.VAR);
 				h.next();
 				break;
 			}
 			default:
-				p.setMutability(fMutabilityType.NONE);
+				p.setMutability(fVariableMutabilityType.NONE);
 				break;
 		}
 		p.setIdentifier((fNameValToken) h.accept(T_ID));
@@ -1418,7 +1418,7 @@ public class fParser {
 
 	fValue varDef(fModifiers mods) {
 		// patDef() + "ids: Type = _"
-		return patDef(fMutabilityType.VAR, mods);
+		return patDef(fVariableMutabilityType.VAR, mods);
 	}
 
 
@@ -1473,7 +1473,7 @@ public class fParser {
 		return new AstProdSubTreeN(GrmPrd.PATTERN_1, a);
 	}
 
-	fValue patDef(fMutabilityType mutabilityType, fModifiers mods) {
+	fValue patDef(fVariableMutabilityType mutabilityType, fModifiers mods) {
 		fValue value;
 		switch (mutabilityType){
 			case VAL: {
@@ -1796,7 +1796,7 @@ public class fParser {
 			}
 			case T_VAL: {
 				h.next();
-				return patDef(fMutabilityType.VAL, mods);
+				return patDef(fVariableMutabilityType.VAL, mods);
 			}
 			case T_VAR: {
 				h.next();

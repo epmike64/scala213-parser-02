@@ -3,18 +3,18 @@ package com.flint.compiler.frontend.ast.nodes.leaves.node;
 import com.flint.compiler.frontend.ast.nodes.AstNodVisitor;
 import com.flint.compiler.frontend.ast.nodes.AstOperandNod;
 import com.flint.compiler.frontend.ast.nodes.leaves.node.subtree.AstProdSubTreeN;
-import com.flint.compiler.frontend.parse.lex.token.fMutabilityType;
+import com.flint.compiler.frontend.parse.lex.token.fVariableMutabilityType;
 import com.flint.compiler.frontend.parse.lex.token.type.fNameValToken;
 
 
 public class fClassParam extends AstOperandNod {
-	private fMutabilityType mutability = fMutabilityType.NONE;
+	private fVariableMutabilityType mutability = fVariableMutabilityType.NONE;
 	private fNameValToken identifier;
 	private fParamType paramType;
 	private AstProdSubTreeN defaultValue;
 	private fModifiers modifiers;
 
-	public void setMutability(fMutabilityType mutability) {
+	public void setMutability(fVariableMutabilityType mutability) {
 		this.mutability = mutability;
 	}
 
@@ -34,7 +34,7 @@ public class fClassParam extends AstOperandNod {
 		this.modifiers = mds;
 	}
 
-	public fMutabilityType getMutability() {
+	public fVariableMutabilityType getMutability() {
 		return mutability;
 	}
 
