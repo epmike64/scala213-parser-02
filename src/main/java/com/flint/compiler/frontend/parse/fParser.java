@@ -524,6 +524,7 @@ public class fParser {
 					ff.setElseBody(expr(null));
 				}
 				a.setRight(ff);
+				break;
 			}
 			default:
 				break; // for (i <- l1; j <- l2 if i + j > 10) {
