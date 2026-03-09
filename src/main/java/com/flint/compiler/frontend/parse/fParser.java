@@ -1124,24 +1124,24 @@ public class fParser {
 	}
 
 	fModifiers modifiers(){
-		fModifiers mods = new fModifiers(); boolean isMod = false;
+		fModifiers mods = new fModifiers();
 		loop:
 		while(true){
 			switch (h.tKnd()) {
 				case T_ABSTRACT: case T_FINAL: case T_SEALED: case T_IMPLICIT: case T_LAZY:{
 					assert mods.getLocalModifier() == null : "Multiple local modifiers in: " + mods;
-					mods.setLocalModifier(localModifier()); isMod = true;
+					mods.setLocalModifier(localModifier());
 					continue loop;
 				}
 				case T_PRIVATE: case T_PROTECTED:{
 					assert mods.getAccessModifier() == null : "Multiple access modifiers in: " + mods;
-					mods.setAccessModifier(accessModifier()); isMod = true;
+					mods.setAccessModifier(accessModifier());
 					continue loop;
 				}
 				 case T_OVERRIDE: {
 					 assert mods.getOverrideModifier() == null : "Multiple override modifiers in: " + mods;
 					 h.next();
-					 mods.setOverrideModifier(new fOverrideModifier()); isMod = true;
+					 mods.setOverrideModifier(new fOverrideModifier());
 					 continue loop;
 				}
 				default:
